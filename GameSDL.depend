@@ -1,0 +1,62 @@
+# depslib dependency file v1.0
+1710983174 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\baseobject.cpp
+	"CommonFunction.h"
+	"BaseObject.h"
+
+1711122673 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\main.cpp
+	"CommonFunction.h"
+	"graphics.h"
+	"BaseObject.h"
+	"game_map.h"
+	"mainObject.h"
+	"time.h"
+
+1711122377 d:\admin\documents\thuchanhlt\codeblock\gamesdl\commonfunction.h
+	<windows.h>
+	<bits/stdc++.h>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_mixer.h>
+	<SDL_ttf.h>
+
+1710814071 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\commonfunction.cpp
+
+1710841463 d:\admin\documents\thuchanhlt\codeblock\gamesdl\baseobject.h
+	"CommonFunction.h"
+
+1710904298 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\game_map.cpp
+	<bits/stdc++.h>
+	<stdio.h>
+	"game_map.h"
+
+1710916399 d:\admin\documents\thuchanhlt\codeblock\gamesdl\game_map.h
+	"CommonFunction.h"
+	"BaseObject.h"
+
+1711115941 d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.h
+	"CommonFunction.h"
+	"BaseObject.h"
+
+1711116106 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.cpp
+	<bits/stdc++.h>
+	"mainObject.h"
+	"CommonFunction.h"
+
+1710921128 d:\admin\documents\thuchanhlt\codeblock\gamesdl\time.h
+
+1710921128 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\time.cpp
+	"time.h"
+	<bits/stdc++.h>
+	<SDL.h>
+
+1711122377 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\graphics.cpp
+	<SDL.h>
+	<SDL_image.h>
+	"graphics.h"
+	"CommonFunction.h"
+
+1711122152 d:\admin\documents\thuchanhlt\codeblock\gamesdl\graphics.h
+	<SDL.h>
+	<SDL_image.h>
+	"CommonFunction.h"
+

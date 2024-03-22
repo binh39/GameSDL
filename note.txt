@@ -1,0 +1,10 @@
+sửa nhập xuất file
+sửa load ảnh thành const char* thay vì string
+sửa hàm di chuyển
+gộp hàm delay
+sửa hàm di chuyển
+sửa đứng yên load ảnh idle
+sửa ảnh nhảy
+Lỗi rơi 1 ô
+đi xuyên tile
+Lỗi checkmap theo x
