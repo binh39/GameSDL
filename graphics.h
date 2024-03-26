@@ -28,6 +28,13 @@ struct Graphics {
     void renderTexture(SDL_Texture *texture, int x, int y);
     void render(const ScrollingBackground& bgr);
 
+    Mix_Music *loadMusic(const char* path);
+    void play(Mix_Music *gMusic);
+    Mix_Chunk* loadSound(const char* path);
+    void play(Mix_Chunk* gChunk);
+    TTF_Font* loadFont(const char* path, int size);
+    SDL_Texture* renderText(const char* text,TTF_Font* font, SDL_Color textColor);
+
     void quit();
 };
 

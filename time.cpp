@@ -8,8 +8,6 @@ ImpTimer :: ImpTimer()
     paused_tick_ = 0;
     is_paused_ =false;
     is_started_ = false;
-
-
 }
 
 ImpTimer :: ~ImpTimer()

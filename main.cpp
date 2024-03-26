@@ -7,6 +7,12 @@
 
 BaseObject g_background;
 
+void logErrorAndExit(const char* msg, const char* error)
+{
+    SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR,"%s: %s", msg, error);
+    SDL_Quit();
+}
+
 bool InitData(){
     bool success = true;
     int res = SDL_Init(SDL_INIT_VIDEO);
@@ -26,7 +32,8 @@ bool InitData(){
                 success= false;
         }
     }
-
+    if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 ) logErrorAndExit( "SDL_mixer could not initialize! SDL_mixer Error: %s\n",Mix_GetError() );
+    if (TTF_Init() == -1) logErrorAndExit("SDL_ttf could not initialize! SDL_ttf Error: ",TTF_GetError());
     return success;
 }
 
@@ -53,6 +60,7 @@ int main(int argc,char* argv[])
 {
     ImpTimer fps_timer;
 
+
     if( InitData() == false) return -1;
     if(LoadBackground() == false) return -2;
 
@@ -64,6 +72,12 @@ int main(int argc,char* argv[])
     p_player.SelectCharacter();
     p_player.LoadImg(p_player.RunR,g_screen);
     p_player.set_clips();
+
+    Graphics graphics;
+    Mix_Music* gMusic = graphics.loadMusic("sound//cafe_boba.mp3");
+    graphics.play(gMusic);
+    Mix_Chunk *gJump = graphics.loadSound("sound//jump.wav");
+    graphics.play(gJump);
 
     bool is_quit = false;
 

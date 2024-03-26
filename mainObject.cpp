@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 #include "mainObject.h"
 #include "CommonFunction.h"
+#include "graphics.h"
 
 using namespace std;
 
@@ -9,6 +10,8 @@ void MainObject :: SelectCharacter(){
     cout<<"Select character: "<<endl;
     cout<<"1. Ninja Frog"<<endl;
     cout<<"2. Mask Dude"<<endl;
+    cout<<"3. Pink Man"<<endl;
+    cout<<"4. Virtual Guy"<<endl;
     do
     {
         cin>>x;
@@ -26,7 +29,22 @@ void MainObject :: SelectCharacter(){
             JumpR = "img/MaskDude//JumpR.png";
             JumpL = "img/MaskDude//JumpL.png";
         }
-    } while(!( 1<=x && x<=2));
+        else if ( x==3 )
+        {
+            RunR = "img/PinkMan//RunR.png";
+            RunL = "img/PinkMan//RunL.png";
+            JumpR = "img/PinkMan//JumpR.png";
+            JumpL = "img/PinkMan//JumpL.png";
+        }
+        else if ( x==4 )
+        {
+            RunR = "img/VirtualGuy//RunR.png";
+            RunL = "img/VirtualGuy//RunL.png";
+            JumpR = "img/VirtualGuy//JumpR.png";
+            JumpL = "img/VirtualGuy//JumpL.png";
+        }
+
+    } while(!( 1<=x && x<=4));
     cout<<"Game Start!"<<endl;
     return;
 }

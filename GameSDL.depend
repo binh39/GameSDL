@@ -3,7 +3,7 @@
 	"CommonFunction.h"
 	"BaseObject.h"
 
-1711122673 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\main.cpp
+1711178391 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\main.cpp
 	"CommonFunction.h"
 	"graphics.h"
 	"BaseObject.h"
@@ -37,25 +37,25 @@
 	"CommonFunction.h"
 	"BaseObject.h"
 
-1711116106 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.cpp
+1711175439 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.cpp
 	<bits/stdc++.h>
 	"mainObject.h"
 	"CommonFunction.h"
 
-1710921128 d:\admin\documents\thuchanhlt\codeblock\gamesdl\time.h
+1711178391 d:\admin\documents\thuchanhlt\codeblock\gamesdl\time.h
 
-1710921128 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\time.cpp
+1711178391 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\time.cpp
 	"time.h"
 	<bits/stdc++.h>
 	<SDL.h>
 
-1711122377 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\graphics.cpp
+1711177510 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\graphics.cpp
 	<SDL.h>
 	<SDL_image.h>
 	"graphics.h"
 	"CommonFunction.h"
 
-1711122152 d:\admin\documents\thuchanhlt\codeblock\gamesdl\graphics.h
+1711176780 d:\admin\documents\thuchanhlt\codeblock\gamesdl\graphics.h
 	<SDL.h>
 	<SDL_image.h>
 	"CommonFunction.h"

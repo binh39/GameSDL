@@ -16,8 +16,6 @@ public:
 
     bool is_started();
     bool is_paused();
-
-
 private:
     int start_tick_;
     int paused_tick_;
