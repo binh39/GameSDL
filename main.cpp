@@ -13,6 +13,16 @@ void logErrorAndExit(const char* msg, const char* error)
     SDL_Quit();
 }
 
+void waitUntilKeyPressed()
+{
+    SDL_Event e;
+    while (true) {
+        if ( SDL_PollEvent(&e) != 0 && (e.type == SDL_KEYDOWN || e.type == SDL_QUIT) )
+            return;
+        SDL_Delay(100);
+    }
+}
+
 bool InitData(){
     bool success = true;
     int res = SDL_Init(SDL_INIT_VIDEO);
@@ -56,6 +66,7 @@ void close(){
 
 using namespace std;
 
+
 int main(int argc,char* argv[])
 {
     ImpTimer fps_timer;
@@ -69,7 +80,9 @@ int main(int argc,char* argv[])
     game_map.LoadTiles(g_screen);
 
     MainObject p_player;
+
     p_player.SelectCharacter();
+    //waitUntilKeyPressed();
     p_player.LoadImg(p_player.RunR,g_screen);
     p_player.set_clips();
 
@@ -78,6 +91,7 @@ int main(int argc,char* argv[])
     graphics.play(gMusic);
     Mix_Chunk *gJump = graphics.loadSound("sound//jump.wav");
     graphics.play(gJump);
+
 
     bool is_quit = false;
 
@@ -93,15 +107,14 @@ int main(int argc,char* argv[])
         SDL_SetRenderDrawColor(g_screen,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR);
         SDL_RenderClear(g_screen);
         g_background.Render(g_screen,NULL);
-
         Map map_data = game_map.getMap();
-
         p_player.SetMapXY(map_data.start_x_, map_data.start_y_);
-        p_player.DoPlayer(map_data);
-
+        p_player.DoPlayer(map_data, graphics, gJump);
         game_map.SetMap(map_data);
         game_map.DrawMap(g_screen);
+        //Hinh anh load sau dong nay
         p_player.Show(g_screen);
+        p_player.HandleBullet(g_screen);
 
         SDL_RenderPresent(g_screen);
 

@@ -26,6 +26,9 @@ const int COLOR_KEY_B = 180;
 
 const int RENDER_DRAW_COLOR = 0xff;
 
+//Bullet
+const int BULLET_SPEED = 20;
+const int BULLET_SPEED_ENEMY = 10;
 #define BACKGROUND_IMG "img//Background.png"
 
 #define TILE_SIZE 64

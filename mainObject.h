@@ -1,8 +1,11 @@
 #ifndef MAIN_OBJECT_H
 #define MAIN_OBJECT_H
 
+#include <bits/stdc++.h>
 #include "CommonFunction.h"
 #include "BaseObject.h"
+#include "graphics.h"
+#include "BulletObject.h"
 
 #define GRAVITY_SPEED 1
 #define MAX_FALL_SPEED 10
@@ -18,13 +21,15 @@ public:
     string RunL;
     string JumpR;
     string JumpL;
+
     MainObject();
     ~MainObject();
 
     enum WalkType
     {
-        WALK_RIGHT = 0,
-        WALK_LEFT = 1,
+        WALK_NONE = 0,
+        WALK_RIGHT = 1,
+        WALK_LEFT = 2,
     };
 
     bool LoadImg(string path, SDL_Renderer* screen);
@@ -32,14 +37,25 @@ public:
     void HandelInputAction(SDL_Event events, SDL_Renderer* screen);
     void set_clips();
 
-    void DoPlayer(Map& map_data);
+    void DoPlayer(Map& map_data, Graphics& graphics, Mix_Chunk * jump);
     void CheckToMap(Map& map_data);
 
     void SetMapXY(const int map_x, const int map_y){map_x_ = map_x; map_y_ = map_y;}
     void CenterEntityOnMap(Map& map_data);
     void SelectCharacter();
+    void UpdateImagePlayer(SDL_Renderer* des);
+
+    void set_bullet_list(vector<BulletObject*> bullet_list){
+            p_bullet_list_ = bullet_list;
+        }
+    vector<BulletObject*> get_bullet_list() const {return p_bullet_list_;}
+    void HandleBullet(SDL_Renderer* des);
+
+
+
 private:
 
+    vector<BulletObject*> p_bullet_list_;
 
     float x_val_;
     float y_val_;

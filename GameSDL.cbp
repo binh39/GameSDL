@@ -34,6 +34,8 @@
 		</Compiler>
 		<Unit filename="BaseObject.cpp" />
 		<Unit filename="BaseObject.h" />
+		<Unit filename="BulletObject.cpp" />
+		<Unit filename="BulletObject.h" />
 		<Unit filename="CommonFunction.cpp" />
 		<Unit filename="CommonFunction.h" />
 		<Unit filename="game_map.cpp" />

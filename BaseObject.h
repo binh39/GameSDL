@@ -17,14 +17,14 @@ public:
     virtual bool LoadImg(string path, SDL_Renderer* screen);
     void Render(SDL_Renderer* des,const SDL_Rect* clip = NULL);
 
-
+    void PrintRect(){
+        cout<<rect_.x<<" "<<rect_.y<<endl;
+    }
     void Free();
 
 protected:
     SDL_Texture* p_object_;
     SDL_Rect rect_;
-
-
 };
 
 

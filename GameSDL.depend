@@ -1,9 +1,9 @@
 # depslib dependency file v1.0
-1710983174 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\baseobject.cpp
+1713103226 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\baseobject.cpp
 	"CommonFunction.h"
 	"BaseObject.h"
 
-1711178391 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\main.cpp
+1713106571 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\main.cpp
 	"CommonFunction.h"
 	"graphics.h"
 	"BaseObject.h"
@@ -11,7 +11,7 @@
 	"mainObject.h"
 	"time.h"
 
-1711122377 d:\admin\documents\thuchanhlt\codeblock\gamesdl\commonfunction.h
+1713107687 d:\admin\documents\thuchanhlt\codeblock\gamesdl\commonfunction.h
 	<windows.h>
 	<bits/stdc++.h>
 	<SDL.h>
@@ -21,7 +21,7 @@
 
 1710814071 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\commonfunction.cpp
 
-1710841463 d:\admin\documents\thuchanhlt\codeblock\gamesdl\baseobject.h
+1713111369 d:\admin\documents\thuchanhlt\codeblock\gamesdl\baseobject.h
 	"CommonFunction.h"
 
 1710904298 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\game_map.cpp
@@ -33,14 +33,18 @@
 	"CommonFunction.h"
 	"BaseObject.h"
 
-1711115941 d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.h
+1713107687 d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.h
+	<bits/stdc++.h>
 	"CommonFunction.h"
 	"BaseObject.h"
+	"graphics.h"
+	"BulletObject.h"
 
-1711175439 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.cpp
+1713114540 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.cpp
 	<bits/stdc++.h>
 	"mainObject.h"
 	"CommonFunction.h"
+	"graphics.h"
 
 1711178391 d:\admin\documents\thuchanhlt\codeblock\gamesdl\time.h
 
@@ -58,5 +62,12 @@
 1711176780 d:\admin\documents\thuchanhlt\codeblock\gamesdl\graphics.h
 	<SDL.h>
 	<SDL_image.h>
+	"CommonFunction.h"
+
+1713114651 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\bulletobject.cpp
+	"BulletObject.h"
+
+1713111106 d:\admin\documents\thuchanhlt\codeblock\gamesdl\bulletobject.h
+	"BaseObject.h"
 	"CommonFunction.h"
 
