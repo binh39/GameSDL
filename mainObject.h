@@ -42,7 +42,7 @@ public:
 
     void SetMapXY(const int map_x, const int map_y){map_x_ = map_x; map_y_ = map_y;}
     void CenterEntityOnMap(Map& map_data);
-    void SelectCharacter();
+    void SelectCharacter(int choose);
     void UpdateImagePlayer(SDL_Renderer* des);
 
     void set_bullet_list(vector<BulletObject*> bullet_list){
@@ -50,11 +50,13 @@ public:
         }
     vector<BulletObject*> get_bullet_list() const {return p_bullet_list_;}
     void HandleBullet(SDL_Renderer* des);
+    void Vitri(){cout<<x_pos_<<" "<<y_pos_<<endl;}
 
-
+    void IncreaseMoney();
 
 private:
 
+    int money_count;
     vector<BulletObject*> p_bullet_list_;
 
     float x_val_;

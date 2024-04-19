@@ -3,15 +3,16 @@
 	"CommonFunction.h"
 	"BaseObject.h"
 
-1713106571 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\main.cpp
+1713547518 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\main.cpp
 	"CommonFunction.h"
 	"graphics.h"
 	"BaseObject.h"
 	"game_map.h"
 	"mainObject.h"
 	"time.h"
+	"ThreatsObject.h"
 
-1713107687 d:\admin\documents\thuchanhlt\codeblock\gamesdl\commonfunction.h
+1713462197 d:\admin\documents\thuchanhlt\codeblock\gamesdl\commonfunction.h
 	<windows.h>
 	<bits/stdc++.h>
 	<SDL.h>
@@ -33,14 +34,14 @@
 	"CommonFunction.h"
 	"BaseObject.h"
 
-1713107687 d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.h
+1713462197 d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.h
 	<bits/stdc++.h>
 	"CommonFunction.h"
 	"BaseObject.h"
 	"graphics.h"
 	"BulletObject.h"
 
-1713114540 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.cpp
+1713534997 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.cpp
 	<bits/stdc++.h>
 	"mainObject.h"
 	"CommonFunction.h"
@@ -59,10 +60,11 @@
 	"graphics.h"
 	"CommonFunction.h"
 
-1711176780 d:\admin\documents\thuchanhlt\codeblock\gamesdl\graphics.h
+1713169993 d:\admin\documents\thuchanhlt\codeblock\gamesdl\graphics.h
 	<SDL.h>
 	<SDL_image.h>
 	"CommonFunction.h"
+	<bits/stdc++.h>
 
 1713114651 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\bulletobject.cpp
 	"BulletObject.h"
@@ -70,4 +72,11 @@
 1713111106 d:\admin\documents\thuchanhlt\codeblock\gamesdl\bulletobject.h
 	"BaseObject.h"
 	"CommonFunction.h"
+
+1713547436 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\threatsobject.cpp
+	"ThreatsObject.h"
+
+1713545839 d:\admin\documents\thuchanhlt\codeblock\gamesdl\threatsobject.h
+	"CommonFunction.h"
+	"BaseObject.h"
 

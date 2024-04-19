@@ -8,3 +8,4 @@ sửa ảnh nhảy
 Lỗi rơi 1 ô
 đi xuyên tile
 Lỗi checkmap theo x
+sửa setClip, show theo tham số truyền vào,

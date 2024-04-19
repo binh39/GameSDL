@@ -5,48 +5,35 @@
 
 using namespace std;
 
-void MainObject :: SelectCharacter(){
-    int x = 1;
-    cout<<"Select character: "<<endl;
-    cout<<"1. Ninja Frog"<<endl;
-    cout<<"2. Mask Dude"<<endl;
-    cout<<"3. Pink Man"<<endl;
-    cout<<"4. Virtual Guy"<<endl;
-    do
+void MainObject :: SelectCharacter(int choose){
+    if(choose==1)
     {
-        cin>>x;
-        if(x==1)
-        {
-            RunR = "img/NinjaFrog//RunR.png";
-            RunL = "img/NinjaFrog//RunL.png";
-            JumpR = "img/NinjaFrog//JumpR.png";
-            JumpL = "img/NinjaFrog//JumpL.png";
-        }
-        else if ( x==2 )
-        {
-            RunR = "img/MaskDude//RunR.png";
-            RunL = "img/MaskDude//RunL.png";
-            JumpR = "img/MaskDude//JumpR.png";
-            JumpL = "img/MaskDude//JumpL.png";
-        }
-        else if ( x==3 )
-        {
-            RunR = "img/PinkMan//RunR.png";
-            RunL = "img/PinkMan//RunL.png";
-            JumpR = "img/PinkMan//JumpR.png";
-            JumpL = "img/PinkMan//JumpL.png";
-        }
-        else if ( x==4 )
-        {
-            RunR = "img/VirtualGuy//RunR.png";
-            RunL = "img/VirtualGuy//RunL.png";
-            JumpR = "img/VirtualGuy//JumpR.png";
-            JumpL = "img/VirtualGuy//JumpL.png";
-        }
-
-    } while(!( 1<=x && x<=4));
-    cout<<"Game Start!"<<endl;
-    return;
+        RunR = "img/NinjaFrog//RunR.png";
+        RunL = "img/NinjaFrog//RunL.png";
+        JumpR = "img/NinjaFrog//JumpR.png";
+        JumpL = "img/NinjaFrog//JumpL.png";
+    }
+    else if ( choose==2 )
+    {
+        RunR = "img/MaskDude//RunR.png";
+        RunL = "img/MaskDude//RunL.png";
+        JumpR = "img/MaskDude//JumpR.png";
+        JumpL = "img/MaskDude//JumpL.png";
+    }
+    else if ( choose==3 )
+    {
+        RunR = "img/PinkMan//RunR.png";
+        RunL = "img/PinkMan//RunL.png";
+        JumpR = "img/PinkMan//JumpR.png";
+        JumpL = "img/PinkMan//JumpL.png";
+    }
+    else
+    {
+        RunR = "img/VirtualGuy//RunR.png";
+        RunL = "img/VirtualGuy//RunL.png";
+        JumpR = "img/VirtualGuy//JumpR.png";
+        JumpL = "img/VirtualGuy//JumpL.png";
+    }
 }
 
 MainObject :: MainObject()
@@ -72,6 +59,7 @@ MainObject :: MainObject()
     map_x_ =0;
     map_y_ =0;
     come_back_time_ =0;
+    money_count = 0;
 }
 
 MainObject :: ~MainObject()
@@ -372,17 +360,40 @@ void MainObject :: CheckToMap(Map& map_data)
     {
         if(x_val_ > 0) //main obbject di chuyen sang phai
         {
-            if(map_data.tile[y1][x2] != BLANK_TILE || map_data.tile[y2][x2] != BLANK_TILE)
+            int val1 = map_data.tile[y1][x2];
+            int val2 = map_data.tile[y2][x2];
+
+            if(val1 == STATE_MONEY || val2 == STATE_MONEY)
+            {
+                map_data.tile[y1][x2] = 0;
+                map_data.tile[y2][x2] = 0;
+                IncreaseMoney();
+            }
+
+            else
+            {
+                if(val1 != BLANK_TILE || val2 != BLANK_TILE)
             {
                 //x_pos_ = x2*TILE_SIZE;
                 //x_pos_ -= width_frame_ +1;
                 x_pos_ = test_x;
                 x_val_ =0;
             }
+            }
+
         }
         else if (x_val_ < 0)
         {
-            if(map_data.tile[y1][x1] != BLANK_TILE || map_data.tile[y2][x1] != BLANK_TILE)
+            int val1 = map_data.tile[y1][x1];
+            int val2 = map_data.tile[y2][x1];
+
+            if(val1 == STATE_MONEY || val2 == STATE_MONEY)
+            {
+                map_data.tile[y1][x1] = 0;
+                map_data.tile[y2][x1] = 0;
+                IncreaseMoney();
+            }
+            if(val1 != BLANK_TILE || val2 != BLANK_TILE)
             {
                 //x_pos_ = (x1 +1)*TILE_SIZE;
                 x_pos_ = test_x;
@@ -403,24 +414,47 @@ void MainObject :: CheckToMap(Map& map_data)
     {
         if(y_val_>0)
         {
-            if(map_data.tile[y2][x1] != BLANK_TILE || map_data.tile[y2][x2] != BLANK_TILE)
+            int val1 = map_data.tile[y2][x1];
+            int val2 = map_data.tile[y2][x2];
+            if(val1 == STATE_MONEY || val2 == STATE_MONEY)
             {
-                //y_pos_ = y2*TILE_SIZE;
-                //y_pos_ -= (height_frame_+ 1);
-                y_pos_ = test_y;
-                y_val_ = 0;
-                on_ground_ = true;
-                if(status_ == WALK_NONE) status_ == WALK_RIGHT;
+                map_data.tile[y2][x1] = 0;
+                map_data.tile[y2][x2] = 0;
+                IncreaseMoney();
+            }
+            else
+            {
+                if(val1 != BLANK_TILE || val2 != BLANK_TILE)
+                {
+                    //y_pos_ = y2*TILE_SIZE;
+                    //y_pos_ -= (height_frame_+ 1);
+                    y_pos_ = test_y;
+                    y_val_ = 0;
+                    on_ground_ = true;
+                    if(status_ == WALK_NONE) status_ == WALK_RIGHT;
+                }
             }
         }
         else if (y_val_ < 0)
         {
-            if(map_data.tile[y1][x1] != BLANK_TILE || map_data.tile[y1][x2]!=BLANK_TILE)
+            int val1 = map_data.tile[y1][x1];
+            int val2 = map_data.tile[y1][x2];
+            if(val1 == STATE_MONEY || val2 == STATE_MONEY)
             {
-                //y_pos_ = (y1 + 1)*TILE_SIZE;
-                y_pos_ = test_y;
-                y_val_ = 0;
+                map_data.tile[y1][x1] = 0;
+                map_data.tile[y1][x2] = 0;
+                IncreaseMoney();
             }
+            else
+            {
+                if(val1 != BLANK_TILE || val2 !=BLANK_TILE)
+                {
+                    //y_pos_ = (y1 + 1)*TILE_SIZE;
+                    y_pos_ = test_y;
+                    y_val_ = 0;
+                }
+            }
+
         }
     }
 
@@ -466,3 +500,9 @@ void MainObject :: UpdateImagePlayer(SDL_Renderer* des){
         }
     }
 }
+
+void MainObject :: IncreaseMoney(){
+    money_count++;
+}
+
+

@@ -38,6 +38,8 @@ const int BULLET_SPEED_ENEMY = 10;
 #define MAX_MAP_X 80
 #define MAX_MAP_Y 10
 
+#define STATE_MONEY 4
+
 typedef struct Input
 {
     int left_;

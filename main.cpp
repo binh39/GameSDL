@@ -4,6 +4,7 @@
 #include "game_map.h"
 #include "mainObject.h"
 #include "time.h"
+#include "ThreatsObject.h"
 
 BaseObject g_background;
 
@@ -64,16 +65,78 @@ void close(){
     SDL_Quit();
 }
 
-using namespace std;
+vector<ThreatsObject*> MakeThreadList()
+{
+    vector<ThreatsObject*> list_threats;
+    ThreatsObject* dynamic_threats = new ThreatsObject[3];
+    for(int i=0; i<3 ; i++)
+    {
+        ThreatsObject* p_threat = (dynamic_threats+i);
+        if(p_threat != NULL)
+        {
+            p_threat->LoadImg("img/Enemy/BunnyL.png",g_screen);
+            p_threat->set_clips();
+            p_threat->set_type_move(ThreatsObject::MOVE_IN_SPACE_THREAT);
+            p_threat->set_x_pos(7*64+i*64*6);
+            p_threat->set_y_pos(200);
 
+            int pos1 = p_threat->get_x_pos()-60;
+            int pos2 = p_threat->get_x_pos()+60;
+            p_threat->SetAnimationPos(pos1,pos2);
+            p_threat->set_input_left(1);
+            list_threats.push_back(p_threat);
+        }
+    }
+
+    ThreatsObject* threats_objs = new ThreatsObject[20];
+    for(int i=0 ; i<20 ; i++)
+    {
+        ThreatsObject* p_threat = (threats_objs+i);
+        if(i%2==0)
+        {
+            if(p_threat != NULL)
+        {
+            p_threat->LoadImg("img/Enemy/Plant.png",g_screen);
+            p_threat->set_clips();
+            p_threat->set_x_pos(5*64+i*64*3);
+            p_threat->set_y_pos(250);
+            p_threat->set_type_move(ThreatsObject::STATIC_THREAT);
+            p_threat->set_input_left(0);
+            list_threats.push_back(p_threat);
+        }
+        }
+        else
+        {
+            if(p_threat != NULL)
+        {
+            p_threat->LoadImg("img/Enemy/Turtle.png",g_screen);
+            p_threat->set_clips();
+            p_threat->set_x_pos(5*64+i*64*3);
+            p_threat->set_y_pos(250);
+            p_threat->set_type_move(ThreatsObject::STATIC_THREAT);
+            p_threat->set_input_left(0);
+            list_threats.push_back(p_threat);
+        }
+        }
+
+    }
+    return list_threats;
+}
+
+using namespace std;
 
 int main(int argc,char* argv[])
 {
+    int choose=0;
     ImpTimer fps_timer;
-
 
     if( InitData() == false) return -1;
     if(LoadBackground() == false) return -2;
+
+    Menu menu;
+    menu.StartMenu(g_screen,g_event);
+    choose = menu.ChooseCharacter(g_screen,g_event);
+    //waitUntilKeyPressed();
 
     GameMap game_map;
     game_map.LoadMap("map/map02.txt");
@@ -81,13 +144,15 @@ int main(int argc,char* argv[])
 
     MainObject p_player;
 
-    p_player.SelectCharacter();
+    p_player.SelectCharacter(choose);
     //waitUntilKeyPressed();
     p_player.LoadImg(p_player.RunR,g_screen);
     p_player.set_clips();
 
+    vector<ThreatsObject*> threats_list = MakeThreadList();
+
     Graphics graphics;
-    Mix_Music* gMusic = graphics.loadMusic("sound//cafe_boba.mp3");
+    Mix_Music* gMusic = graphics.loadMusic("sound//cafe_boba_short.mp3");
     graphics.play(gMusic);
     Mix_Chunk *gJump = graphics.loadSound("sound//jump.wav");
     graphics.play(gJump);
@@ -112,8 +177,20 @@ int main(int argc,char* argv[])
         p_player.DoPlayer(map_data, graphics, gJump);
         game_map.SetMap(map_data);
         game_map.DrawMap(g_screen);
+
+        for(int i=0 ; i<threats_list.size() ; i++){
+            ThreatsObject* p_threat = threats_list[i];
+            if(p_threat != NULL)
+            {
+                p_threat->SetMapXY(map_data.start_x_, map_data.start_y_);
+                p_threat->ImpMoveType(g_screen);
+                p_threat->DoPlayer(map_data);
+                p_threat->Show(g_screen);
+            }
+        }
         //Hinh anh load sau dong nay
         p_player.Show(g_screen);
+        p_player.Vitri();
         p_player.HandleBullet(g_screen);
 
         SDL_RenderPresent(g_screen);
