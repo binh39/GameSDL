@@ -3,7 +3,7 @@
 	"CommonFunction.h"
 	"BaseObject.h"
 
-1713547518 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\main.cpp
+1713597037 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\main.cpp
 	"CommonFunction.h"
 	"graphics.h"
 	"BaseObject.h"
@@ -69,14 +69,15 @@
 1713114651 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\bulletobject.cpp
 	"BulletObject.h"
 
-1713111106 d:\admin\documents\thuchanhlt\codeblock\gamesdl\bulletobject.h
+1713598623 d:\admin\documents\thuchanhlt\codeblock\gamesdl\bulletobject.h
 	"BaseObject.h"
 	"CommonFunction.h"
 
-1713547436 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\threatsobject.cpp
+1713548405 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\threatsobject.cpp
 	"ThreatsObject.h"
 
-1713545839 d:\admin\documents\thuchanhlt\codeblock\gamesdl\threatsobject.h
+1713597037 d:\admin\documents\thuchanhlt\codeblock\gamesdl\threatsobject.h
 	"CommonFunction.h"
 	"BaseObject.h"
+	"BulletObject.h"
 

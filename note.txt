@@ -9,3 +9,4 @@ Lỗi rơi 1 ô
 đi xuyên tile
 Lỗi checkmap theo x
 sửa setClip, show theo tham số truyền vào,
+x_pos ứng với toàn bản đồ, rect_.x là vị trí trong phạm vi màn hình
