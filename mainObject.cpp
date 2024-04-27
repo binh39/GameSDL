@@ -36,8 +36,7 @@ void MainObject :: SelectCharacter(int choose){
     }
 }
 
-MainObject :: MainObject()
-{
+MainObject :: MainObject(){
     RunR = "img/NinjaFrog//RunR.png";
     RunL = "img/NinjaFrog//RunL.png";
     JumpR = "img/NinjaFrog//JumpR.png";
@@ -62,9 +61,7 @@ MainObject :: MainObject()
     money_count = 0;
 }
 
-MainObject :: ~MainObject()
-{
-
+MainObject :: ~MainObject(){
 }
 
 bool MainObject :: LoadImg(string path,SDL_Renderer* screen)
@@ -171,23 +168,23 @@ void MainObject :: HandelInputAction(SDL_Event events, SDL_Renderer* screen)
 
             if(status_ == WALK_LEFT)
             {
-                cout<<double((rect_.y-mouseY)*1.0/(mouseX-rect_.x))<<endl;
                 if( mouseX >= rect_.x) p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
                 else if( double((rect_.y-mouseY)*1.0/(rect_.x - mouseX)) > 0.156 ) p_bullet->set_bullet_dir(BulletObject::DIR_UP_LEFT);
                 else if( double((rect_.y-mouseY+64)*1.0/(rect_.x - mouseX)) < -0.156 ) p_bullet->set_bullet_dir(BulletObject::DIR_DOWN_LEFT);
                 else p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
 
-                p_bullet->SetRect(rect_.x, rect_.y + height_frame_*0.3);
+                //p_bullet->SetRect(rect_.x+20, rect_.y + height_frame_*0.5);
+                p_bullet->set_position(x_pos_+20, y_pos_+ height_frame_*0.5);
             }
             else
             {
-                cout<<double((rect_.y-mouseY)*1.0/(mouseX-rect_.x))<<endl;
                 if( mouseX <= rect_.x) p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
                 else if( double((rect_.y-mouseY)*1.0/(mouseX-rect_.x)) > 0.156 ) p_bullet->set_bullet_dir(BulletObject::DIR_UP_RIGHT);
                 else if( double((rect_.y-mouseY+64)*1.0/(mouseX-rect_.x)) < -0.156 ) p_bullet->set_bullet_dir(BulletObject::DIR_DOWN_RIGHT);
                 else p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
 
-                p_bullet->SetRect(rect_.x + width_frame_ - 20, rect_.y + height_frame_*0.3);
+                //p_bullet->SetRect(rect_.x + width_frame_ - 40, rect_.y + height_frame_*0.5);
+                p_bullet->set_position(x_pos_+width_frame_-40, y_pos_+height_frame_*0.5);
             }
             //toc do
             p_bullet->set_x_val(BULLET_SPEED);
@@ -198,9 +195,6 @@ void MainObject :: HandelInputAction(SDL_Event events, SDL_Renderer* screen)
         }
         else if(events.button.button == SDL_BUTTON_LEFT)
         {
-            //cout<<mouseX<<" "<<mouseY<<endl;
-            //cout<<"check mouse left\n";
-
             BulletObject* p_bullet = new BulletObject();
             p_bullet->set_bullet_type(BulletObject::SPHERE_BULLET);
             p_bullet->LoadImgBullet(screen);
@@ -208,25 +202,25 @@ void MainObject :: HandelInputAction(SDL_Event events, SDL_Renderer* screen)
             //set vi tri
             if(status_ == WALK_LEFT)
             {
-                cout<<double((rect_.y-mouseY)*1.0/(mouseX-rect_.x))<<endl;
                 if( mouseX >= rect_.x) p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
                 else if( double((rect_.y-mouseY)*1.0/(rect_.x - mouseX)) > 0.156 ) p_bullet->set_bullet_dir(BulletObject::DIR_UP_LEFT);
                 else if( double((rect_.y-mouseY+64)*1.0/(rect_.x - mouseX)) < -0.156 ) p_bullet->set_bullet_dir(BulletObject::DIR_DOWN_LEFT);
                 else p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
 
                 //p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
-                p_bullet->SetRect(rect_.x, rect_.y + height_frame_*0.3);
+                //p_bullet->SetRect(rect_.x+20, rect_.y + height_frame_*0.5);
+                p_bullet->set_position(x_pos_+20, y_pos_+height_frame_*0.5);
 
             }
             else
             {
-                cout<<double((rect_.y-mouseY)*1.0/(mouseX-rect_.x))<<endl;
                 if( mouseX <= rect_.x) p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
                 else if( double((rect_.y-mouseY)*1.0/(mouseX-rect_.x)) > 0.156 ) p_bullet->set_bullet_dir(BulletObject::DIR_UP_RIGHT);
                 else if( double((rect_.y-mouseY+64)*1.0/(mouseX-rect_.x)) < -0.156 ) p_bullet->set_bullet_dir(BulletObject::DIR_DOWN_RIGHT);
                 else p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
                 //p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
-                p_bullet->SetRect(rect_.x + width_frame_ - 20, rect_.y + height_frame_*0.3);
+                //p_bullet->SetRect(rect_.x + width_frame_ - 40, rect_.y + height_frame_*0.5);
+                p_bullet->set_position(x_pos_+width_frame_-40, y_pos_+height_frame_*0.5);
             }
             //toc do
             p_bullet->set_x_val(BULLET_SPEED);
@@ -243,40 +237,56 @@ void MainObject :: HandelInputAction(SDL_Event events, SDL_Renderer* screen)
 
 }
 
-void MainObject :: HandleBullet(SDL_Renderer* des){
+SDL_Rect MainObject :: GetRectFrame(){
+    SDL_Rect rect;
+    rect.x = rect_.x;
+    rect.y = rect_.y;
+    rect.w = width_frame_;
+    rect.h = height_frame_;
+    return rect;
+}
+
+void MainObject :: HandleBullet(SDL_Renderer* des, Map& map_data){
     for(int i=0 ; i< p_bullet_list_.size(); i++){
         BulletObject* p_bullet = p_bullet_list_[i];
         if(p_bullet != NULL)
         {
             if(p_bullet->get_is_move() == true)
             {
-                p_bullet->HandleMove(SCREEN_WIDTH,SCREEN_HEIGHT);
+                p_bullet->HandleMove(SCREEN_WIDTH,SCREEN_HEIGHT, map_data);
                 //p_bullet->PrintRect();
                 p_bullet->Render(des);
             }
-        }
-        else
-        {
-            p_bullet_list_.erase(p_bullet_list_.begin()+i);
-            if(p_bullet !=NULL){
-                delete p_bullet;
-                p_bullet = NULL;
+            else
+            {
+                p_bullet_list_.erase(p_bullet_list_.begin()+i);
+                if(p_bullet !=NULL){
+                    delete p_bullet;
+                    p_bullet = NULL;
+                }
             }
         }
+
     }
 }
 
+void MainObject :: RemoveBullet(const int& idx){
+    int size = p_bullet_list_.size();
+    if(size>0 && idx <size){
+        BulletObject* p_bullet = p_bullet_list_[idx];
+        p_bullet_list_.erase(p_bullet_list_.begin()+idx);
+        if(p_bullet){ delete p_bullet;  p_bullet=NULL;}
+    }
+}
 
 void MainObject :: DoPlayer(Map& map_data, Graphics& graphics, Mix_Chunk * jump)
 {
     if( come_back_time_ == 0)
     {
-            x_val_ =0;
+        x_val_ =0;
         y_val_ += GRAVITY_SPEED;
 
-        if(y_val_ >= MAX_FALL_SPEED){
-            y_val_ = MAX_FALL_SPEED;
-        }
+        if(y_val_ >= MAX_FALL_SPEED) y_val_ = MAX_FALL_SPEED;
 
         if(input_type_.left_ == 1){
             x_val_ -= PLAYER_SPEED;

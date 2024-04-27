@@ -44,15 +44,17 @@ public:
     void CenterEntityOnMap(Map& map_data);
     void SelectCharacter(int choose);
     void UpdateImagePlayer(SDL_Renderer* des);
+    SDL_Rect GetRectFrame();
+
 
     void set_bullet_list(vector<BulletObject*> bullet_list){
             p_bullet_list_ = bullet_list;
         }
     vector<BulletObject*> get_bullet_list() const {return p_bullet_list_;}
-    void HandleBullet(SDL_Renderer* des);
-    void Vitri(){cout<<x_pos_<<" "<<y_pos_<<endl;}
-
+    void HandleBullet(SDL_Renderer* des, Map& map_data);
+    void RemoveBullet(const int& idx);
     void IncreaseMoney();
+    void Vitri(){cout<<x_pos_<<" "<<y_pos_<<endl;}
 
 private:
 

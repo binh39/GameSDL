@@ -10,6 +10,7 @@
 #define THREATE_GRAVITY_SPEED 0.8
 #define THREATE_MAX_FALL_SPEED 10
 #define THREAT_SPEED 3
+#define THREAT_FIRE 10
 using namespace std;
 
 class ThreatsObject : public BaseObject
@@ -39,7 +40,7 @@ public:
     int get_height_frame() const {return height_frame_;}
     void DoPlayer(Map& gMap);
     void CheckToMap(Map& gMap);
-
+    SDL_Rect GetRectFrame();
     void InitThreats();
 
     void set_type_move(const int& typeMove){type_move_ = typeMove;}
@@ -50,8 +51,8 @@ public:
     vector<BulletObject*> get_bullet_list() const {return bullet_list_;}
     void set_bullet_list(const vector<BulletObject*> &bl_list){bullet_list_ = bl_list;}
     void InitBullet(BulletObject* p_bullet, SDL_Renderer* screen);
-    void MakeBullet(SDL_Renderer* screen, const int& x_limit, const int& y_limit);
-
+    void MakeBullet(SDL_Renderer* screen, const int& x_limit, const int& y_limit,Map& map_data);
+    void RemoveBullet(const int& idx);
 
 private:
 

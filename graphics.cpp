@@ -102,8 +102,6 @@ SDL_Texture* Graphics :: renderText(const char* text,TTF_Font* font, SDL_Color t
     return texture;
 }
 
-
-
 void Graphics::quit()
 {
     IMG_Quit();
@@ -113,8 +111,9 @@ void Graphics::quit()
 }
 
 //Scrolling Background
-void ScrollingBackground::setTexture(SDL_Texture* _texture) {
-    texture = _texture;
+void ScrollingBackground::setTexture(SDL_Renderer* renderer) {
+    texture = IMG_LoadTexture(renderer, "img/Background.png");
+    if (texture == NULL) SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION,SDL_LOG_PRIORITY_ERROR, "Load texture %s", IMG_GetError());
     SDL_QueryTexture(texture, NULL, NULL, &width, &height);
 }
 
@@ -123,7 +122,34 @@ void ScrollingBackground::scroll(int distance) {
     if( scrollingOffset < 0 ) { scrollingOffset = width; }
 }
 
+//Sprite
+void Sprite::init(SDL_Texture* _texture, int frames, const int _clips [][4]) {
+    texture = _texture;
+    SDL_Rect clip;
+    for (int i = 0; i < frames; i++) {
+        clip.x = _clips[i][0];
+        clip.y = _clips[i][1];
+        clip.w = _clips[i][2];
+        clip.h = _clips[i][3];
+        clips.push_back(clip);
+    }
+}
+void Sprite::tick() {
+    currentFrame = (currentFrame + 1) % clips.size();
+}
 
+void Sprite::move(){
+    x = (x+4)%(1280+64);
+}
 
+const SDL_Rect* Sprite::getCurrentClip() const {
+    return &(clips[currentFrame]);
+}
+
+void Sprite :: Render(int x, int y, SDL_Renderer* renderer) {
+    const SDL_Rect* clip = getCurrentClip();
+    SDL_Rect renderQuad = {x, y, clip->w, clip->h};
+    SDL_RenderCopy(renderer, texture, clip, &renderQuad);
+}
 
 

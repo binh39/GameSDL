@@ -6,6 +6,12 @@ BulletObject :: BulletObject()
     y_val_ = 0;
     is_move_ = false;
     bullet_type_ = SPHERE_BULLET;
+
+    x_pos_=0;
+    y_pos_=0;
+    map_x=0;
+    map_y=0;
+
 }
 
 BulletObject :: ~BulletObject()
@@ -26,45 +32,64 @@ bool BulletObject :: LoadImgBullet(SDL_Renderer* des)
     return false;
 }
 
-void BulletObject :: HandleMove(const int& x_border, const int& y_border)
+void BulletObject :: HandleMove(const int& x_border, const int& y_border, Map& map_data)
 {
+    map_x = map_data.start_x_;
+    map_y = map_data.start_y_;
+
+    rect_.x = x_pos_ - map_x;
+    rect_.y = y_pos_ - map_y;
+
     if(bullet_dir_ == DIR_RIGHT)
     {
-        rect_.x += x_val_;
+        //rect_.x += x_val_;
+        x_pos_ += x_val_;
+        rect_.x = x_pos_ - map_x;
         if(rect_.x > x_border) is_move_ = false;
     }
     else if(bullet_dir_ == DIR_LEFT)
     {
-        rect_.x -= x_val_;
+        //rect_.x -= x_val_;
+        x_pos_ -= x_val_;
+        rect_.x = x_pos_ - map_x;
         if(rect_.x < 0) is_move_ = false;
     }
     else if(bullet_dir_ == DIR_UP)
     {
-        rect_.y -=y_val_;
+        y_pos_ -=y_val_;
+        rect_.y = y_pos_ - map_y;
         if(rect_.y<0) is_move_ = false;
     }
     else if(bullet_dir_ == DIR_UP_LEFT)
     {
-        rect_.x -= x_val_*0.7;
-        rect_.y -= y_val_*0.7;
+        x_pos_ -= x_val_*0.7;
+        y_pos_ -= y_val_*0.7;
+        rect_.x = x_pos_ - map_x;
+        rect_.y = y_pos_ - map_y;
         if(rect_.x < 0 || rect_.y < 0) is_move_ = false;
     }
     else if(bullet_dir_ == DIR_UP_RIGHT)
     {
-        rect_.x += x_val_*0.7;
-        rect_.y -= y_val_*0.7;
+        x_pos_ += x_val_*0.7;
+        y_pos_ -= y_val_*0.7;
+        rect_.x = x_pos_ - map_x;
+        rect_.y = y_pos_ - map_y;
         if(rect_.x > x_border || rect_.y < 0) is_move_ = false;
     }
     else if(bullet_dir_ == DIR_DOWN_LEFT)
     {
-        rect_.x -= x_val_*0.7;
-        rect_.y += y_val_*0.7;
+        x_pos_ -= x_val_*0.7;
+        y_pos_ += y_val_*0.7;
+        rect_.x = x_pos_ - map_x;
+        rect_.y = y_pos_ - map_y;
         if(rect_.x < 0 || rect_.y > y_border) is_move_ = false;
     }
     else if(bullet_dir_ == DIR_DOWN_RIGHT)
     {
-        rect_.x += x_val_*0.7;
-        rect_.y += y_val_*0.7;
+        x_pos_ += x_val_*0.7;
+        y_pos_ += y_val_*0.7;
+        rect_.x = x_pos_ - map_x;
+        rect_.y = y_pos_ - map_y;
         if(rect_.x > x_border || rect_.y > y_border) is_move_ = false;
     }
 

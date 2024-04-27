@@ -24,7 +24,6 @@ bool ThreatsObject :: LoadImg(string path, SDL_Renderer* screen){
     bool ret = BaseObject::LoadImg(path,screen);
     if(ret)
     {
-        cout<<"Load success "<<path<<endl;
         width_frame_ = rect_.w/THREATE_FRAME_NUM;
         height_frame_ = rect_.h;
     }
@@ -94,6 +93,15 @@ void ThreatsObject :: InitThreats(){
     y_pos_ = 0;
     come_back_time_ = 0;
     if(type_move_==MOVE_IN_SPACE_THREAT) input_type_.left_ = 1;
+}
+
+SDL_Rect ThreatsObject :: GetRectFrame(){
+    SDL_Rect rect;
+    rect.x = rect_.x;
+    rect.y = rect_.y;
+    rect.w = width_frame_;
+    rect.h = height_frame_;
+    return rect;
 }
 
 void ThreatsObject :: CheckToMap(Map& map_data)
@@ -254,15 +262,16 @@ void ThreatsObject :: InitBullet(BulletObject* p_bullet, SDL_Renderer* screen)
         {
             p_bullet->set_is_move(true);
             p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
-            p_bullet->SetRect(rect_.x+10, rect_.y+10);
-            p_bullet->set_x_val(15);
+            //p_bullet->SetRect(rect_.x+10, rect_.y+10);
+            p_bullet->set_position(x_pos_+10, y_pos_+10);
+            p_bullet->set_x_val(THREAT_FIRE);
             bullet_list_.push_back(p_bullet);
         }
     }
     else cout<<"error Bullet is NULL\n";
 }
 
-void ThreatsObject :: MakeBullet(SDL_Renderer* screen, const int& x_limit, const int& y_limit)
+void ThreatsObject :: MakeBullet(SDL_Renderer* screen, const int& x_limit, const int& y_limit, Map& map_data)
 {
     for(int i=0; i < bullet_list_.size() ; i++)
     {
@@ -271,10 +280,10 @@ void ThreatsObject :: MakeBullet(SDL_Renderer* screen, const int& x_limit, const
         {
             if(p_bullet->get_is_move())
             {
-                int bullet_distance = rect_.x +width_frame_ - p_bullet->GetRect().x;
+                int bullet_distance = x_pos_ +width_frame_ - p_bullet->get_pos_x();
                 if(0<bullet_distance && bullet_distance < 4*64)
                 {
-                    p_bullet->HandleMove(x_limit,y_limit);
+                    p_bullet->HandleMove(x_limit,y_limit, map_data);
                     p_bullet->Render(screen);
                 }
                 else{
@@ -284,9 +293,18 @@ void ThreatsObject :: MakeBullet(SDL_Renderer* screen, const int& x_limit, const
             else
             {
                 p_bullet->set_is_move(true);
-                p_bullet->SetRect(rect_.x+10,rect_.y+10);
+                //p_bullet->SetRect(rect_.x+10,rect_.y+10);
+                p_bullet->set_position(x_pos_+10, y_pos_+10);
             }
         }
     }
 }
 
+void ThreatsObject :: RemoveBullet(const int& idx){
+    int size = bullet_list_.size();
+    if(size>0 && idx <size){
+        BulletObject* p_bullet = bullet_list_[idx];
+        bullet_list_.erase(bullet_list_.begin()+idx);
+        if(p_bullet){ delete p_bullet;  p_bullet=NULL;}
+    }
+}
