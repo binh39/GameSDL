@@ -1,7 +1,6 @@
 #include "BulletObject.h"
 
-BulletObject :: BulletObject()
-{
+BulletObject :: BulletObject(){
     x_val_ = 0;
     y_val_ = 0;
     is_move_ = false;
@@ -11,12 +10,9 @@ BulletObject :: BulletObject()
     y_pos_=0;
     map_x=0;
     map_y=0;
-
 }
 
-BulletObject :: ~BulletObject()
-{
-
+BulletObject :: ~BulletObject(){
 }
 
 bool BulletObject :: LoadImgBullet(SDL_Renderer* des)

@@ -46,6 +46,8 @@ public:
     void UpdateImagePlayer(SDL_Renderer* des);
     SDL_Rect GetRectFrame();
 
+    float get_x_pos(){return x_pos_;}
+    float get_y_pos(){return y_pos_;}
 
     void set_bullet_list(vector<BulletObject*> bullet_list){
             p_bullet_list_ = bullet_list;
@@ -54,10 +56,14 @@ public:
     void HandleBullet(SDL_Renderer* des, Map& map_data);
     void RemoveBullet(const int& idx);
     void IncreaseMoney();
+    int GetMoneyCount() const {return money_count;}
     void Vitri(){cout<<x_pos_<<" "<<y_pos_<<endl;}
+    void set_come_back_time(const int& cb_time){come_back_time_ = cb_time;}
+    void Super();
 
 private:
 
+    bool gun = false;
     int money_count;
     vector<BulletObject*> p_bullet_list_;
 

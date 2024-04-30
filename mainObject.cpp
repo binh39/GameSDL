@@ -41,6 +41,7 @@ MainObject :: MainObject(){
     RunL = "img/NinjaFrog//RunL.png";
     JumpR = "img/NinjaFrog//JumpR.png";
     JumpL = "img/NinjaFrog//JumpL.png";
+    gun = false;
     frame_ = 0;
     x_pos_ = 0;
     y_pos_ =0 ;
@@ -155,7 +156,7 @@ void MainObject :: HandelInputAction(SDL_Event events, SDL_Renderer* screen)
         }
     }
 
-    if(events.type == SDL_MOUSEBUTTONDOWN)
+    if(events.type == SDL_MOUSEBUTTONDOWN && gun)
     {
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
@@ -174,7 +175,7 @@ void MainObject :: HandelInputAction(SDL_Event events, SDL_Renderer* screen)
                 else p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
 
                 //p_bullet->SetRect(rect_.x+20, rect_.y + height_frame_*0.5);
-                p_bullet->set_position(x_pos_+20, y_pos_+ height_frame_*0.5);
+                p_bullet->set_position(x_pos_+10, y_pos_+ height_frame_*0.65);
             }
             else
             {
@@ -184,7 +185,7 @@ void MainObject :: HandelInputAction(SDL_Event events, SDL_Renderer* screen)
                 else p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
 
                 //p_bullet->SetRect(rect_.x + width_frame_ - 40, rect_.y + height_frame_*0.5);
-                p_bullet->set_position(x_pos_+width_frame_-40, y_pos_+height_frame_*0.5);
+                p_bullet->set_position(x_pos_+width_frame_-28, y_pos_+height_frame_*0.65);
             }
             //toc do
             p_bullet->set_x_val(BULLET_SPEED);
@@ -209,7 +210,7 @@ void MainObject :: HandelInputAction(SDL_Event events, SDL_Renderer* screen)
 
                 //p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
                 //p_bullet->SetRect(rect_.x+20, rect_.y + height_frame_*0.5);
-                p_bullet->set_position(x_pos_+20, y_pos_+height_frame_*0.5);
+                p_bullet->set_position(x_pos_+10, y_pos_+height_frame_*0.65);
 
             }
             else
@@ -220,7 +221,7 @@ void MainObject :: HandelInputAction(SDL_Event events, SDL_Renderer* screen)
                 else p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
                 //p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
                 //p_bullet->SetRect(rect_.x + width_frame_ - 40, rect_.y + height_frame_*0.5);
-                p_bullet->set_position(x_pos_+width_frame_-40, y_pos_+height_frame_*0.5);
+                p_bullet->set_position(x_pos_+width_frame_-28, y_pos_+height_frame_*0.65);
             }
             //toc do
             p_bullet->set_x_val(BULLET_SPEED);
@@ -254,7 +255,6 @@ void MainObject :: HandleBullet(SDL_Renderer* des, Map& map_data){
             if(p_bullet->get_is_move() == true)
             {
                 p_bullet->HandleMove(SCREEN_WIDTH,SCREEN_HEIGHT, map_data);
-                //p_bullet->PrintRect();
                 p_bullet->Render(des);
             }
             else
@@ -377,7 +377,7 @@ void MainObject :: CheckToMap(Map& map_data)
             {
                 map_data.tile[y1][x2] = 0;
                 map_data.tile[y2][x2] = 0;
-                IncreaseMoney();
+                Super();
             }
 
             else
@@ -401,7 +401,7 @@ void MainObject :: CheckToMap(Map& map_data)
             {
                 map_data.tile[y1][x1] = 0;
                 map_data.tile[y2][x1] = 0;
-                IncreaseMoney();
+                Super();
             }
             if(val1 != BLANK_TILE || val2 != BLANK_TILE)
             {
@@ -430,7 +430,7 @@ void MainObject :: CheckToMap(Map& map_data)
             {
                 map_data.tile[y2][x1] = 0;
                 map_data.tile[y2][x2] = 0;
-                IncreaseMoney();
+                Super();
             }
             else
             {
@@ -453,7 +453,7 @@ void MainObject :: CheckToMap(Map& map_data)
             {
                 map_data.tile[y1][x1] = 0;
                 map_data.tile[y1][x2] = 0;
-                IncreaseMoney();
+                Super();
             }
             else
             {
@@ -513,6 +513,14 @@ void MainObject :: UpdateImagePlayer(SDL_Renderer* des){
 
 void MainObject :: IncreaseMoney(){
     money_count++;
+}
+
+void MainObject :: Super(){
+    gun = true;
+    RunL = "img/Super//RunL.png";
+    RunR = "img/Super//RunR.png";
+    JumpL = "img/Super//JumpL.png";
+    JumpR = "img/Super//JumpR.png";
 }
 
 

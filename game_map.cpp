@@ -4,17 +4,20 @@
 
 void GameMap :: LoadMap(char* name)
 {
-    FILE* fp = NULL;
-    fopen_s(&fp,name,"rb");
+    //FILE* fp = NULL;
+    //fopen_s(&fp,name,"rb");
 
-    if(fp==NULL) return;
+    //if(fp==NULL) return;
 
     game_map_.max_x_=0;
     game_map_.max_y_=0;
 
+    ifstream file(name);
+
     for(int i=0 ; i<MAX_MAP_Y ; i++){
         for(int j=0 ; j<MAX_MAP_X ; j++){
-            fscanf(fp,"%d" , &game_map_.tile[i][j]);
+            //fscanf(fp,"%d" , &game_map_.tile[i][j]);
+            file>>game_map_.tile[i][j];
             int val = game_map_.tile[i][j];
             if(val > 0)
             {
@@ -30,7 +33,8 @@ void GameMap :: LoadMap(char* name)
     game_map_.start_x_=0;
     game_map_.start_y_=0;
     game_map_.file_name_=name;
-    fclose(fp);
+    //fclose(fp);
+    file.close();
 }
 
 void GameMap :: LoadTiles(SDL_Renderer* screen)

@@ -132,7 +132,7 @@ struct Menu {
         SDL_RenderPresent(renderer);
     }
 
-    SDL_Texture* LoadButton(const char *filename, SDL_Renderer* renderer,int x ,int y){
+    SDL_Texture* LoadButton(const char *filename, SDL_Renderer* renderer){
         SDL_Texture* button = loadTexture(filename, renderer);
         return button;
     }
@@ -146,9 +146,9 @@ struct Menu {
         SDL_Texture* man = IMG_LoadTexture(renderer, "img/NinjaFrog//RunR.png");
         Man.init(man, MAN_FRAMES, MAN_CLIPS);
 
-        SDL_Texture* pixel_adventure = LoadButton("img/button//PixelAdventure.png", renderer, 350, 100);
-        SDL_Texture* start1 = LoadButton("img/button//Start1.png", renderer, 500, 200);
-        SDL_Texture* start2 = LoadButton("img/button//Start2.png", renderer, 500, 200);
+        SDL_Texture* pixel_adventure = LoadButton("img/button//PixelAdventure.png", renderer);
+        SDL_Texture* start1 = LoadButton("img/button//Start1.png", renderer);
+        SDL_Texture* start2 = LoadButton("img/button//Start2.png", renderer);
 
         SDL_RenderPresent(renderer);
 
@@ -165,6 +165,7 @@ struct Menu {
             renderTexture(SBackground.texture, SBackground.scrollingOffset - SBackground.width, 0, renderer);
 
             renderTexture(pixel_adventure, 350, 100,renderer);
+
 
             Man.Render(Man.x-64, Man.y+560, renderer);
             Man.tick(); Man.move();
@@ -216,8 +217,9 @@ struct Menu {
         SDL_Texture* Sguy2 = IMG_LoadTexture(renderer, "img/VirtualGuy//BigRun.png");
         BigGuy.init(Sguy2, MAN_FRAMES_3, MAN_CLIPS_3);
 
-        SDL_Texture* continue1 = LoadButton("img/button/Continue1.png", renderer, 1030, 10);
-        SDL_Texture* continue2 = LoadButton("img/button/Continue2.png", renderer, 1030, 10);
+        SDL_Texture* continue1 = LoadButton("img/button/Continue1.png", renderer);
+        SDL_Texture* continue2 = LoadButton("img/button/Continue2.png", renderer);
+        SDL_Texture* selectcharacter = LoadButton("font/Text//check.png", renderer);
 
         bool quit=false;
         int x=0,y=0;
@@ -230,6 +232,7 @@ struct Menu {
             SBackground.scroll(1);
             renderTexture(SBackground.texture, SBackground.scrollingOffset, 0, renderer);
             renderTexture(SBackground.texture, SBackground.scrollingOffset - SBackground.width, 0, renderer);
+            renderTexture(selectcharacter, 317, 100, renderer);
 
             if( (1030<=x&&x<=1270) && (10<=y&&y<=87) ) renderTexture(continue2, 1030, 10,renderer);
             else renderTexture(continue1, 1030, 10,renderer);
@@ -281,6 +284,7 @@ struct Menu {
         }
         SDL_DestroyTexture( continue1 ); continue1 = NULL;
         SDL_DestroyTexture( continue2 ); continue2 = NULL;
+        SDL_DestroyTexture( selectcharacter); selectcharacter = NULL;
         SDL_DestroyTexture( Sfrog ); Sfrog = NULL;
         SDL_DestroyTexture( Sfrog2); Sfrog2 = NULL;
         SDL_DestroyTexture( Smask ); Smask = NULL;

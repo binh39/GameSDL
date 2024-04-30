@@ -1,0 +1,2 @@
+-HighScore 210x28,
+-Số độ rộng x = 20, y = 26, nên để khoảng cách giữa 2 ô là 2. (Vậy khoảng cách là 22*i), khoảng cách đầu với score là 2, y hơn 1.

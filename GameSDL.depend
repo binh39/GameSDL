@@ -1,9 +1,9 @@
 # depslib dependency file v1.0
-1714227620 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\baseobject.cpp
+1714501544 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\baseobject.cpp
 	"CommonFunction.h"
 	"BaseObject.h"
 
-1714230956 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\main.cpp
+1714509594 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\main.cpp
 	"CommonFunction.h"
 	"graphics.h"
 	"BaseObject.h"
@@ -11,8 +11,13 @@
 	"mainObject.h"
 	"time.h"
 	"ThreatsObject.h"
+	"ExplosionObject.h"
+	"TextObject.h"
+	"PlayerPower.h"
+	"Geometric.h"
+	"BossObject.h"
 
-1714207759 d:\admin\documents\thuchanhlt\codeblock\gamesdl\commonfunction.h
+1714507243 d:\admin\documents\thuchanhlt\codeblock\gamesdl\commonfunction.h
 	<windows.h>
 	<bits/stdc++.h>
 	<SDL.h>
@@ -20,13 +25,13 @@
 	<SDL_mixer.h>
 	<SDL_ttf.h>
 
-1714228166 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\commonfunction.cpp
+1714509394 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\commonfunction.cpp
 	"CommonFunction.h"
 
 1713111369 d:\admin\documents\thuchanhlt\codeblock\gamesdl\baseobject.h
 	"CommonFunction.h"
 
-1710904298 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\game_map.cpp
+1714501091 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\game_map.cpp
 	<bits/stdc++.h>
 	<stdio.h>
 	"game_map.h"
@@ -35,14 +40,14 @@
 	"CommonFunction.h"
 	"BaseObject.h"
 
-1714229472 d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.h
+1714504736 d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.h
 	<bits/stdc++.h>
 	"CommonFunction.h"
 	"BaseObject.h"
 	"graphics.h"
 	"BulletObject.h"
 
-1714230150 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.cpp
+1714504736 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.cpp
 	<bits/stdc++.h>
 	"mainObject.h"
 	"CommonFunction.h"
@@ -61,24 +66,58 @@
 	"graphics.h"
 	"CommonFunction.h"
 
-1714210996 d:\admin\documents\thuchanhlt\codeblock\gamesdl\graphics.h
+1714409894 d:\admin\documents\thuchanhlt\codeblock\gamesdl\graphics.h
 	<SDL.h>
 	<SDL_image.h>
 	"CommonFunction.h"
 	<bits/stdc++.h>
 
-1714227725 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\bulletobject.cpp
+1714496989 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\bulletobject.cpp
 	"BulletObject.h"
 
 1713627118 d:\admin\documents\thuchanhlt\codeblock\gamesdl\bulletobject.h
 	"BaseObject.h"
 	"CommonFunction.h"
 
-1714230150 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\threatsobject.cpp
+1714496989 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\threatsobject.cpp
 	"ThreatsObject.h"
 
-1714230150 d:\admin\documents\thuchanhlt\codeblock\gamesdl\threatsobject.h
+1714280881 d:\admin\documents\thuchanhlt\codeblock\gamesdl\threatsobject.h
 	"CommonFunction.h"
 	"BaseObject.h"
+	"BulletObject.h"
+
+1714278990 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\explosionobject.cpp
+	"ExplosionObject.h"
+
+1714278802 d:\admin\documents\thuchanhlt\codeblock\gamesdl\explosionobject.h
+	"CommonFunction.h"
+	"BaseObject.h"
+
+1714316365 d:\admin\documents\thuchanhlt\codeblock\gamesdl\textobject.h
+	"CommonFunction.h"
+
+1714317467 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\textobject.cpp
+	"TextObject.h"
+
+1714411587 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\playerpower.cpp
+	"PlayerPower.h"
+
+1714411541 d:\admin\documents\thuchanhlt\codeblock\gamesdl\playerpower.h
+	"CommonFunction.h"
+	"BaseObject.h"
+
+1714455617 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\geometric.cpp
+	"Geometric.h"
+
+1714455205 d:\admin\documents\thuchanhlt\codeblock\gamesdl\geometric.h
+	"CommonFunction.h"
+
+1714501064 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\bossobject.cpp
+	"BossObject.h"
+
+1714498742 d:\admin\documents\thuchanhlt\codeblock\gamesdl\bossobject.h
+	"BaseObject.h"
+	"CommonFunction.h"
 	"BulletObject.h"
 

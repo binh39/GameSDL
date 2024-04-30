@@ -12,6 +12,9 @@ static SDL_Window* g_window = NULL;
 static SDL_Renderer* g_screen = NULL;
 static SDL_Event g_event;
 
+const int FONT_SIZE = 30;
+const int MAX_TIME = 300;
+
 #define WINDOW_TITLE "Pixel Adventure"
 
 //Screen
@@ -63,6 +66,7 @@ typedef struct Map{
 
 namespace SDLCommonFunc{
     bool CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2);
+    bool CheckVaQuai(const SDL_Rect& player, const SDL_Rect& object);
 }
 
 
