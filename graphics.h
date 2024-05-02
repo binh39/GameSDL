@@ -1,10 +1,7 @@
 #ifndef _GRAPHICS_H
 #define _GRAPHICS_H
 
-#include <SDL.h>
-#include <SDL_image.h>
 #include "CommonFunction.h"
-#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -102,8 +99,11 @@ struct Graphics {
 
 struct Menu {
     SDL_Texture *background_menu;
-    SDL_Texture *button_menu;
-
+    //SDL_Texture *button_menu;
+    bool restart_ = false;
+    int volumn_ = 1;
+    SDL_Texture* volumn_on;
+    SDL_Texture* volumn_off;
 
 
     SDL_Texture *loadTexture(const char *filename, SDL_Renderer* renderer)
@@ -124,7 +124,6 @@ struct Menu {
         SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
         SDL_RenderCopy(renderer, texture, NULL, &dest);
     }
-
 
     void LoadBackgroundMenu(const char *filename, SDL_Renderer* renderer){
         background_menu = loadTexture(filename, renderer);
@@ -168,6 +167,7 @@ struct Menu {
 
 
             Man.Render(Man.x-64, Man.y+560, renderer);
+            Man.Render(Man.x-64, Man.y, renderer);
             Man.tick(); Man.move();
 
             if( (500<=x&&x<=756) && (200<=y&&y<=328) ) renderTexture(start2, 500, 200, renderer);
@@ -295,9 +295,130 @@ struct Menu {
         SDL_DestroyTexture( Sguy2 ); Sguy2 = NULL;
         return A;
     }
+
+    void MenuGameOver(SDL_Renderer* renderer, SDL_Event event){
+
+        ScrollingBackground SBackground;
+        SBackground.setTexture(renderer);
+
+        Sprite Man;
+        SDL_Texture* man = IMG_LoadTexture(renderer, "img/NinjaFrog//RunR.png");
+        Man.init(man, MAN_FRAMES, MAN_CLIPS);
+
+        SDL_Texture* game_over = LoadButton("img/button//GameOver.png", renderer);
+        SDL_Texture* start1 = LoadButton("img/button//Start1.png", renderer);
+        SDL_Texture* start2 = LoadButton("img/button//Start2.png", renderer);
+
+        bool quit=false;
+        int x=0,y=0;
+        while(!quit)
+        {
+            SDL_PollEvent(&event);
+            if(event.type == SDL_QUIT) exit(0);
+            SDL_GetMouseState(&x,&y);
+
+            SBackground.scroll(1);
+            renderTexture(SBackground.texture, SBackground.scrollingOffset, 0, renderer);
+            renderTexture(SBackground.texture, SBackground.scrollingOffset - SBackground.width, 0, renderer);
+
+            renderTexture(game_over, 405, 100,renderer);
+
+
+            Man.Render(Man.x-64, Man.y+560, renderer);
+            Man.Render(Man.x-64, Man.y, renderer);
+            Man.tick(); Man.move();
+
+            if( (500<=x&&x<=756) && (200<=y&&y<=328) ) renderTexture(start2, 500, 200, renderer);
+            else renderTexture(start1, 500, 200, renderer);
+            if( (500<=x&&x<=756) && (200<=y&&y<=328) && (event.type==SDL_MOUSEBUTTONDOWN || event.type==SDL_MOUSEBUTTONUP) ){
+                restart_ = true;
+                quit=true;
+            }
+            SDL_RenderPresent(renderer);
+            SDL_Delay(45);
+        }
+        SDL_DestroyTexture( man ); man = NULL;
+        SDL_DestroyTexture( game_over ); game_over = NULL;
+        SDL_DestroyTexture( start1 ); start1 = NULL;
+        SDL_DestroyTexture( start2 ); start2 = NULL;
+    }
+
+    void MenuWin(SDL_Renderer* renderer, SDL_Event event){
+
+        ScrollingBackground SBackground;
+        SBackground.setTexture(renderer);
+
+        Sprite Man;
+        SDL_Texture* man = IMG_LoadTexture(renderer, "img/NinjaFrog//RunR.png");
+        Man.init(man, MAN_FRAMES, MAN_CLIPS);
+
+        SDL_Texture* game_win = LoadButton("img/button//Win.png", renderer);
+        SDL_Texture* start1 = LoadButton("img/button//Start1.png", renderer);
+        SDL_Texture* start2 = LoadButton("img/button//Start2.png", renderer);
+
+        bool quit=false;
+        int x=0,y=0;
+        while(!quit)
+        {
+            SDL_PollEvent(&event);
+            if(event.type == SDL_QUIT) exit(0);
+            SDL_GetMouseState(&x,&y);
+
+            SBackground.scroll(1);
+            renderTexture(SBackground.texture, SBackground.scrollingOffset, 0, renderer);
+            renderTexture(SBackground.texture, SBackground.scrollingOffset - SBackground.width, 0, renderer);
+
+            renderTexture(game_win, 454, 100,renderer);
+
+
+            Man.Render(Man.x-64, Man.y+560, renderer);
+            Man.Render(Man.x-64, Man.y, renderer);
+            Man.tick(); Man.move();
+
+            if( (500<=x&&x<=756) && (200<=y&&y<=328) ) renderTexture(start2, 500, 200, renderer);
+            else renderTexture(start1, 500, 200, renderer);
+            if( (500<=x&&x<=756) && (200<=y&&y<=328) && (event.type==SDL_MOUSEBUTTONDOWN || event.type==SDL_MOUSEBUTTONUP) ){
+                restart_ = true;
+                quit=true;
+            }
+            SDL_RenderPresent(renderer);
+            SDL_Delay(45);
+        }
+        SDL_DestroyTexture( man ); man = NULL;
+        SDL_DestroyTexture( game_win ); game_win = NULL;
+        SDL_DestroyTexture( start1 ); start1 = NULL;
+        SDL_DestroyTexture( start2 ); start2 = NULL;
+    }
+
+    void LoadVolumnButton(SDL_Renderer* renderer){
+        volumn_on = LoadButton("img/button//VolumeOn.png", renderer);
+        volumn_off = LoadButton("img/button//VolumeOff.png", renderer);
+    }
+
+    void RenderVolumnButton(SDL_Renderer* renderer){
+        if(volumn_) renderTexture(volumn_on, 1250, 8, renderer);
+        else renderTexture(volumn_off, 1250, 8, renderer);
+    }
+
+    void ChangeVolumn(SDL_Event event, Mix_Chunk* chunk){
+        int x=0, y=0;
+        SDL_GetMouseState(&x, &y);
+        if(event.type == SDL_MOUSEBUTTONDOWN && (1250<=x && x<=1269) && (8<=y && y<=27) ){
+            if(volumn_ == 1){
+                Mix_VolumeMusic(0);
+                Mix_VolumeChunk(chunk, 0);
+            }
+            else{
+                Mix_VolumeMusic(MIX_MAX_VOLUME);
+                Mix_VolumeChunk(chunk, MIX_MAX_VOLUME);
+            }
+            volumn_ = (volumn_+1)%2;
+        }
+    }
+
+
+
 };
-
-
 
 
 #endif // _GRAPHICS_H

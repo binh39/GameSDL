@@ -1,6 +1,7 @@
 #include "BossObject.h"
 
 BossObject :: BossObject(){
+    boss_life = 10;
     frame_ = 0;
     x_val_=0;
     y_val_=0;
@@ -13,7 +14,9 @@ BossObject :: BossObject(){
     map_y_=0;
 }
 
-BossObject :: ~BossObject(){}
+BossObject :: ~BossObject(){
+
+}
 
 bool BossObject :: LoadImg(string path, SDL_Renderer* screen){
     bool ret = BaseObject :: LoadImg(path, screen);
@@ -242,6 +245,39 @@ void BossObject :: MakeBullet(SDL_Renderer* des, const int& x_limit, const int& 
             }
         }
     }
+}
+
+void BossObject :: RemoveBullet(const int& idx){
+    int size = bullet_list_.size();
+    if( 0< size && idx <size){
+        BulletObject* p_bullet = bullet_list_[idx];
+        p_bullet->SetRect(-10,-10);
+        bullet_list_.erase(bullet_list_.begin()+idx);
+        if(p_bullet){ delete p_bullet;  p_bullet=NULL;}
+    }
+}
+
+void BossObject :: ClearBullet(){
+    int n = bullet_list_.size();
+    for(int i=n-1 ; i>=0 ; i--){
+        BulletObject* p_bullet = bullet_list_[i];
+        bullet_list_.pop_back();
+        if(p_bullet){
+            delete p_bullet;
+            p_bullet = NULL;
+        }
+    }
+    bullet_list_.clear();
+}
+
+bool BossObject :: IsLive(){
+    if(boss_life>0) return true;
+    return false;
+}
+
+SDL_Rect BossObject :: GetRectFrame(){
+    SDL_Rect rect = {rect_.x, rect_.y, width_frame_, height_frame_};
+    return rect;
 }
 
 

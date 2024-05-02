@@ -25,7 +25,7 @@ public:
     void DrawMap(SDL_Renderer* screen);
     Map getMap() const {return game_map_;}
     void SetMap(Map& map_data){game_map_ = map_data;}
-
+    void MapBreak(const int& idx);
 private:
     Map game_map_;
     TileMat tile_mat[MAX_TILES];

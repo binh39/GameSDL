@@ -42,8 +42,15 @@ public:
     void set_bullet_list(vector<BulletObject*>& am_list){bullet_list_ = am_list;}
     void InitBullet(SDL_Renderer* screen);
     void MakeBullet(SDL_Renderer* des, const int& x_limit, const int& y_limit, Map& map_data);
-
+    void RemoveBullet(const int& idx);
+    void ClearBullet();
+    void BanBoss(){if(boss_life>0) boss_life--;}
+    bool IsLive();
+    int CheckLive(){return boss_life;}
+    SDL_Rect GetRectFrame();
 private:
+    int boss_life;
+
     int map_x_;
     int map_y_;
     int on_ground_;

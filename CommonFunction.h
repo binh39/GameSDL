@@ -13,10 +13,10 @@ static SDL_Renderer* g_screen = NULL;
 static SDL_Event g_event;
 
 const int FONT_SIZE = 30;
-const int MAX_TIME = 300;
+const int MAX_TIME = 20;
 
 #define WINDOW_TITLE "Pixel Adventure"
-
+#define FONT_NAME "font//VNI-Souvir.ttf"
 //Screen
 const int FRAME_PER_SECOND = 32; //fps
 const int SCREEN_WIDTH = 1280;

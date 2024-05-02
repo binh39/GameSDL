@@ -2,6 +2,7 @@
 #include "mainObject.h"
 #include "CommonFunction.h"
 #include "graphics.h"
+#include "ExplosionObject.h"
 
 using namespace std;
 
@@ -266,7 +267,6 @@ void MainObject :: HandleBullet(SDL_Renderer* des, Map& map_data){
                 }
             }
         }
-
     }
 }
 
@@ -279,7 +279,7 @@ void MainObject :: RemoveBullet(const int& idx){
     }
 }
 
-void MainObject :: DoPlayer(Map& map_data, Graphics& graphics, Mix_Chunk * jump)
+void MainObject :: DoPlayer(Map& map_data, Graphics& graphics, Mix_Chunk * jump, SDL_Renderer* screen)
 {
     if( come_back_time_ == 0)
     {
@@ -309,7 +309,7 @@ void MainObject :: DoPlayer(Map& map_data, Graphics& graphics, Mix_Chunk * jump)
         }
 
 
-        CheckToMap(map_data);
+        CheckToMap(map_data, screen);
         CenterEntityOnMap(map_data);
     }
 
@@ -347,7 +347,7 @@ void MainObject :: CenterEntityOnMap(Map& map_data)
     else if(map_data.start_y_ + SCREEN_HEIGHT >= map_data.max_y_) map_data.start_y_ = map_data.max_y_ - SCREEN_HEIGHT;
 }
 
-void MainObject :: CheckToMap(Map& map_data)
+void MainObject :: CheckToMap(Map& map_data, SDL_Renderer* screen)
 {
     int x1=0;
     int x2=0;
@@ -377,7 +377,7 @@ void MainObject :: CheckToMap(Map& map_data)
             {
                 map_data.tile[y1][x2] = 0;
                 map_data.tile[y2][x2] = 0;
-                Super();
+                Super(screen);
             }
 
             else
@@ -401,7 +401,7 @@ void MainObject :: CheckToMap(Map& map_data)
             {
                 map_data.tile[y1][x1] = 0;
                 map_data.tile[y2][x1] = 0;
-                Super();
+                Super(screen);
             }
             if(val1 != BLANK_TILE || val2 != BLANK_TILE)
             {
@@ -430,7 +430,7 @@ void MainObject :: CheckToMap(Map& map_data)
             {
                 map_data.tile[y2][x1] = 0;
                 map_data.tile[y2][x2] = 0;
-                Super();
+                Super(screen);
             }
             else
             {
@@ -453,7 +453,7 @@ void MainObject :: CheckToMap(Map& map_data)
             {
                 map_data.tile[y1][x1] = 0;
                 map_data.tile[y1][x2] = 0;
-                Super();
+                Super(screen);
             }
             else
             {
@@ -515,12 +515,35 @@ void MainObject :: IncreaseMoney(){
     money_count++;
 }
 
-void MainObject :: Super(){
+void MainObject :: Super(SDL_Renderer* screen){
     gun = true;
     RunL = "img/Super//RunL.png";
     RunR = "img/Super//RunR.png";
     JumpL = "img/Super//JumpL.png";
     JumpR = "img/Super//JumpR.png";
+    ExplosionObject super_power;
+    bool sRet = super_power.LoadImg("img/Super//SuperWhite.png", screen);
+    if(!sRet){
+        cout<<"Error LoadImg SuperPower\n";
+    }
+    super_power.set_clip();
+
+    SDL_Texture* text_power = IMG_LoadTexture(screen, "img/Super//checkSuper.png");
+
+    for(int i=0; i<8 ; i++){
+        int x_pos = rect_.x;
+        int y_pos = rect_.y;
+        super_power.set_frame(i);
+        super_power.SetRect(x_pos, y_pos);
+        super_power.Show(screen);
+
+        SDL_Rect text = {rect_.x-23, rect_.y - i*1, 112, 20};
+        SDL_RenderCopy(screen, text_power, NULL, &text);
+
+        SDL_RenderPresent(screen);
+        SDL_Delay(80);
+    }
 }
+
 
 

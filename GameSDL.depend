@@ -3,7 +3,7 @@
 	"CommonFunction.h"
 	"BaseObject.h"
 
-1714509594 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\main.cpp
+1714664782 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\main.cpp
 	"CommonFunction.h"
 	"graphics.h"
 	"BaseObject.h"
@@ -17,7 +17,7 @@
 	"Geometric.h"
 	"BossObject.h"
 
-1714507243 d:\admin\documents\thuchanhlt\codeblock\gamesdl\commonfunction.h
+1714663516 d:\admin\documents\thuchanhlt\codeblock\gamesdl\commonfunction.h
 	<windows.h>
 	<bits/stdc++.h>
 	<SDL.h>
@@ -25,33 +25,35 @@
 	<SDL_mixer.h>
 	<SDL_ttf.h>
 
-1714509394 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\commonfunction.cpp
+1714659296 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\commonfunction.cpp
 	"CommonFunction.h"
 
 1713111369 d:\admin\documents\thuchanhlt\codeblock\gamesdl\baseobject.h
 	"CommonFunction.h"
 
-1714501091 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\game_map.cpp
+1714662505 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\game_map.cpp
 	<bits/stdc++.h>
 	<stdio.h>
 	"game_map.h"
 
-1710916399 d:\admin\documents\thuchanhlt\codeblock\gamesdl\game_map.h
+1714662042 d:\admin\documents\thuchanhlt\codeblock\gamesdl\game_map.h
 	"CommonFunction.h"
 	"BaseObject.h"
 
-1714504736 d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.h
+1714572718 d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.h
 	<bits/stdc++.h>
 	"CommonFunction.h"
 	"BaseObject.h"
 	"graphics.h"
 	"BulletObject.h"
+	"ExplosionObject.h"
 
-1714504736 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.cpp
+1714646461 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.cpp
 	<bits/stdc++.h>
 	"mainObject.h"
 	"CommonFunction.h"
 	"graphics.h"
+	"ExplosionObject.h"
 
 1711178391 d:\admin\documents\thuchanhlt\codeblock\gamesdl\time.h
 
@@ -66,11 +68,8 @@
 	"graphics.h"
 	"CommonFunction.h"
 
-1714409894 d:\admin\documents\thuchanhlt\codeblock\gamesdl\graphics.h
-	<SDL.h>
-	<SDL_image.h>
+1714661298 d:\admin\documents\thuchanhlt\codeblock\gamesdl\graphics.h
 	"CommonFunction.h"
-	<bits/stdc++.h>
 
 1714496989 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\bulletobject.cpp
 	"BulletObject.h"
@@ -113,10 +112,10 @@
 1714455205 d:\admin\documents\thuchanhlt\codeblock\gamesdl\geometric.h
 	"CommonFunction.h"
 
-1714501064 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\bossobject.cpp
+1714664446 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\bossobject.cpp
 	"BossObject.h"
 
-1714498742 d:\admin\documents\thuchanhlt\codeblock\gamesdl\bossobject.h
+1714664446 d:\admin\documents\thuchanhlt\codeblock\gamesdl\bossobject.h
 	"BaseObject.h"
 	"CommonFunction.h"
 	"BulletObject.h"

@@ -52,7 +52,7 @@ bool InitData(){
             cout<<"Error init font\n";
             success = false;
         }
-        font_time = TTF_OpenFont("font//Purisa-BoldOblique.ttf", FONT_SIZE);
+        font_time = TTF_OpenFont(FONT_NAME, FONT_SIZE);
         if(font_time == NULL){
             success = false;
         }
@@ -145,22 +145,35 @@ using namespace std;
 
 int main(int argc,char* argv[])
 {
-    int choose=0;
-    ImpTimer fps_timer;
 
     if( InitData() == false) return -1;
     if(LoadBackground() == false) return -2;
 
+    Begin:
+
+    int choose=0;
+    ImpTimer fps_timer;
+
+    bool is_lose = false;
+    bool is_win = false;
+    bool is_continue = false;
+    bool is_stop = false;
     Menu menu;
+    menu.restart_ = false;
     menu.StartMenu(g_screen,g_event);
     choose = menu.ChooseCharacter(g_screen,g_event);
+    menu.LoadVolumnButton(g_screen);
+
+    Graphics graphics;
+    Mix_Music* gMusic = graphics.loadMusic("sound//cafe_boba_short.mp3");
+    graphics.play(gMusic);
+    Mix_Chunk *gJump = graphics.loadSound("sound//jump.wav");
+    graphics.play(gJump);
 
     MainObject p_player;
     p_player.SelectCharacter(choose);
     p_player.LoadImg(p_player.RunR,g_screen);
     p_player.set_clips();
-
-
 
     PlayerPower player_power;
     player_power.Init(g_screen);
@@ -182,22 +195,13 @@ int main(int argc,char* argv[])
     bossObject.set_xpos(xPosBoss);
     bossObject.set_ypos(10);
 
-
-    ExplosionObject exp_threat;
-    bool tRet = exp_threat.LoadImg("img//Explosion.png", g_screen);
+    ExplosionObject explosion_;
+    bool tRet = explosion_.LoadImg("img//Explosion.png", g_screen);
     if(!tRet){
         cout << "Error LoadImg Explosion\n";
         return -1;
     }
-    exp_threat.set_clip();
-
-    ExplosionObject exp_main;
-    bool mRet = exp_main.LoadImg("img//Explosion.png", g_screen);
-    if(!mRet){
-        cout<<"Error LoadImg Explosion player\n";
-        return -1;
-    }
-    exp_main.set_clip();
+    explosion_.set_clip();
 
     int num_die = 0;
 
@@ -209,23 +213,22 @@ int main(int argc,char* argv[])
     TextObject money_game;
     money_game.SetColor(TextObject::WHITE_TEXT);
 
-    Graphics graphics;
-    Mix_Music* gMusic = graphics.loadMusic("sound//cafe_boba_short.mp3");
-    //graphics.play(gMusic);
-    Mix_Chunk *gJump = graphics.loadSound("sound//jump.wav");
-    //graphics.play(gJump);
+
 
 
     bool is_quit = false;
     bool gap_boss = false;
+    bool map_break = false;
 
     while(!is_quit){
-            fps_timer.start();
+        fps_timer.start();
+        SDL_Event test;
         while(SDL_PollEvent(&g_event)!=0){
             if(g_event.type==SDL_QUIT){
                 is_quit = true;
             }
             p_player.HandelInputAction(g_event, g_screen);
+            menu.ChangeVolumn(g_event, gJump);
         }
 
         SDL_SetRenderDrawColor(g_screen,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR);
@@ -233,7 +236,7 @@ int main(int argc,char* argv[])
         g_background.Render(g_screen,NULL);
         Map map_data = game_map.getMap();
         p_player.SetMapXY(map_data.start_x_, map_data.start_y_);
-        p_player.DoPlayer(map_data, graphics, gJump);
+        p_player.DoPlayer(map_data, graphics, gJump, g_screen);
         game_map.SetMap(map_data);
         game_map.DrawMap(g_screen);
 
@@ -247,6 +250,11 @@ int main(int argc,char* argv[])
         player_power.Show(g_screen);
         player_money.Show(g_screen);
 
+        menu.RenderVolumnButton(g_screen);
+
+        bool Va1 = false;
+        bool Va2 = false;
+
         for(int i=0 ; i<threats_list.size() ; i++){
             ThreatsObject* p_threat = threats_list[i];
             if(p_threat != NULL)
@@ -256,72 +264,110 @@ int main(int argc,char* argv[])
                 p_threat->DoPlayer(map_data);
                 p_threat->MakeBullet(g_screen,SCREEN_WIDTH,SCREEN_HEIGHT,map_data);
                 p_threat->Show(g_screen);
-                SDL_Rect tRect;
-                tRect.x = p_threat->GetRect().x;
-                tRect.y = p_threat->GetRect().y;
-                tRect.w = p_threat->get_width_frame();
-                tRect.h = p_threat->get_height_frame();
+                SDL_Rect tRect = p_threat->GetRectFrame();
+                SDL_Rect pRect = p_player.GetRectFrame();
 
-                SDL_Rect rect_player = p_player.GetRectFrame();
-                bool killquai = SDLCommonFunc::CheckVaQuai(rect_player,tRect);
+                bool killquai = SDLCommonFunc::CheckVaQuai(pRect,tRect);
                 if(killquai){
+                    p_player.Nhay();
+                    for(int ex = 0; ex<NUM_FRAME_EXP ; ex++){
+                                int x_pos = p_threat->GetRect().x;
+                                int y_pos = p_threat->GetRect().y;
+                                explosion_.set_frame(ex);
+                                explosion_.SetRect(x_pos, y_pos);
+                                explosion_.Show(g_screen);
+                            }
                     p_threat->Free();
                     threats_list.erase(threats_list.begin()+i);
+                    cout<<"Kill Threat success\n";
                 }
                 else{
-                    bool bCol1 = false;
                     vector<BulletObject*> tBullet_list = p_threat->get_bullet_list();
-                    for(int jj =0; jj<tBullet_list.size(); jj++){
-                        BulletObject* pt_bullet = tBullet_list[jj];
+                    for(int j =0; j<tBullet_list.size(); j++){
+                        BulletObject* pt_bullet = tBullet_list[j];
                         if(pt_bullet){
-                            bCol1 = SDLCommonFunc::CheckCollision(pt_bullet->GetRect(), rect_player);
-                                if(bCol1){
-                                    p_threat->RemoveBullet(jj);
-                                    break;
-                                }
-                        }
-                    }
-                    SDL_Rect rect_threat = p_threat->GetRectFrame();
-                    bool bCol2 = SDLCommonFunc::CheckCollision(rect_player, rect_threat);
-                    if(bCol1 || bCol2){
-                    int width_exp_frame = exp_main.get_frame_width();
-                    int height__exp_frame = exp_main.get_frame_height();
-                    for(int ex=0; ex<NUM_FRAME_EXP; ex++){
-                        int x_pos = (p_player.GetRectFrame().x + p_player.GetRectFrame().w*0.5 - width_exp_frame*0.5);
-                        int y_pos = (p_player.GetRectFrame().y + p_player.GetRectFrame().h*0.5 - height__exp_frame*0.5);
-                        exp_main.set_frame(ex);
-                        exp_main.SetRect(x_pos, y_pos);
-                        exp_main.Show(g_screen);
-                        SDL_RenderPresent(g_screen);
-                        SDL_Delay(30);
-                    }
-                    num_die++;
-                    if(num_die < 3){
-                        p_player.SetRect(0,0);
-                        p_player.set_come_back_time(60);
-                        player_power.Decrease();
-                        player_power.Render(g_screen);
-                        SDL_Delay(1000);
-                        continue;
-                    }
-                    else{
-                        if(MessageBox(NULL, "GAME OVER", "Info", MB_OK | MB_ICONSTOP) == IDOK){
-                            p_threat->Free();
-                            close();
-                            SDL_Quit();
-                            return 0;
+                            Va1 = SDLCommonFunc::CheckCollision(pt_bullet->GetRect(), pRect);
+                            if(Va1){
+                                p_threat->RemoveBullet(j);
+                                break;
                             }
                         }
+                    }
+                    Va2 = SDLCommonFunc::CheckCollision(pRect, tRect);
+                    if(Va1 || Va2) break;
+                }
+            }
+        }
+
+        //Boss
+        bool VaBoss = false;
+        bool BulletBoss = false;
+        if( bossObject.get_x_pos() - p_player.get_x_pos() <= (SCREEN_WIDTH/2)) gap_boss = true;
+        if(gap_boss && bossObject.IsLive()){
+            bossObject.SetMapXY(map_data.start_x_, map_data.start_y_);
+            bossObject.DoPlayer(map_data);
+            bossObject.MakeBullet(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT, map_data);
+            bossObject.Show(g_screen);
+
+            SDL_Rect bossRect = bossObject.GetRectFrame();
+            SDL_Rect pRect = p_player.GetRectFrame();
+
+            VaBoss = SDLCommonFunc::CheckCollision(pRect, bossRect);
+
+            vector<BulletObject*> bullet_boss = bossObject.get_bullet_list();
+            for(int j =0; j<bullet_boss.size(); j++){
+                BulletObject* bullet_ = bullet_boss[j];
+                if(bullet_){
+                    BulletBoss = SDLCommonFunc::CheckCollision(bullet_->GetRect(), pRect);
+                    if(BulletBoss){
+                        bossObject.ClearBullet();
+                        break;
                     }
                 }
             }
         }
+
+        if(Va1 || Va2 || VaBoss || BulletBoss){
+            int width_exp_frame = explosion_.get_frame_width();
+            int height__exp_frame = explosion_.get_frame_height();
+            for(int ex=0; ex<NUM_FRAME_EXP; ex++){
+                int x_pos = (p_player.GetRectFrame().x + p_player.GetRectFrame().w*0.5 - width_exp_frame*0.5);
+                int y_pos = (p_player.GetRectFrame().y + p_player.GetRectFrame().h*0.5 - height__exp_frame*0.5);
+                explosion_.set_frame(ex);
+                explosion_.SetRect(x_pos, y_pos);
+                explosion_.Show(g_screen);
+                SDL_RenderPresent(g_screen);
+                SDL_Delay(30);
+            }
+            num_die++;
+            if(num_die < 3){
+                p_player.SetRect(0,0);
+                p_player.set_come_back_time(60);
+                player_power.Decrease();
+                player_power.Render(g_screen);
+                SDL_Delay(1000);
+                continue;
+            }
+            else{
+                        /*if(MessageBox(NULL, "GAME OVER", "Info", MB_OK | MB_ICONSTOP) == IDOK){
+                            p_threat->Free();
+                            close();
+                            SDL_Quit();
+                            return 0;
+                            }*/
+                is_lose = true;
+                is_quit = true;
+                break;
+            }
+        }
+
         //Hinh anh load sau dong nay
         p_player.Show(g_screen);
         p_player.HandleBullet(g_screen,map_data);
 
-        int frame_exp_width = exp_threat.get_frame_width();
-        int frame_exp_height = exp_threat.get_frame_height();
+        int frame_exp_width = explosion_.get_frame_width();
+        int frame_exp_height = explosion_.get_frame_height();
+
 
 
         vector<BulletObject*> bullet_arr = p_player.get_bullet_list();
@@ -329,15 +375,12 @@ int main(int argc,char* argv[])
             BulletObject* p_bullet = bullet_arr[r];
             if(p_bullet!=NULL)
             {
+                SDL_Rect bRect = p_bullet->GetRect();
                 for(int t=0 ; t<threats_list.size(); t++){
                     ThreatsObject* obj_threat = threats_list[t];
                     if(obj_threat!=NULL){
-                        SDL_Rect tRect;
-                        tRect.x = obj_threat->GetRect().x;
-                        tRect.y = obj_threat->GetRect().y;
-                        tRect.w = obj_threat->get_width_frame();
-                        tRect.h = obj_threat->get_height_frame();
-                        SDL_Rect bRect = p_bullet->GetRect();
+                        SDL_Rect tRect = obj_threat->GetRectFrame();
+
                         bool bCol = SDLCommonFunc::CheckCollision(bRect, tRect);
                         if(bCol){
                             p_player.IncreaseMoney();
@@ -345,10 +388,9 @@ int main(int argc,char* argv[])
                             for(int ex = 0; ex<NUM_FRAME_EXP ; ex++){
                                 int x_pos = p_bullet->GetRect().x - frame_exp_width*0.5;
                                 int y_pos = p_bullet->GetRect().y - frame_exp_height*0.5;
-
-                                exp_threat.set_frame(ex);
-                                exp_threat.SetRect(x_pos, y_pos);
-                                exp_threat.Show(g_screen);
+                                explosion_.set_frame(ex);
+                                explosion_.SetRect(x_pos, y_pos);
+                                explosion_.Show(g_screen);
                             }
 
                             p_player.RemoveBullet(r);
@@ -357,48 +399,56 @@ int main(int argc,char* argv[])
                         }
                     }
                 }
+                bool BanBoss = false;
+                if(gap_boss && bossObject.IsLive()){
+                    SDL_Rect bossRect = bossObject.GetRectFrame();
+                    BanBoss = SDLCommonFunc::CheckCollision(bRect, bossRect);
+                    if(BanBoss){
+                        p_player.RemoveBullet(r);
+                        bossObject.BanBoss();
+                        cout<<bossObject.CheckLive()<<endl;
+                    }
+                }
             }
-
         }
         //Show game time
-        string str_time = "Time: ";
+        string str_time = "Map break in: ";
         Uint32 time_val = SDL_GetTicks()/1000;
         Uint32 val_time = MAX_TIME - time_val;
+        int idx = time_val;
         if(val_time <= 0){
-            if(MessageBox(NULL, "GAME OVER", "Info", MB_OK | MB_ICONSTOP) == IDOK){
-                is_quit = true;
-                break;
-            }
+            map_break = true;
         }
-        else{
+        else if(!map_break){
             string str_val = to_string(val_time);
             str_time += str_val;
             time_game.SetText(str_time);
             time_game.LoadFromRenderText(font_time, g_screen);
-            time_game.RenderText(g_screen,SCREEN_WIDTH-200, 15);
+            time_game.RenderText(g_screen,SCREEN_WIDTH-400, 0);
         }
+        else{
+            string s = "Map is breaking!!";
+            time_game.SetText(s);
+            time_game.LoadFromRenderText(font_time, g_screen);
+            time_game.RenderText(g_screen,SCREEN_WIDTH-400, 0);
+        }
+
+        if(map_break){
+            game_map.MapBreak(idx-20);
+        }
+
         string val_str_mark = to_string(mark_value);
         string strMark("Score: ");
         strMark+= val_str_mark;
         mark_game.SetText(strMark);
         mark_game.LoadFromRenderText(font_time, g_screen);
-        mark_game.RenderText(g_screen, SCREEN_WIDTH*0.5 - 50, FONT_SIZE);
+        mark_game.RenderText(g_screen, SCREEN_WIDTH*0.5 - 50, 0);
 
         int money_count = p_player.GetMoneyCount();
         string money_str = to_string(money_count);
         money_game.SetText(money_str);
         money_game.LoadFromRenderText(font_time, g_screen);
-        money_game.RenderText(g_screen, SCREEN_WIDTH*0.5 - 250, FONT_SIZE);
-
-        //Boss
-        int val = MAX_MAP_X*TILE_SIZE - (map_data.start_x_ + p_player.GetRect().x);
-        if( bossObject.get_x_pos() - p_player.get_x_pos() <= (SCREEN_WIDTH/2)) gap_boss = true;
-        if(gap_boss){
-            bossObject.SetMapXY(map_data.start_x_, map_data.start_y_);
-            bossObject.DoPlayer(map_data);
-            bossObject.MakeBullet(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT, map_data);
-            bossObject.Show(g_screen);
-        }
+        money_game.RenderText(g_screen, SCREEN_WIDTH*0.5 - 200, 0);
 
         SDL_RenderPresent(g_screen);
 
@@ -409,7 +459,6 @@ int main(int argc,char* argv[])
             int delay_time = time_one_frame - real_imp_time;
             if(delay_time >=0 ) SDL_Delay(delay_time);
         }
-
     }
 
     for(int i=0; i<threats_list.size(); i++)
@@ -421,8 +470,18 @@ int main(int argc,char* argv[])
             p_threat=NULL;
         }
     }
-
     threats_list.clear();
+    if(is_lose){
+        menu.MenuGameOver(g_screen, g_event);
+        is_continue = menu.restart_;
+        if(is_continue) goto Begin;
+    }
+    else if(is_win){
+        menu.MenuWin(g_screen, g_event);
+        is_continue = menu.restart_;
+        if(is_continue) goto Begin;
+    }
+
     close();
     return 0;
 }

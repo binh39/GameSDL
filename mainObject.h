@@ -6,6 +6,7 @@
 #include "BaseObject.h"
 #include "graphics.h"
 #include "BulletObject.h"
+#include "ExplosionObject.h"
 
 #define GRAVITY_SPEED 1
 #define MAX_FALL_SPEED 10
@@ -37,8 +38,8 @@ public:
     void HandelInputAction(SDL_Event events, SDL_Renderer* screen);
     void set_clips();
 
-    void DoPlayer(Map& map_data, Graphics& graphics, Mix_Chunk * jump);
-    void CheckToMap(Map& map_data);
+    void DoPlayer(Map& map_data, Graphics& graphics, Mix_Chunk * jump, SDL_Renderer* screen);
+    void CheckToMap(Map& map_data, SDL_Renderer* screen);
 
     void SetMapXY(const int map_x, const int map_y){map_x_ = map_x; map_y_ = map_y;}
     void CenterEntityOnMap(Map& map_data);
@@ -59,8 +60,8 @@ public:
     int GetMoneyCount() const {return money_count;}
     void Vitri(){cout<<x_pos_<<" "<<y_pos_<<endl;}
     void set_come_back_time(const int& cb_time){come_back_time_ = cb_time;}
-    void Super();
-
+    void Super(SDL_Renderer* screen);
+    void Nhay(){y_val_ = -5;}
 private:
 
     bool gun = false;
