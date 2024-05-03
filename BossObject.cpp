@@ -18,6 +18,14 @@ BossObject :: ~BossObject(){
 
 }
 
+void BossObject :: CreateBoss(SDL_Renderer* screen){
+    LoadImg(BOSS_IMG, screen);
+    set_clips();
+    int x = MAX_MAP_X*TILE_SIZE - SCREEN_WIDTH*0.8;
+    set_xpos(x);
+    set_ypos(10);
+}
+
 bool BossObject :: LoadImg(string path, SDL_Renderer* screen){
     bool ret = BaseObject :: LoadImg(path, screen);
     if(ret){
@@ -42,7 +50,7 @@ void BossObject :: Show(SDL_Renderer* des){
     if(think_time_ == 0){
         rect_.x = x_pos_ - map_x_;
         rect_.y = y_pos_ - map_y_;
-        frame_ = (frame_+1)%32;
+        frame_ = (frame_+1)%FRAME_NUM_32;
     }
     SDL_Rect* currentClip = &frame_clip_[frame_];
     SDL_Rect renderQuad = {rect_.x, rect_.y, width_frame_, height_frame_};
@@ -216,25 +224,24 @@ void BossObject :: CheckToMap(Map& map_data)
 
 void BossObject :: InitBullet(SDL_Renderer* screen){
     BulletObject* p_bullet = new BulletObject();
-    bool ret = p_bullet->LoadImg("img/Boss//boss_bullet.png", screen);
+    bool ret = p_bullet->LoadImg("img/Boss//BossBullet.png", screen);
     if(ret){
         p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
         p_bullet->set_is_move(true);
-        //p_bullet->SetRect(rect_.x -50, rect_.y+height_frame_-30);
-        p_bullet->set_position(x_pos_-20, y_pos_+height_frame_*0.8);
+        p_bullet->set_position(x_pos_+10, y_pos_+height_frame_*0.45);
         p_bullet->set_x_val(BOSS_FIRE);
         bullet_list_.push_back(p_bullet);
     }
 }
 
 void BossObject :: MakeBullet(SDL_Renderer* des, const int& x_limit, const int& y_limit, Map& map_data){
-    if(frame_ == 18) InitBullet(des);
+    if(frame_ == 31) InitBullet(des);
     for(int i=0; i<bullet_list_.size(); i++){
         BulletObject* p_bullet = bullet_list_[i];
         if(p_bullet!=NULL){
             if(p_bullet->get_is_move()){
                 int bullet_distance = x_pos_ +width_frame_ - p_bullet->get_pos_x();
-                if(0<bullet_distance && bullet_distance < 9*64 + 276){
+                if(0<bullet_distance && bullet_distance < 9*64){
                     p_bullet->HandleMove(x_limit, y_limit, map_data);
                     p_bullet->Render(des);
                 }

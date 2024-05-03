@@ -17,6 +17,8 @@ const int MAX_TIME = 20;
 
 #define WINDOW_TITLE "Pixel Adventure"
 #define FONT_NAME "font//VNI-Souvir.ttf"
+#define BACKGROUND_IMG "img//Background.png"
+#define BOSS_IMG "img/Boss//Boss.png"
 //Screen
 const int FRAME_PER_SECOND = 32; //fps
 const int SCREEN_WIDTH = 1280;
@@ -32,16 +34,14 @@ const int RENDER_DRAW_COLOR = 0xff;
 //Bullet
 const int BULLET_SPEED = 20;
 const int BULLET_SPEED_ENEMY = 10;
-#define BACKGROUND_IMG "img//Background.png"
 
 #define TILE_SIZE 64
 #define BLANK_TILE 0
-
+#define SUPER_POWER 6
+#define WIN_CUP 4
 
 #define MAX_MAP_X 80
 #define MAX_MAP_Y 10
-
-#define STATE_MONEY 4
 
 typedef struct Input
 {

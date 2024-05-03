@@ -18,6 +18,9 @@ class BossObject : public BaseObject{
 public:
     BossObject();
     ~BossObject();
+
+    void CreateBoss(SDL_Renderer* screen);
+
     void set_x_val(int xp){x_val_ = xp;}
     void set_y_val(int yp){y_val_ = yp;}
     void set_xpos(const int& xps){x_pos_ = xps;}

@@ -114,7 +114,7 @@ void MainObject :: Show(SDL_Renderer* des)
     }
 }
 
-void MainObject :: HandelInputAction(SDL_Event events, SDL_Renderer* screen)
+void MainObject :: HandelInputAction(SDL_Event events, SDL_Renderer* screen, Mix_Chunk* gun_sound, Graphics& graphics)
 {
     if(events.type == SDL_KEYDOWN)
     {
@@ -159,6 +159,7 @@ void MainObject :: HandelInputAction(SDL_Event events, SDL_Renderer* screen)
 
     if(events.type == SDL_MOUSEBUTTONDOWN && gun)
     {
+        graphics.play(gun_sound);
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
         if(events.button.button == SDL_BUTTON_RIGHT)
@@ -373,7 +374,7 @@ void MainObject :: CheckToMap(Map& map_data, SDL_Renderer* screen)
             int val1 = map_data.tile[y1][x2];
             int val2 = map_data.tile[y2][x2];
 
-            if(val1 == STATE_MONEY || val2 == STATE_MONEY)
+            if(val1 == SUPER_POWER || val2 == SUPER_POWER)
             {
                 map_data.tile[y1][x2] = 0;
                 map_data.tile[y2][x2] = 0;
@@ -397,7 +398,7 @@ void MainObject :: CheckToMap(Map& map_data, SDL_Renderer* screen)
             int val1 = map_data.tile[y1][x1];
             int val2 = map_data.tile[y2][x1];
 
-            if(val1 == STATE_MONEY || val2 == STATE_MONEY)
+            if(val1 == SUPER_POWER || val2 == SUPER_POWER)
             {
                 map_data.tile[y1][x1] = 0;
                 map_data.tile[y2][x1] = 0;
@@ -426,7 +427,7 @@ void MainObject :: CheckToMap(Map& map_data, SDL_Renderer* screen)
         {
             int val1 = map_data.tile[y2][x1];
             int val2 = map_data.tile[y2][x2];
-            if(val1 == STATE_MONEY || val2 == STATE_MONEY)
+            if(val1 == SUPER_POWER || val2 == SUPER_POWER)
             {
                 map_data.tile[y2][x1] = 0;
                 map_data.tile[y2][x2] = 0;
@@ -449,7 +450,7 @@ void MainObject :: CheckToMap(Map& map_data, SDL_Renderer* screen)
         {
             int val1 = map_data.tile[y1][x1];
             int val2 = map_data.tile[y1][x2];
-            if(val1 == STATE_MONEY || val2 == STATE_MONEY)
+            if(val1 == SUPER_POWER || val2 == SUPER_POWER)
             {
                 map_data.tile[y1][x1] = 0;
                 map_data.tile[y1][x2] = 0;
@@ -545,5 +546,19 @@ void MainObject :: Super(SDL_Renderer* screen){
     }
 }
 
+bool MainObject :: CollectItem(const Sprite& item){
+    int left_a = x_pos_;
+    int right_a = x_pos_ + width_frame_;
+    int top_a = y_pos_;
+    int bottom_a = y_pos_ + height_frame_;
 
+    int left_b = item.x_pos;
+    int right_b = item.x_pos + width_frame_;
+    int top_b = item.y_pos;
+    int bottom_b = item.y_pos + height_frame_;
+
+  if( (left_a<=right_b && right_a>=left_b) && (top_a<=bottom_b && bottom_a>=top_b) ) return true;
+
+  return false;
+}
 

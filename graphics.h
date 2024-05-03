@@ -50,6 +50,45 @@ const int MAN_CLIPS_3[][4] = {
     {256*11, 0, 256, 256}};
 const int MAN_FRAMES_3 = 12;
 
+const int FRUITS_CLIPS[][4] = {
+    {  0, 0, 32, 32},
+    { 32, 0, 32, 32},
+    { 64, 0, 32, 32},
+    { 96, 0, 32, 32},
+    {128, 0, 32, 32},
+    {160, 0, 32, 32},
+    {192, 0, 32, 32},
+    {224, 0, 32, 32},
+    {256, 0, 32, 32},
+    {288, 0, 32, 32},
+    {320, 0, 32, 32},
+    {352, 0, 32, 32},
+    {384, 0, 32, 32},
+    {416, 0, 32, 32},
+    {448, 0, 32, 32},
+    {480, 0, 32, 32},
+    {512, 0, 32, 32}};
+const int FRUITS_FRAME = 17;
+
+const int FLAGS_CLIPS[][4] = {
+    {  0, 0, 64, 64},
+    { 64, 0, 64, 64},
+    { 128, 0, 64, 64},
+    { 192, 0, 64, 64},
+    {256, 0, 64, 64},
+    {320, 0, 64, 64},
+    {384, 0, 64, 64},
+    {448, 0, 64, 64},
+    {512, 0, 64, 64},
+    {576, 0, 64, 64},
+    {640, 0, 64, 64},
+    {704, 0, 64, 64},
+    {768, 0, 64, 64},
+    {832, 0, 64, 64},
+    {896, 0, 64, 64},
+    {960, 0, 64, 64}};
+const int FLAGS_FRAME = 16;
+
 struct ScrollingBackground{
     SDL_Texture* texture;
     int scrollingOffset = 0;
@@ -66,45 +105,35 @@ struct Sprite{
     int x=0;
     int y=0;
 
-    void init(SDL_Texture* _texture, int frames, const int _clips[][4]);
+    int x_pos=0;
+    int y_pos=0;
+    int width_frame_=0;
+    int height_frame_=0;
+
+    void init(int frames, const int _clips[][4]);
     void tick();
     const SDL_Rect* getCurrentClip() const;
+    void LoadImg(const char* name, SDL_Renderer* renderer);
     void Render(int x, int y, SDL_Renderer* renderer);
+    void RenderWithMap(Map& map_data, SDL_Renderer* renderer);
+    void set_pos(const int& xp, const int& yp){x_pos = xp; y_pos = yp;}
     void move();
+    void Free();
 };
 
 struct Graphics {
-    SDL_Renderer *renderer;
-    SDL_Window *window;
-
-    void logErrorAndExit(const char* msg, const char* error);
-    void init();
-
-    void prepareScene(SDL_Texture * background);
-    void presentScene();
-
-    SDL_Texture *loadTexture(const char *filename);
-    void renderTexture(SDL_Texture *texture, int x, int y);
-    void render(const ScrollingBackground& bgr);
-
     Mix_Music *loadMusic(const char* path);
     void play(Mix_Music *gMusic);
     Mix_Chunk* loadSound(const char* path);
     void play(Mix_Chunk* gChunk);
-    TTF_Font* loadFont(const char* path, int size);
-    SDL_Texture* renderText(const char* text,TTF_Font* font, SDL_Color textColor);
-
-    void quit();
 };
 
 struct Menu {
     SDL_Texture *background_menu;
-    //SDL_Texture *button_menu;
     bool restart_ = false;
     int volumn_ = 1;
     SDL_Texture* volumn_on;
     SDL_Texture* volumn_off;
-
 
     SDL_Texture *loadTexture(const char *filename, SDL_Renderer* renderer)
     {
@@ -142,8 +171,8 @@ struct Menu {
         SBackground.setTexture(renderer);
 
         Sprite Man;
-        SDL_Texture* man = IMG_LoadTexture(renderer, "img/NinjaFrog//RunR.png");
-        Man.init(man, MAN_FRAMES, MAN_CLIPS);
+        Man.LoadImg("img/NinjaFrog//RunR.png", renderer);
+        Man.init(MAN_FRAMES, MAN_CLIPS);
 
         SDL_Texture* pixel_adventure = LoadButton("img/button//PixelAdventure.png", renderer);
         SDL_Texture* start1 = LoadButton("img/button//Start1.png", renderer);
@@ -176,7 +205,6 @@ struct Menu {
             SDL_RenderPresent(renderer);
             SDL_Delay(45);
         }
-        SDL_DestroyTexture( man ); man = NULL;
         SDL_DestroyTexture( pixel_adventure ); pixel_adventure = NULL;
         SDL_DestroyTexture( start1 ); start1 = NULL;
         SDL_DestroyTexture( start2 ); start2 = NULL;
@@ -190,32 +218,32 @@ struct Menu {
         SBackground.setTexture(renderer);
 
         Sprite Frog;
-        SDL_Texture* Sfrog = IMG_LoadTexture(renderer, "img/NinjaFrog//BigIdle.png");
-        Frog.init(Sfrog, MAN_FRAMES_2, MAN_CLIPS_2);
+        Frog.LoadImg("img/NinjaFrog//BigIdle.png", renderer);
+        Frog.init(MAN_FRAMES_2, MAN_CLIPS_2);
         Sprite BigFrog;
-        SDL_Texture* Sfrog2 = IMG_LoadTexture(renderer, "img/NinjaFrog//BigRun.png");
-        BigFrog.init(Sfrog2, MAN_FRAMES_3, MAN_CLIPS_3);
+        BigFrog.LoadImg("img/NinjaFrog//BigRun.png", renderer);
+        BigFrog.init(MAN_FRAMES_3, MAN_CLIPS_3);
 
         Sprite Mask;
-        SDL_Texture* Smask = IMG_LoadTexture(renderer, "img/MaskDude//BigIdle.png");
-        Mask.init(Smask, MAN_FRAMES_2, MAN_CLIPS_2);
+        Mask.LoadImg("img/MaskDude//BigIdle.png", renderer);
+        Mask.init(MAN_FRAMES_2, MAN_CLIPS_2);
         Sprite BigMask;
-        SDL_Texture* Smask2 = IMG_LoadTexture(renderer, "img/MaskDude//BigRun.png");
-        BigMask.init(Smask2, MAN_FRAMES_3, MAN_CLIPS_3);
+        BigMask.LoadImg("img/MaskDude//BigRun.png", renderer);
+        BigMask.init(MAN_FRAMES_3, MAN_CLIPS_3);
 
         Sprite Pink;
-        SDL_Texture* Spink = IMG_LoadTexture(renderer, "img/PinkMan//BigIdle.png");
-        Pink.init(Spink, MAN_FRAMES_2, MAN_CLIPS_2);
+        Pink.LoadImg("img/PinkMan//BigIdle.png", renderer);
+        Pink.init(MAN_FRAMES_2, MAN_CLIPS_2);
         Sprite BigPink;
-        SDL_Texture* Spink2 = IMG_LoadTexture(renderer, "img/PinkMan//BigRun.png");
-        BigPink.init(Spink2, MAN_FRAMES_3, MAN_CLIPS_3);
+        BigPink.LoadImg("img/PinkMan//BigRun.png", renderer);
+        BigPink.init(MAN_FRAMES_3, MAN_CLIPS_3);
 
         Sprite Guy;
-        SDL_Texture* Sguy = IMG_LoadTexture(renderer, "img/VirtualGuy//BigIdle.png");
-        Guy.init(Sguy, MAN_FRAMES_2, MAN_CLIPS_2);
+        Guy.LoadImg("img/VirtualGuy//BigIdle.png", renderer);
+        Guy.init(MAN_FRAMES_2, MAN_CLIPS_2);
         Sprite BigGuy;
-        SDL_Texture* Sguy2 = IMG_LoadTexture(renderer, "img/VirtualGuy//BigRun.png");
-        BigGuy.init(Sguy2, MAN_FRAMES_3, MAN_CLIPS_3);
+        BigGuy.LoadImg("img/VirtualGuy//BigRun.png", renderer);
+        BigGuy.init(MAN_FRAMES_3, MAN_CLIPS_3);
 
         SDL_Texture* continue1 = LoadButton("img/button/Continue1.png", renderer);
         SDL_Texture* continue2 = LoadButton("img/button/Continue2.png", renderer);
@@ -285,14 +313,6 @@ struct Menu {
         SDL_DestroyTexture( continue1 ); continue1 = NULL;
         SDL_DestroyTexture( continue2 ); continue2 = NULL;
         SDL_DestroyTexture( selectcharacter); selectcharacter = NULL;
-        SDL_DestroyTexture( Sfrog ); Sfrog = NULL;
-        SDL_DestroyTexture( Sfrog2); Sfrog2 = NULL;
-        SDL_DestroyTexture( Smask ); Smask = NULL;
-        SDL_DestroyTexture( Smask2 ); Smask2 = NULL;
-        SDL_DestroyTexture( Spink ); Spink = NULL;
-        SDL_DestroyTexture( Spink2 ); Spink2 = NULL;
-        SDL_DestroyTexture( Sguy ); Sguy = NULL;
-        SDL_DestroyTexture( Sguy2 ); Sguy2 = NULL;
         return A;
     }
 
@@ -302,8 +322,8 @@ struct Menu {
         SBackground.setTexture(renderer);
 
         Sprite Man;
-        SDL_Texture* man = IMG_LoadTexture(renderer, "img/NinjaFrog//RunR.png");
-        Man.init(man, MAN_FRAMES, MAN_CLIPS);
+        Man.LoadImg("img/NinjaFrog//RunR.png", renderer);
+        Man.init(MAN_FRAMES, MAN_CLIPS);
 
         SDL_Texture* game_over = LoadButton("img/button//GameOver.png", renderer);
         SDL_Texture* start1 = LoadButton("img/button//Start1.png", renderer);
@@ -330,14 +350,13 @@ struct Menu {
 
             if( (500<=x&&x<=756) && (200<=y&&y<=328) ) renderTexture(start2, 500, 200, renderer);
             else renderTexture(start1, 500, 200, renderer);
-            if( (500<=x&&x<=756) && (200<=y&&y<=328) && (event.type==SDL_MOUSEBUTTONDOWN || event.type==SDL_MOUSEBUTTONUP) ){
+            if( (500<=x&&x<=756) && (200<=y&&y<=328) && (event.type==SDL_MOUSEBUTTONUP) ){
                 restart_ = true;
                 quit=true;
             }
             SDL_RenderPresent(renderer);
             SDL_Delay(45);
         }
-        SDL_DestroyTexture( man ); man = NULL;
         SDL_DestroyTexture( game_over ); game_over = NULL;
         SDL_DestroyTexture( start1 ); start1 = NULL;
         SDL_DestroyTexture( start2 ); start2 = NULL;
@@ -349,8 +368,8 @@ struct Menu {
         SBackground.setTexture(renderer);
 
         Sprite Man;
-        SDL_Texture* man = IMG_LoadTexture(renderer, "img/NinjaFrog//RunR.png");
-        Man.init(man, MAN_FRAMES, MAN_CLIPS);
+        Man.LoadImg("img/NinjaFrog//RunR.png", renderer);
+        Man.init(MAN_FRAMES, MAN_CLIPS);
 
         SDL_Texture* game_win = LoadButton("img/button//Win.png", renderer);
         SDL_Texture* start1 = LoadButton("img/button//Start1.png", renderer);
@@ -377,14 +396,13 @@ struct Menu {
 
             if( (500<=x&&x<=756) && (200<=y&&y<=328) ) renderTexture(start2, 500, 200, renderer);
             else renderTexture(start1, 500, 200, renderer);
-            if( (500<=x&&x<=756) && (200<=y&&y<=328) && (event.type==SDL_MOUSEBUTTONDOWN || event.type==SDL_MOUSEBUTTONUP) ){
+            if( (500<=x&&x<=756) && (200<=y&&y<=328) && (event.type==SDL_MOUSEBUTTONUP) ){
                 restart_ = true;
                 quit=true;
             }
             SDL_RenderPresent(renderer);
             SDL_Delay(45);
         }
-        SDL_DestroyTexture( man ); man = NULL;
         SDL_DestroyTexture( game_win ); game_win = NULL;
         SDL_DestroyTexture( start1 ); start1 = NULL;
         SDL_DestroyTexture( start2 ); start2 = NULL;
@@ -396,14 +414,14 @@ struct Menu {
     }
 
     void RenderVolumnButton(SDL_Renderer* renderer){
-        if(volumn_) renderTexture(volumn_on, 1250, 8, renderer);
-        else renderTexture(volumn_off, 1250, 8, renderer);
+        if(volumn_) renderTexture(volumn_on, 1249, 11, renderer);
+        else renderTexture(volumn_off, 1249, 11, renderer);
     }
 
     void ChangeVolumn(SDL_Event event, Mix_Chunk* chunk){
         int x=0, y=0;
         SDL_GetMouseState(&x, &y);
-        if(event.type == SDL_MOUSEBUTTONDOWN && (1250<=x && x<=1269) && (8<=y && y<=27) ){
+        if(event.type == SDL_MOUSEBUTTONDOWN && (1249<=x && x<=1268) && (11<=y && y<=30) ){
             if(volumn_ == 1){
                 Mix_VolumeMusic(0);
                 Mix_VolumeChunk(chunk, 0);
@@ -416,9 +434,9 @@ struct Menu {
         }
     }
 
-
-
 };
+
+
 
 
 #endif // _GRAPHICS_H

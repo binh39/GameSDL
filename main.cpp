@@ -68,6 +68,15 @@ bool LoadBackground(){
     return true;
 }
 
+void renderTexture(SDL_Texture *texture, int x, int y, SDL_Renderer* renderer)
+{
+    SDL_Rect dest;
+    dest.x = x;
+    dest.y = y;
+    SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
+    SDL_RenderCopy(renderer, texture, NULL, &dest);
+}
+
 void close(){
     g_background.Free();
     SDL_DestroyRenderer(g_screen);
@@ -141,6 +150,33 @@ vector<ThreatsObject*> MakeThreadList()
     return list_threats;
 }
 
+vector<Sprite*> MakeFruitList(){
+    vector<Sprite*> fruit_list;
+    Sprite* apple = new Sprite[5];
+    for(int i=0;i<5;i++){
+        Sprite* apple_ = (apple+i);
+        if(apple_!=nullptr){
+            apple_->LoadImg("img/Items/Fruits//Apple.png", g_screen);
+            apple_->init(FRUITS_FRAME, FRUITS_CLIPS);
+            apple_->set_pos(i*TILE_SIZE + 64*4, 330);
+            fruit_list.push_back(apple_);
+        }
+    }
+
+    Sprite* banana = new Sprite[5];
+    for(int i=0;i<5;i++){
+        Sprite* banana_ = (banana+i);
+        if(banana_!=nullptr){
+            banana_->LoadImg("img/Items/Fruits//Banana.png", g_screen);
+            banana_->init(FRUITS_FRAME, FRUITS_CLIPS);
+            banana_->set_pos(i*TILE_SIZE + 64*10, 330);
+            fruit_list.push_back(banana_);
+        }
+    }
+
+    return fruit_list;
+}
+
 using namespace std;
 
 int main(int argc,char* argv[])
@@ -153,6 +189,7 @@ int main(int argc,char* argv[])
 
     int choose=0;
     ImpTimer fps_timer;
+    SDL_Texture* vien = IMG_LoadTexture(g_screen, "img//vien.png");
 
     bool is_lose = false;
     bool is_win = false;
@@ -168,8 +205,9 @@ int main(int argc,char* argv[])
     Mix_Music* gMusic = graphics.loadMusic("sound//cafe_boba_short.mp3");
     graphics.play(gMusic);
     Mix_Chunk *gJump = graphics.loadSound("sound//jump.wav");
-    graphics.play(gJump);
-
+    Mix_Chunk *gun_sound = graphics.loadSound("sound//Gun2.wav");
+    Mix_Chunk *fruit_sound = graphics.loadSound("sound//Fruit.wav");
+    Mix_Chunk *super_power = graphics.loadSound("sound//SuperPower.wav");
     MainObject p_player;
     p_player.SelectCharacter(choose);
     p_player.LoadImg(p_player.RunR,g_screen);
@@ -185,16 +223,6 @@ int main(int argc,char* argv[])
     game_map.LoadMap("map/map02.txt");
     game_map.LoadTiles(g_screen);
 
-    vector<ThreatsObject*> threats_list = MakeThreadList();
-
-    //Boss
-    BossObject bossObject;
-    bossObject.LoadImg("img/Boss//boss_object.png", g_screen);
-    bossObject.set_clips();
-    int xPosBoss = MAX_MAP_X*TILE_SIZE - SCREEN_WIDTH*0.8;
-    bossObject.set_xpos(xPosBoss);
-    bossObject.set_ypos(10);
-
     ExplosionObject explosion_;
     bool tRet = explosion_.LoadImg("img//Explosion.png", g_screen);
     if(!tRet){
@@ -202,8 +230,6 @@ int main(int argc,char* argv[])
         return -1;
     }
     explosion_.set_clip();
-
-    int num_die = 0;
 
     TextObject time_game;
     time_game.SetColor(TextObject::WHITE_TEXT);
@@ -213,12 +239,26 @@ int main(int argc,char* argv[])
     TextObject money_game;
     money_game.SetColor(TextObject::WHITE_TEXT);
 
+    vector<ThreatsObject*> threats_list = MakeThreadList();
 
+    BossObject bossObject;
+    bossObject.CreateBoss(g_screen);
 
+    Sprite Start_Flag;
+    Start_Flag.LoadImg("img/Items//Start.png", g_screen);
+    Start_Flag.init(FLAGS_FRAME, FLAGS_CLIPS);
+    Start_Flag.set_pos(0,448);
+    Sprite Cup;
+    Cup.LoadImg("img/Items//End.png", g_screen);
+    Cup.init(FLAGS_FRAME, FLAGS_CLIPS);
+    Cup.set_pos(79*64, 448);
+    vector<Sprite*> fruit_list = MakeFruitList();
 
+    int num_die = 0;
     bool is_quit = false;
     bool gap_boss = false;
     bool map_break = false;
+    int time_real = SDL_GetTicks()/1000;
 
     while(!is_quit){
         fps_timer.start();
@@ -227,7 +267,7 @@ int main(int argc,char* argv[])
             if(g_event.type==SDL_QUIT){
                 is_quit = true;
             }
-            p_player.HandelInputAction(g_event, g_screen);
+            p_player.HandelInputAction(g_event, g_screen, gun_sound, graphics);
             menu.ChangeVolumn(g_event, gJump);
         }
 
@@ -240,20 +280,33 @@ int main(int argc,char* argv[])
         game_map.SetMap(map_data);
         game_map.DrawMap(g_screen);
 
-        GeomytricFormat rectangle_size(0,0, SCREEN_WIDTH, 40);
-        ColorData color_data(0,50,180);
-        Geomytric :: RenderRectangle(rectangle_size, color_data, g_screen);
-        GeomytricFormat outlineSize(1, 1, SCREEN_WIDTH-2, 38);
-        ColorData color_data2(255,255,255);
-        Geomytric :: RenderOutline(outlineSize, color_data2, g_screen);
-
+        renderTexture(vien, 0, 0, g_screen);
+        menu.RenderVolumnButton(g_screen);
         player_power.Show(g_screen);
         player_money.Show(g_screen);
 
-        menu.RenderVolumnButton(g_screen);
+        Start_Flag.RenderWithMap(map_data, g_screen);
+        Start_Flag.tick();
+        Cup.RenderWithMap(map_data,g_screen);
+        Cup.tick();
 
         bool Va1 = false;
         bool Va2 = false;
+
+        for(int i=0; i<fruit_list.size() ; i++){
+            Sprite* fruit = fruit_list[i];
+            if(fruit!=nullptr){
+                fruit->RenderWithMap(map_data,g_screen);
+                fruit->tick();
+                bool AnQua = p_player.CollectItem(*fruit);
+                if(AnQua){
+                    p_player.IncreaseMoney();
+                    mark_value += 100;
+                    fruit->Free();
+                    fruit_list.erase(fruit_list.begin()+i);
+                }
+            }
+        }
 
         for(int i=0 ; i<threats_list.size() ; i++){
             ThreatsObject* p_threat = threats_list[i];
@@ -280,6 +333,8 @@ int main(int argc,char* argv[])
                     p_threat->Free();
                     threats_list.erase(threats_list.begin()+i);
                     cout<<"Kill Threat success\n";
+                    p_player.IncreaseMoney();
+                    mark_value += 100;
                 }
                 else{
                     vector<BulletObject*> tBullet_list = p_threat->get_bullet_list();
@@ -349,12 +404,6 @@ int main(int argc,char* argv[])
                 continue;
             }
             else{
-                        /*if(MessageBox(NULL, "GAME OVER", "Info", MB_OK | MB_ICONSTOP) == IDOK){
-                            p_threat->Free();
-                            close();
-                            SDL_Quit();
-                            return 0;
-                            }*/
                 is_lose = true;
                 is_quit = true;
                 break;
@@ -367,8 +416,6 @@ int main(int argc,char* argv[])
 
         int frame_exp_width = explosion_.get_frame_width();
         int frame_exp_height = explosion_.get_frame_height();
-
-
 
         vector<BulletObject*> bullet_arr = p_player.get_bullet_list();
         for(int r =0 ; r<bullet_arr.size(); r++){
@@ -409,32 +456,37 @@ int main(int argc,char* argv[])
                         cout<<bossObject.CheckLive()<<endl;
                     }
                 }
+                if(!bossObject.IsLive()){
+                    //is_win = true;
+                    //is_quit = true;
+                }
             }
         }
         //Show game time
         string str_time = "Map break in: ";
-        Uint32 time_val = SDL_GetTicks()/1000;
-        Uint32 val_time = MAX_TIME - time_val;
-        int idx = time_val;
-        if(val_time <= 0){
+        Uint32 time_tick = SDL_GetTicks()/1000;
+        int val_time = time_tick - time_real;
+        int idx = val_time;
+
+        if(val_time == MAX_TIME){
             map_break = true;
         }
         else if(!map_break){
-            string str_val = to_string(val_time);
+            string str_val = to_string(MAX_TIME - val_time);
             str_time += str_val;
             time_game.SetText(str_time);
             time_game.LoadFromRenderText(font_time, g_screen);
-            time_game.RenderText(g_screen,SCREEN_WIDTH-400, 0);
+            time_game.RenderText(g_screen,SCREEN_WIDTH-400, -2);
         }
         else{
             string s = "Map is breaking!!";
             time_game.SetText(s);
             time_game.LoadFromRenderText(font_time, g_screen);
-            time_game.RenderText(g_screen,SCREEN_WIDTH-400, 0);
+            time_game.RenderText(g_screen,SCREEN_WIDTH-400, -2);
         }
 
         if(map_break){
-            game_map.MapBreak(idx-20);
+            game_map.MapBreak(idx-MAX_TIME);
         }
 
         string val_str_mark = to_string(mark_value);
@@ -442,13 +494,13 @@ int main(int argc,char* argv[])
         strMark+= val_str_mark;
         mark_game.SetText(strMark);
         mark_game.LoadFromRenderText(font_time, g_screen);
-        mark_game.RenderText(g_screen, SCREEN_WIDTH*0.5 - 50, 0);
+        mark_game.RenderText(g_screen, SCREEN_WIDTH*0.5 - 50, -2);
 
         int money_count = p_player.GetMoneyCount();
         string money_str = to_string(money_count);
         money_game.SetText(money_str);
         money_game.LoadFromRenderText(font_time, g_screen);
-        money_game.RenderText(g_screen, SCREEN_WIDTH*0.5 - 200, 0);
+        money_game.RenderText(g_screen, SCREEN_WIDTH*0.5 - 200, -2);
 
         SDL_RenderPresent(g_screen);
 

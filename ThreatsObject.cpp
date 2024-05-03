@@ -130,7 +130,7 @@ void ThreatsObject :: CheckToMap(Map& map_data)
             int val1 = map_data.tile[y1][x2];
             int val2 = map_data.tile[y2][x2];
 
-            if((val1 != BLANK_TILE && val1!=STATE_MONEY) || (val2 != BLANK_TILE && val2!=STATE_MONEY))
+            if((val1 != BLANK_TILE && val1!=SUPER_POWER) || (val2 != BLANK_TILE && val2!=SUPER_POWER))
             {
                 //x_pos_ = x2*TILE_SIZE;
                 //x_pos_ -= width_frame_ +1;
@@ -145,7 +145,7 @@ void ThreatsObject :: CheckToMap(Map& map_data)
             int val1 = map_data.tile[y1][x1];
             int val2 = map_data.tile[y2][x1];
 
-            if((val1 != BLANK_TILE && val1!=STATE_MONEY) || (val2 != BLANK_TILE && val2!=STATE_MONEY))
+            if((val1 != BLANK_TILE && val1!=SUPER_POWER) || (val2 != BLANK_TILE && val2!=SUPER_POWER))
             {
                 //x_pos_ = (x1 +1)*TILE_SIZE;
                 x_pos_ = test_x;
@@ -171,7 +171,7 @@ void ThreatsObject :: CheckToMap(Map& map_data)
             int val1 = map_data.tile[y2][x1];
             int val2 = map_data.tile[y2][x2];
 
-            if((val1 != BLANK_TILE && val1!=STATE_MONEY) || (val2 != BLANK_TILE && val2!=STATE_MONEY))
+            if((val1 != BLANK_TILE && val1!=SUPER_POWER) || (val2 != BLANK_TILE && val2!=SUPER_POWER))
             {
                 //y_pos_ = y2*TILE_SIZE;
                 //y_pos_ -= (height_frame_+ 1);
@@ -186,7 +186,7 @@ void ThreatsObject :: CheckToMap(Map& map_data)
             int val1 = map_data.tile[y1][x1];
             int val2 = map_data.tile[y1][x2];
 
-            if((val1 != BLANK_TILE && val1!=STATE_MONEY) || (val2 != BLANK_TILE && val2!=STATE_MONEY))
+            if((val1 != BLANK_TILE && val1!=SUPER_POWER) || (val2 != BLANK_TILE && val2!=SUPER_POWER))
             {
                 //y_pos_ = (y1 + 1)*TILE_SIZE;
                 y_pos_ = test_y;

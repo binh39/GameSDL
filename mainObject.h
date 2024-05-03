@@ -35,7 +35,7 @@ public:
 
     bool LoadImg(string path, SDL_Renderer* screen);
     void Show(SDL_Renderer* des);
-    void HandelInputAction(SDL_Event events, SDL_Renderer* screen);
+    void HandelInputAction(SDL_Event events, SDL_Renderer* screen, Mix_Chunk* gun_sound, Graphics& graphics);
     void set_clips();
 
     void DoPlayer(Map& map_data, Graphics& graphics, Mix_Chunk * jump, SDL_Renderer* screen);
@@ -58,12 +58,14 @@ public:
     void RemoveBullet(const int& idx);
     void IncreaseMoney();
     int GetMoneyCount() const {return money_count;}
+    bool CollectItem(const Sprite& item);
+    bool GetIsCup(){return is_cup;}
     void Vitri(){cout<<x_pos_<<" "<<y_pos_<<endl;}
     void set_come_back_time(const int& cb_time){come_back_time_ = cb_time;}
     void Super(SDL_Renderer* screen);
     void Nhay(){y_val_ = -5;}
 private:
-
+    bool is_cup = false;
     bool gun = false;
     int money_count;
     vector<BulletObject*> p_bullet_list_;
