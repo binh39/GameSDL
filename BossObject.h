@@ -4,6 +4,7 @@
 #include "BaseObject.h"
 #include "CommonFunction.h"
 #include "BulletObject.h"
+#include "graphics.h"
 
 #define GRAVITY_SPEED 1
 #define MAX_FALL_SPEED 10
@@ -44,16 +45,17 @@ public:
     vector<BulletObject*> get_bullet_list() const {return bullet_list_;}
     void set_bullet_list(vector<BulletObject*>& am_list){bullet_list_ = am_list;}
     void InitBullet(SDL_Renderer* screen);
-    void MakeBullet(SDL_Renderer* des, const int& x_limit, const int& y_limit, Map& map_data);
+    void MakeBullet(SDL_Renderer* des, const int& x_limit, const int& y_limit, Map& map_data, const float& xPlayer, const float& yPlayer, Graphics& graphics, Mix_Chunk* boss_gun);
     void RemoveBullet(const int& idx);
     void ClearBullet();
     void BanBoss(){if(boss_life>0) boss_life--;}
     bool IsLive();
     int CheckLive(){return boss_life;}
     SDL_Rect GetRectFrame();
+    void ShowHeart(SDL_Renderer* screen, Map& map_data);
 private:
+    SDL_Texture* heart;
     int boss_life;
-
     int map_x_;
     int map_y_;
     int on_ground_;

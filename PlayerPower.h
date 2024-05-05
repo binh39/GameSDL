@@ -3,37 +3,22 @@
 
 #include "CommonFunction.h"
 #include "BaseObject.h"
+#include "graphics.h"
 
 using namespace std;
 
-class PlayerPower : public BaseObject{
-public:
-    PlayerPower();
-    ~PlayerPower();
-    void SetNum(const int& num){number_ = num;}
-    void AddPos(const int& xPos);
-    void Show(SDL_Renderer* screen);
-    void Init(SDL_Renderer* screen);
+struct PlayerHeart{
+    //vector<Sprite*> heart_list;
+    Sprite heart;
+    int num_heart=3;
 
-    void InitCrease();
-    void Decrease();
-private:
-    int number_;
-    vector<int> pos_list_;
+    void SetHeart(const int& num){num_heart = num;}
+    void Increase(){num_heart++;}
+    void Decrease(){num_heart--;}
 
-};
-
-class PlayerMoney : public BaseObject{
-public:
-    PlayerMoney();
-    ~PlayerMoney();
     void Init(SDL_Renderer* screen);
     void Show(SDL_Renderer* screen);
-    void SetPos(const int& x, const int& y){x_pos = x; y_pos = y;}
-
-private:
-    int x_pos;
-    int y_pos;
 };
+
 
 #endif // PLAYER_POWER_H

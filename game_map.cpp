@@ -86,7 +86,14 @@ void GameMap :: DrawMap(SDL_Renderer* screen){
 }
 
 void GameMap :: MapBreak(const int& idx){
-    if(0<=idx && idx <= MAX_MAP_X - 30){
+    if(2<=idx && idx <= MAX_MAP_X - 30){
+        for(int j=idx-2; j<=idx ; j++){
+            for(int i=0; i<MAX_MAP_Y ; i++){
+            game_map_.tile[i][j] = 0;
+            }
+        }
+    }
+     else if(0<=idx && idx <= MAX_MAP_X - 30){
         for(int i=0; i<MAX_MAP_Y ; i++){
             game_map_.tile[i][idx] = 0;
         }

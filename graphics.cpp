@@ -47,8 +47,7 @@ void Sprite :: LoadImg(const char* name, SDL_Renderer* renderer){
     texture = IMG_LoadTexture(renderer, name);
 }
 
-void Sprite::init(/*SDL_Texture* _texture,*/int frames, const int _clips [][4]) {
-    //texture = _texture;
+void Sprite::init(int frames, const int _clips [][4]) {
     SDL_Rect clip;
     for (int i = 0; i < frames; i++) {
         clip.x = _clips[i][0];
@@ -73,8 +72,9 @@ const SDL_Rect* Sprite::getCurrentClip() const {
 }
 
 void Sprite :: Render(int x, int y, SDL_Renderer* renderer) {
+    x=x%(1280+64);
     const SDL_Rect* clip = getCurrentClip();
-    SDL_Rect renderQuad = {x, y, clip->w, clip->h};
+    SDL_Rect renderQuad = {x-64, y, clip->w, clip->h};
     SDL_RenderCopy(renderer, texture, clip, &renderQuad);
 }
 
@@ -82,7 +82,7 @@ void Sprite :: RenderWithMap(Map& map_data, SDL_Renderer* renderer){
     x = x_pos - map_data.start_x_;
     y = y_pos - map_data.start_y_;
     const SDL_Rect* clip = getCurrentClip();
-    SDL_Rect renderquad = {x, y, 64, 64};
+    SDL_Rect renderquad = {x, y, width_frame_, height_frame_};
     SDL_RenderCopy(renderer, texture, clip, &renderquad);
 }
 

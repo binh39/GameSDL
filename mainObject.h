@@ -38,8 +38,8 @@ public:
     void HandelInputAction(SDL_Event events, SDL_Renderer* screen, Mix_Chunk* gun_sound, Graphics& graphics);
     void set_clips();
 
-    void DoPlayer(Map& map_data, Graphics& graphics, Mix_Chunk * jump, SDL_Renderer* screen);
-    void CheckToMap(Map& map_data, SDL_Renderer* screen);
+    void DoPlayer(Map& map_data, SDL_Renderer* screen, int &num_live, Graphics& graphics, Mix_Chunk* chunk);
+    void CheckToMap(Map& map_data, SDL_Renderer* screen, int& num_live, Graphics& graphics, Mix_Chunk* chunk);
 
     void SetMapXY(const int map_x, const int map_y){map_x_ = map_x; map_y_ = map_y;}
     void CenterEntityOnMap(Map& map_data);
@@ -62,8 +62,11 @@ public:
     bool GetIsCup(){return is_cup;}
     void Vitri(){cout<<x_pos_<<" "<<y_pos_<<endl;}
     void set_come_back_time(const int& cb_time){come_back_time_ = cb_time;}
-    void Super(SDL_Renderer* screen);
+    void Super(SDL_Renderer* screen, Graphics& graphics, Mix_Chunk* chunk);
     void Nhay(){y_val_ = -5;}
+    void Bay(){y_val_ = -27; on_ground_=false;}
+    void Khong(){on_ground_ = false;}
+    void SetBegin(){x_pos_=0; y_pos_=5*64;}
 private:
     bool is_cup = false;
     bool gun = false;

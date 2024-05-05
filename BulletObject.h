@@ -37,6 +37,7 @@ public:
     void set_bullet_type(const unsigned int& bulletType){bullet_type_ = bulletType;}
     unsigned int get_bullet_type() const {return bullet_type_;}
     void HandleMove(const int& x_border, const int& y_border, Map& map_data);
+    void HandleMove2(const int& x_border, const int& y_border, Map& map_data, const float& xPlayer, const float& yPlayer);
     void set_position(const float& x, const float& y){x_pos_ = x; y_pos_ = y;}
     int get_pos_x(){return x_pos_;}
     int get_pos_y(){return y_pos_;}

@@ -157,81 +157,35 @@ void MainObject :: HandelInputAction(SDL_Event events, SDL_Renderer* screen, Mix
         }
     }
 
-    if(events.type == SDL_MOUSEBUTTONDOWN && gun)
+    if(events.type== SDL_MOUSEBUTTONDOWN && events.button.button == SDL_BUTTON_LEFT && gun && come_back_time_ ==0)
     {
         graphics.play(gun_sound);
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
-        if(events.button.button == SDL_BUTTON_RIGHT)
+        BulletObject* p_bullet = new BulletObject();
+        p_bullet->set_bullet_type(BulletObject::LASER_BULLET);
+        p_bullet->LoadImgBullet(screen);
+        if(status_ == WALK_LEFT)
         {
-
-            BulletObject* p_bullet = new BulletObject();
-            p_bullet->set_bullet_type(BulletObject::LASER_BULLET);
-            p_bullet->LoadImgBullet(screen);
-
-            if(status_ == WALK_LEFT)
-            {
-                if( mouseX >= rect_.x) p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
-                else if( double((rect_.y-mouseY)*1.0/(rect_.x - mouseX)) > 0.156 ) p_bullet->set_bullet_dir(BulletObject::DIR_UP_LEFT);
-                else if( double((rect_.y-mouseY+64)*1.0/(rect_.x - mouseX)) < -0.156 ) p_bullet->set_bullet_dir(BulletObject::DIR_DOWN_LEFT);
-                else p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
-
-                //p_bullet->SetRect(rect_.x+20, rect_.y + height_frame_*0.5);
-                p_bullet->set_position(x_pos_+10, y_pos_+ height_frame_*0.65);
-            }
-            else
-            {
-                if( mouseX <= rect_.x) p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
-                else if( double((rect_.y-mouseY)*1.0/(mouseX-rect_.x)) > 0.156 ) p_bullet->set_bullet_dir(BulletObject::DIR_UP_RIGHT);
-                else if( double((rect_.y-mouseY+64)*1.0/(mouseX-rect_.x)) < -0.156 ) p_bullet->set_bullet_dir(BulletObject::DIR_DOWN_RIGHT);
-                else p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
-
-                //p_bullet->SetRect(rect_.x + width_frame_ - 40, rect_.y + height_frame_*0.5);
-                p_bullet->set_position(x_pos_+width_frame_-28, y_pos_+height_frame_*0.65);
-            }
-            //toc do
-            p_bullet->set_x_val(BULLET_SPEED);
-            p_bullet->set_y_val(BULLET_SPEED);
-            p_bullet->set_is_move(true);
-
-            p_bullet_list_.push_back(p_bullet);
+            if( mouseX >= rect_.x) p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
+            else if( double((rect_.y-mouseY)*1.0/(rect_.x - mouseX)) > 0.156 ) p_bullet->set_bullet_dir(BulletObject::DIR_UP_LEFT);
+            else if( double((rect_.y-mouseY+64)*1.0/(rect_.x - mouseX)) < -0.156 ) p_bullet->set_bullet_dir(BulletObject::DIR_DOWN_LEFT);
+            else p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
+            p_bullet->set_position(x_pos_+18, y_pos_+height_frame_*0.68);
         }
-        else if(events.button.button == SDL_BUTTON_LEFT)
+        else
         {
-            BulletObject* p_bullet = new BulletObject();
-            p_bullet->set_bullet_type(BulletObject::SPHERE_BULLET);
-            p_bullet->LoadImgBullet(screen);
-
-            //set vi tri
-            if(status_ == WALK_LEFT)
-            {
-                if( mouseX >= rect_.x) p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
-                else if( double((rect_.y-mouseY)*1.0/(rect_.x - mouseX)) > 0.156 ) p_bullet->set_bullet_dir(BulletObject::DIR_UP_LEFT);
-                else if( double((rect_.y-mouseY+64)*1.0/(rect_.x - mouseX)) < -0.156 ) p_bullet->set_bullet_dir(BulletObject::DIR_DOWN_LEFT);
-                else p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
-
-                //p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
-                //p_bullet->SetRect(rect_.x+20, rect_.y + height_frame_*0.5);
-                p_bullet->set_position(x_pos_+10, y_pos_+height_frame_*0.65);
-
-            }
-            else
-            {
-                if( mouseX <= rect_.x) p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
-                else if( double((rect_.y-mouseY)*1.0/(mouseX-rect_.x)) > 0.156 ) p_bullet->set_bullet_dir(BulletObject::DIR_UP_RIGHT);
-                else if( double((rect_.y-mouseY+64)*1.0/(mouseX-rect_.x)) < -0.156 ) p_bullet->set_bullet_dir(BulletObject::DIR_DOWN_RIGHT);
-                else p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
-                //p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
-                //p_bullet->SetRect(rect_.x + width_frame_ - 40, rect_.y + height_frame_*0.5);
-                p_bullet->set_position(x_pos_+width_frame_-28, y_pos_+height_frame_*0.65);
-            }
-            //toc do
-            p_bullet->set_x_val(BULLET_SPEED);
-            p_bullet->set_y_val(BULLET_SPEED);
-            p_bullet->set_is_move(true);
-
-            p_bullet_list_.push_back(p_bullet);
+            if( mouseX <= rect_.x) p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
+            else if( double((rect_.y-mouseY)*1.0/(mouseX-rect_.x)) > 0.156 ) p_bullet->set_bullet_dir(BulletObject::DIR_UP_RIGHT);
+            else if( double((rect_.y-mouseY+64)*1.0/(mouseX-rect_.x)) < -0.156 ) p_bullet->set_bullet_dir(BulletObject::DIR_DOWN_RIGHT);
+            else p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
+            p_bullet->set_position(x_pos_+width_frame_-23, y_pos_+height_frame_*0.68);
         }
+        p_bullet->set_x_val(BULLET_SPEED);
+        p_bullet->set_y_val(BULLET_SPEED);
+        p_bullet->set_is_move(true);
+
+        p_bullet_list_.push_back(p_bullet);
     }
     if(events.key.keysym.scancode == SDL_SCANCODE_UP || events.key.keysym.scancode == SDL_SCANCODE_SPACE || events.key.keysym.scancode==SDL_SCANCODE_W)
     {
@@ -280,7 +234,7 @@ void MainObject :: RemoveBullet(const int& idx){
     }
 }
 
-void MainObject :: DoPlayer(Map& map_data, Graphics& graphics, Mix_Chunk * jump, SDL_Renderer* screen)
+void MainObject :: DoPlayer(Map& map_data, SDL_Renderer* screen, int& num_live, Graphics& graphics, Mix_Chunk* chunk)
 {
     if( come_back_time_ == 0)
     {
@@ -301,16 +255,13 @@ void MainObject :: DoPlayer(Map& map_data, Graphics& graphics, Mix_Chunk * jump,
             if(on_ground_ == true)
             {
                 y_val_ = -PLAYER_JUMP_VAL;
-                graphics.play(jump);
-                // pass by value
-
             }
             on_ground_ = false;
             input_type_.jump_ = 0;
         }
 
 
-        CheckToMap(map_data, screen);
+        CheckToMap(map_data, screen, num_live, graphics, chunk);
         CenterEntityOnMap(map_data);
     }
 
@@ -348,16 +299,15 @@ void MainObject :: CenterEntityOnMap(Map& map_data)
     else if(map_data.start_y_ + SCREEN_HEIGHT >= map_data.max_y_) map_data.start_y_ = map_data.max_y_ - SCREEN_HEIGHT;
 }
 
-void MainObject :: CheckToMap(Map& map_data, SDL_Renderer* screen)
+void MainObject :: CheckToMap(Map& map_data, SDL_Renderer* screen, int &num_live, Graphics& graphics, Mix_Chunk* chunk)
 {
     int x1=0;
     int x2=0;
-
     int y1=0;
     int y2=0;
-
     int test_x = x_pos_;
     int test_y = y_pos_;
+
     //Check horizontal
     int height_min = height_frame_ < TILE_SIZE ? height_frame_ : TILE_SIZE;
 
@@ -373,40 +323,33 @@ void MainObject :: CheckToMap(Map& map_data, SDL_Renderer* screen)
         {
             int val1 = map_data.tile[y1][x2];
             int val2 = map_data.tile[y2][x2];
-
             if(val1 == SUPER_POWER || val2 == SUPER_POWER)
             {
                 map_data.tile[y1][x2] = 0;
                 map_data.tile[y2][x2] = 0;
-                Super(screen);
+                Super(screen, graphics, chunk);
             }
-
             else
             {
                 if(val1 != BLANK_TILE || val2 != BLANK_TILE)
-            {
-                //x_pos_ = x2*TILE_SIZE;
-                //x_pos_ -= width_frame_ +1;
-                x_pos_ = test_x;
-                x_val_ =0;
+                {
+                    x_pos_ = test_x;
+                    x_val_ =0;
+                }
             }
-            }
-
         }
         else if (x_val_ < 0)
         {
             int val1 = map_data.tile[y1][x1];
             int val2 = map_data.tile[y2][x1];
-
             if(val1 == SUPER_POWER || val2 == SUPER_POWER)
             {
                 map_data.tile[y1][x1] = 0;
                 map_data.tile[y2][x1] = 0;
-                Super(screen);
+                Super(screen, graphics, chunk);
             }
             if(val1 != BLANK_TILE || val2 != BLANK_TILE)
             {
-                //x_pos_ = (x1 +1)*TILE_SIZE;
                 x_pos_ = test_x;
                 x_val_ =0;
             }
@@ -431,14 +374,12 @@ void MainObject :: CheckToMap(Map& map_data, SDL_Renderer* screen)
             {
                 map_data.tile[y2][x1] = 0;
                 map_data.tile[y2][x2] = 0;
-                Super(screen);
+                Super(screen, graphics, chunk);
             }
             else
             {
                 if(val1 != BLANK_TILE || val2 != BLANK_TILE)
                 {
-                    //y_pos_ = y2*TILE_SIZE;
-                    //y_pos_ -= (height_frame_+ 1);
                     y_pos_ = test_y;
                     y_val_ = 0;
                     on_ground_ = true;
@@ -454,13 +395,12 @@ void MainObject :: CheckToMap(Map& map_data, SDL_Renderer* screen)
             {
                 map_data.tile[y1][x1] = 0;
                 map_data.tile[y1][x2] = 0;
-                Super(screen);
+                Super(screen, graphics, chunk);
             }
             else
             {
                 if(val1 != BLANK_TILE || val2 !=BLANK_TILE)
                 {
-                    //y_pos_ = (y1 + 1)*TILE_SIZE;
                     y_pos_ = test_y;
                     y_val_ = 0;
                 }
@@ -484,6 +424,7 @@ void MainObject :: CheckToMap(Map& map_data, SDL_Renderer* screen)
     if( y_pos_ > map_data.max_y_)
     {
         come_back_time_ = 60;
+        num_live--;
     }
 }
 
@@ -516,7 +457,8 @@ void MainObject :: IncreaseMoney(){
     money_count++;
 }
 
-void MainObject :: Super(SDL_Renderer* screen){
+void MainObject :: Super(SDL_Renderer* screen, Graphics& graphics, Mix_Chunk* chunk){
+    graphics.play(chunk);
     gun = true;
     RunL = "img/Super//RunL.png";
     RunR = "img/Super//RunR.png";
@@ -528,9 +470,7 @@ void MainObject :: Super(SDL_Renderer* screen){
         cout<<"Error LoadImg SuperPower\n";
     }
     super_power.set_clip();
-
-    SDL_Texture* text_power = IMG_LoadTexture(screen, "img/Super//checkSuper.png");
-
+    SDL_Texture* text_power = IMG_LoadTexture(screen, "img/Super//TextSuper.png");
     for(int i=0; i<8 ; i++){
         int x_pos = rect_.x;
         int y_pos = rect_.y;
@@ -553,9 +493,9 @@ bool MainObject :: CollectItem(const Sprite& item){
     int bottom_a = y_pos_ + height_frame_;
 
     int left_b = item.x_pos;
-    int right_b = item.x_pos + width_frame_;
+    int right_b = item.x_pos + item.width_frame_;
     int top_b = item.y_pos;
-    int bottom_b = item.y_pos + height_frame_;
+    int bottom_b = item.y_pos + item.height_frame_;
 
   if( (left_a<=right_b && right_a>=left_b) && (top_a<=bottom_b && bottom_a>=top_b) ) return true;
 

@@ -15,6 +15,7 @@ static SDL_Event g_event;
 const int FONT_SIZE = 30;
 const int MAX_TIME = 20;
 
+#define HEART 3
 #define WINDOW_TITLE "Pixel Adventure"
 #define FONT_NAME "font//VNI-Souvir.ttf"
 #define BACKGROUND_IMG "img//Background.png"
@@ -37,8 +38,7 @@ const int BULLET_SPEED_ENEMY = 10;
 
 #define TILE_SIZE 64
 #define BLANK_TILE 0
-#define SUPER_POWER 6
-#define WIN_CUP 4
+#define SUPER_POWER 1
 
 #define MAX_MAP_X 80
 #define MAX_MAP_Y 10

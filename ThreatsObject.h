@@ -10,7 +10,7 @@
 #define THREATE_GRAVITY_SPEED 0.8
 #define THREATE_MAX_FALL_SPEED 10
 #define THREAT_SPEED 3
-#define THREAT_FIRE 6
+#define THREAT_FIRE 4
 using namespace std;
 
 class ThreatsObject : public BaseObject

@@ -38,14 +38,12 @@ void BulletObject :: HandleMove(const int& x_border, const int& y_border, Map& m
 
     if(bullet_dir_ == DIR_RIGHT)
     {
-        //rect_.x += x_val_;
         x_pos_ += x_val_;
         rect_.x = x_pos_ - map_x;
         if(rect_.x > x_border) is_move_ = false;
     }
     else if(bullet_dir_ == DIR_LEFT)
     {
-        //rect_.x -= x_val_;
         x_pos_ -= x_val_;
         rect_.x = x_pos_ - map_x;
         if(rect_.x < 0) is_move_ = false;
@@ -88,6 +86,27 @@ void BulletObject :: HandleMove(const int& x_border, const int& y_border, Map& m
         rect_.y = y_pos_ - map_y;
         if(rect_.x > x_border || rect_.y > y_border) is_move_ = false;
     }
-
 }
 
+void BulletObject :: HandleMove2(const int& x_border, const int& y_border, Map& map_data, const float& xPlayer, const float& yPlayer){
+
+    map_x = map_data.start_x_;
+    map_y = map_data.start_y_;
+
+    float A = atan( (x_pos_ - xPlayer) / (yPlayer - y_pos_) );
+
+    if(yPlayer >= y_pos_){
+        x_pos_ -= x_val_ * sin(A);
+        y_pos_ += y_val_ * cos(A);
+    }
+    else{
+        x_pos_ += x_val_ * sin(A);
+        y_pos_ -= y_val_ * cos(A);
+    }
+
+
+
+    rect_.x = x_pos_ - map_x;
+    rect_.y = y_pos_ - map_y;
+    if(rect_.x < 0 || rect_.y > y_border || rect_.y<0 || rect_.y > y_border) is_move_ = false;
+}
