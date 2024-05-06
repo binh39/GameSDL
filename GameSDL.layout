@@ -2,96 +2,12 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="Geometric.cpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="BaseObject.h" open="0" top="0" tabpos="17" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="733" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="graphics.cpp" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2831" topLine="18" />
+			<Cursor1 position="300" topLine="0" />
 		</Cursor>
 		<Folding>
-			<Collapse line="8" />
-			<Collapse line="16" />
-			<Collapse line="22" />
-			<Collapse line="27" />
-			<Collapse line="33" />
-			<Collapse line="39" />
-			<Collapse line="45" />
-			<Collapse line="49" />
-			<Collapse line="61" />
-			<Collapse line="65" />
-			<Collapse line="69" />
-			<Collapse line="73" />
-			<Collapse line="80" />
-		</Folding>
-	</File>
-	<File name="game_map.cpp" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2356" topLine="0" />
-		</Cursor>
-		<Folding>
-			<Collapse line="5" />
-			<Collapse line="40" />
-			<Collapse line="54" />
-			<Collapse line="87" />
-		</Folding>
-	</File>
-	<File name="ThreatsObject.h" open="1" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="167" topLine="52" />
-		</Cursor>
-	</File>
-	<File name="ExplosionObject.h" open="0" top="0" tabpos="21" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="561" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="TextObject.h" open="1" top="0" tabpos="20" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="813" topLine="6" />
-		</Cursor>
-	</File>
-	<File name="BossObject.cpp" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="481" topLine="224" />
-		</Cursor>
-		<Folding>
-			<Collapse line="2" />
-			<Collapse line="16" />
-			<Collapse line="256" />
-			<Collapse line="266" />
-			<Collapse line="279" />
-			<Collapse line="284" />
-		</Folding>
-	</File>
-	<File name="CommonFunction.h" open="1" top="0" tabpos="18" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="956" topLine="43" />
-		</Cursor>
-	</File>
-	<File name="time.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="185" topLine="0" />
-		</Cursor>
-		<Folding>
-			<Collapse line="5" />
-			<Collapse line="13" />
-			<Collapse line="18" />
-			<Collapse line="25" />
-			<Collapse line="31" />
-			<Collapse line="41" />
-			<Collapse line="57" />
-			<Collapse line="62" />
-		</Folding>
-	</File>
-	<File name="CommonFunction.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="146" topLine="0" />
-		</Cursor>
-		<Folding>
-			<Collapse line="21" />
+			<Collapse line="19" />
 		</Folding>
 	</File>
 	<File name="time.h" open="0" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -99,86 +15,66 @@
 			<Cursor1 position="250" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="Geometric.h" open="0" top="0" tabpos="23" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="main.cpp" open="1" top="1" tabpos="10" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="282" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="BulletObject.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="876" topLine="60" />
-		</Cursor>
-	</File>
-	<File name="mainObject.cpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="13653" topLine="145" />
+			<Cursor1 position="27226" topLine="153" />
 		</Cursor>
 		<Folding>
-			<Collapse line="8" />
-			<Collapse line="39" />
-			<Collapse line="65" />
-			<Collapse line="69" />
-			<Collapse line="80" />
-			<Collapse line="93" />
-			<Collapse line="117" />
-			<Collapse line="143" />
-			<Collapse line="160" />
-			<Collapse line="196" />
-			<Collapse line="205" />
-			<Collapse line="227" />
-			<Collapse line="237" />
-			<Collapse line="291" />
-			<Collapse line="430" />
-			<Collapse line="455" />
-			<Collapse line="459" />
-			<Collapse line="488" />
+			<Collapse line="17" />
+			<Collapse line="23" />
+			<Collapse line="32" />
+			<Collapse line="64" />
+			<Collapse line="71" />
+			<Collapse line="79" />
+			<Collapse line="89" />
+			<Collapse line="100" />
+			<Collapse line="156" />
+			<Collapse line="221" />
+			<Collapse line="356" />
+			<Collapse line="407" />
+			<Collapse line="536" />
+			<Collapse line="584" />
+			<Collapse line="675" />
+			<Collapse line="712" />
+			<Collapse line="1099" />
+			<Collapse line="1126" />
 		</Folding>
 	</File>
-	<File name="graphics.h" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+	<File name="ExplosionObject.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="5116" topLine="206" />
+			<Cursor1 position="209" topLine="0" />
 		</Cursor>
 		<Folding>
-			<Collapse line="7" />
-			<Collapse line="22" />
-			<Collapse line="37" />
-			<Collapse line="52" />
-			<Collapse line="72" />
-			<Collapse line="92" />
-			<Collapse line="111" />
-			<Collapse line="129" />
-			<Collapse line="140" />
-			<Collapse line="151" />
-			<Collapse line="186" />
-			<Collapse line="197" />
-			<Collapse line="244" />
-			<Collapse line="259" />
-			<Collapse line="269" />
-			<Collapse line="277" />
-			<Collapse line="283" />
-			<Collapse line="288" />
-			<Collapse line="333" />
-			<Collapse line="559" />
-			<Collapse line="564" />
-			<Collapse line="569" />
+			<Collapse line="4" />
+			<Collapse line="10" />
+			<Collapse line="13" />
+			<Collapse line="23" />
+			<Collapse line="35" />
 		</Folding>
 	</File>
-	<File name="BaseObject.h" open="1" top="0" tabpos="17" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="mainObject.h" open="1" top="0" tabpos="16" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="567" topLine="0" />
-		</Cursor>
-		<Folding>
-			<Collapse line="19" />
-		</Folding>
-	</File>
-	<File name="game_map.h" open="0" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="524" topLine="6" />
+			<Cursor1 position="2287" topLine="41" />
 		</Cursor>
 	</File>
-	<File name="BulletObject.h" open="1" top="0" tabpos="19" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="CommonFunction.h" open="1" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1359" topLine="29" />
+			<Cursor1 position="1026" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Geometric.cpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="733" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="PlayerPower.h" open="0" top="0" tabpos="19" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="151" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="ExplosionObject.h" open="0" top="0" tabpos="21" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="561" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="ThreatsObject.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
@@ -201,6 +97,92 @@
 			<Collapse line="302" />
 		</Folding>
 	</File>
+	<File name="ThreatsObject.h" open="0" top="0" tabpos="18" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="167" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="BossObject.cpp" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="7507" topLine="52" />
+		</Cursor>
+		<Folding>
+			<Collapse line="16" />
+			<Collapse line="20" />
+			<Collapse line="29" />
+			<Collapse line="38" />
+			<Collapse line="49" />
+			<Collapse line="64" />
+			<Collapse line="95" />
+			<Collapse line="107" />
+			<Collapse line="118" />
+			<Collapse line="277" />
+			<Collapse line="287" />
+			<Collapse line="300" />
+			<Collapse line="305" />
+			<Collapse line="310" />
+		</Folding>
+	</File>
+	<File name="BossObject.h" open="1" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1465" topLine="28" />
+		</Cursor>
+	</File>
+	<File name="BulletObject.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2711" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="2" />
+			<Collapse line="19" />
+			<Collapse line="32" />
+			<Collapse line="91" />
+		</Folding>
+	</File>
+	<File name="mainObject.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="14365" topLine="180" />
+		</Cursor>
+		<Folding>
+			<Collapse line="8" />
+			<Collapse line="39" />
+			<Collapse line="65" />
+			<Collapse line="69" />
+			<Collapse line="80" />
+			<Collapse line="93" />
+			<Collapse line="117" />
+			<Collapse line="143" />
+			<Collapse line="160" />
+			<Collapse line="196" />
+			<Collapse line="205" />
+			<Collapse line="227" />
+			<Collapse line="237" />
+			<Collapse line="291" />
+			<Collapse line="430" />
+			<Collapse line="455" />
+			<Collapse line="496" />
+		</Folding>
+	</File>
+	<File name="game_map.h" open="0" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="524" topLine="6" />
+		</Cursor>
+	</File>
+	<File name="time.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="185" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="5" />
+			<Collapse line="13" />
+			<Collapse line="18" />
+			<Collapse line="25" />
+			<Collapse line="31" />
+			<Collapse line="41" />
+			<Collapse line="57" />
+			<Collapse line="62" />
+		</Folding>
+	</File>
 	<File name="TextObject.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="608" topLine="0" />
@@ -210,63 +192,101 @@
 			<Collapse line="8" />
 		</Folding>
 	</File>
-	<File name="ExplosionObject.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="BaseObject.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="209" topLine="0" />
+			<Cursor1 position="821" topLine="8" />
+		</Cursor>
+	</File>
+	<File name="graphics.h" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="23016" topLine="172" />
 		</Cursor>
 		<Folding>
-			<Collapse line="4" />
-			<Collapse line="10" />
-			<Collapse line="13" />
-			<Collapse line="23" />
-			<Collapse line="35" />
+			<Collapse line="7" />
+			<Collapse line="22" />
+			<Collapse line="37" />
+			<Collapse line="52" />
+			<Collapse line="72" />
+			<Collapse line="92" />
+			<Collapse line="111" />
+			<Collapse line="120" />
+			<Collapse line="129" />
+			<Collapse line="140" />
+			<Collapse line="175" />
+			<Collapse line="186" />
+			<Collapse line="199" />
+			<Collapse line="208" />
+			<Collapse line="233" />
+			<Collapse line="251" />
+			<Collapse line="261" />
+			<Collapse line="269" />
+			<Collapse line="275" />
+			<Collapse line="280" />
+			<Collapse line="325" />
+			<Collapse line="493" />
+			<Collapse line="550" />
+			<Collapse line="614" />
+			<Collapse line="619" />
+			<Collapse line="650" />
+			<Collapse line="654" />
 		</Folding>
 	</File>
-	<File name="mainObject.h" open="1" top="0" tabpos="16" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Geometric.h" open="0" top="0" tabpos="23" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2166" topLine="69" />
+			<Cursor1 position="282" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="BossObject.h" open="1" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="BulletObject.h" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="737" topLine="45" />
+			<Cursor1 position="1393" topLine="22" />
 		</Cursor>
 	</File>
-	<File name="PlayerPower.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+	<File name="graphics.cpp" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="197" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="BaseObject.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1165" topLine="19" />
-		</Cursor>
-	</File>
-	<File name="PlayerPower.h" open="1" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="151" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="main.cpp" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="25169" topLine="317" />
+			<Cursor1 position="2467" topLine="13" />
 		</Cursor>
 		<Folding>
-			<Collapse line="17" />
-			<Collapse line="23" />
-			<Collapse line="32" />
-			<Collapse line="64" />
-			<Collapse line="71" />
-			<Collapse line="79" />
-			<Collapse line="91" />
-			<Collapse line="128" />
-			<Collapse line="226" />
-			<Collapse line="280" />
-			<Collapse line="457" />
-			<Collapse line="498" />
-			<Collapse line="550" />
-			<Collapse line="571" />
-			<Collapse line="606" />
+			<Collapse line="8" />
+			<Collapse line="16" />
+			<Collapse line="22" />
+			<Collapse line="27" />
+			<Collapse line="33" />
+			<Collapse line="39" />
+			<Collapse line="45" />
+			<Collapse line="49" />
+			<Collapse line="61" />
+			<Collapse line="65" />
+			<Collapse line="69" />
+			<Collapse line="73" />
+			<Collapse line="88" />
+		</Folding>
+	</File>
+	<File name="game_map.cpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="109" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="35" />
+			<Collapse line="49" />
+			<Collapse line="82" />
+		</Folding>
+	</File>
+	<File name="TextObject.h" open="1" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="813" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="PlayerPower.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="353" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="CommonFunction.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="146" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="21" />
 		</Folding>
 	</File>
 </CodeBlocks_layout_file>

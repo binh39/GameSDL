@@ -32,6 +32,7 @@ public:
     void set_is_move(const bool& isMove){is_move_ = isMove;}
     bool get_is_move() const {return is_move_;}
 
+    void set_goc(const float& goc_){goc = goc_;}
     void set_bullet_dir(const unsigned int& bulletDir){bullet_dir_ = bulletDir;}
     unsigned int get_bullet_dir() const {return bullet_dir_;}
     void set_bullet_type(const unsigned int& bulletType){bullet_type_ = bulletType;}
@@ -44,6 +45,7 @@ public:
     bool LoadImgBullet(SDL_Renderer* des);
 
 private:
+    float goc;
     float x_pos_;
     float y_pos_;
     int map_x;

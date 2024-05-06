@@ -486,6 +486,14 @@ void MainObject :: Super(SDL_Renderer* screen, Graphics& graphics, Mix_Chunk* ch
     }
 }
 
+void MainObject :: UnSuper(string runR, string runL, string jumpL, string jumpR){
+    gun=false;
+    RunR = runR;
+    RunL = runL;
+    JumpL = jumpL;
+    JumpR = jumpR;
+}
+
 bool MainObject :: CollectItem(const Sprite& item){
     int left_a = x_pos_;
     int right_a = x_pos_ + width_frame_;

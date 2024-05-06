@@ -20,7 +20,7 @@ void logErrorAndExit(const char* msg, const char* error)
     SDL_Quit();
 }
 
-void waitUntilKeyPressed()
+void Pause()
 {
     SDL_Event e;
     while (true) {
@@ -77,6 +77,16 @@ void renderTexture(SDL_Texture *texture, int x, int y, SDL_Renderer* renderer)
     SDL_RenderCopy(renderer, texture, NULL, &dest);
 }
 
+void RenderWithMap(Map& map_data, SDL_Texture* texture, SDL_Renderer* renderer, const int& x_pos, const int& y_pos){
+    int x = x_pos - map_data.start_x_;
+    int y = y_pos - map_data.start_y_;
+    SDL_Rect dest;
+    dest.x = x;
+    dest.y = y;
+    SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
+    SDL_RenderCopy(renderer, texture, nullptr, &dest);
+}
+
 void close(){
     g_background.Free();
     SDL_DestroyRenderer(g_screen);
@@ -88,7 +98,127 @@ void close(){
     SDL_Quit();
 }
 
-vector<ThreatsObject*> MakeThreadList()
+vector<ThreatsObject*> MakeThreadList1(){
+    vector<ThreatsObject*> list_threats;
+    ThreatsObject* dynamic_threats = new ThreatsObject[2];
+    for(int i=0; i<2 ; i++)
+    {
+        ThreatsObject* p_threat = (dynamic_threats+i);
+        if(p_threat != NULL)
+        {
+            p_threat->LoadImg("img/Enemy/BunnyL.png",g_screen);
+            p_threat->set_clips();
+            p_threat->set_type_move(ThreatsObject::MOVE_IN_SPACE_THREAT);
+            if(i==0){
+                p_threat->set_x_pos(60*64);
+                p_threat->set_y_pos(7*64-10);
+            }
+            else if(i==1){
+                p_threat->set_x_pos(73*64);
+                p_threat->set_y_pos(7*64-10);
+            }
+            int pos1 = p_threat->get_x_pos()-128;
+            int pos2 = p_threat->get_x_pos()+64;
+            p_threat->SetAnimationPos(pos1,pos2);
+            p_threat->set_input_left(1);
+            list_threats.push_back(p_threat);
+        }
+    }
+
+    ThreatsObject* threats_objs = new ThreatsObject[3];
+    for(int i=0 ; i<3 ; i++)
+    {
+        ThreatsObject* p_threat = (threats_objs+i);
+        if(p_threat!=nullptr){
+            p_threat->LoadImg("img/Enemy/Turtle.png",g_screen);
+            p_threat->set_clips();
+            if(i==0){
+                p_threat->set_x_pos(49*64-2);
+                p_threat->set_y_pos(4*64-50);
+            }
+            else if(i==1){
+                p_threat->set_x_pos(66*64);
+                p_threat->set_y_pos(5*64-50);
+            }
+            else{
+                p_threat->set_x_pos(77*64-2);
+                p_threat->set_y_pos(6*64-50);
+            }
+            p_threat->set_type_move(ThreatsObject::STATIC_THREAT);
+            p_threat->set_input_left(0);
+            list_threats.push_back(p_threat);
+
+        }
+    }
+
+    return list_threats;
+}
+
+vector<ThreatsObject*> MakeThreadList2(){
+    vector<ThreatsObject*> list_threats;
+    ThreatsObject* dynamic_threats = new ThreatsObject[4];
+    for(int i=0; i<4 ; i++)
+    {
+        ThreatsObject* p_threat = (dynamic_threats+i);
+        if(p_threat != NULL)
+        {
+            p_threat->LoadImg("img/Enemy/BunnyL.png",g_screen);
+            p_threat->set_clips();
+            p_threat->set_type_move(ThreatsObject::MOVE_IN_SPACE_THREAT);
+            if(i==0){
+                p_threat->set_x_pos(5*64);
+                p_threat->set_y_pos(6*64-10);
+            }
+            else if(i==1){
+                p_threat->set_x_pos(30*64);
+                p_threat->set_y_pos(6*64-10);
+            }
+            else if(i==2){
+                p_threat->set_x_pos(41*64);
+                p_threat->set_y_pos(7*64-10);
+            }
+            else if(i==3){
+                p_threat->set_x_pos(61*64);
+                p_threat->set_y_pos(7*64-10);
+            }
+            int pos1 = p_threat->get_x_pos()-128;
+            int pos2 = p_threat->get_x_pos()+64;
+            p_threat->SetAnimationPos(pos1,pos2);
+            p_threat->set_input_left(1);
+            list_threats.push_back(p_threat);
+        }
+    }
+
+    ThreatsObject* threats_objs = new ThreatsObject[3];
+    for(int i=0 ; i<3 ; i++)
+    {
+        ThreatsObject* p_threat = (threats_objs+i);
+        if(p_threat!=nullptr){
+            p_threat->LoadImg("img/Enemy/Turtle.png",g_screen);
+            p_threat->set_clips();
+            if(i==0){
+                p_threat->set_x_pos(17*64);
+                p_threat->set_y_pos(7*64-50);
+            }
+            else if(i==1){
+                p_threat->set_x_pos(38*64);
+                p_threat->set_y_pos(2*64-50);
+            }
+            else{
+                p_threat->set_x_pos(73*64);
+                p_threat->set_y_pos(7*64-50);
+            }
+            p_threat->set_type_move(ThreatsObject::STATIC_THREAT);
+            p_threat->set_input_left(0);
+            list_threats.push_back(p_threat);
+
+        }
+    }
+
+    return list_threats;
+}
+
+vector<ThreatsObject*> MakeThreadList3()
 {
     vector<ThreatsObject*> list_threats;
     ThreatsObject* dynamic_threats = new ThreatsObject[4];
@@ -224,7 +354,148 @@ vector<ThreatsObject*> MakeThreadList()
     return list_threats;
 }
 
-vector<Sprite*> MakeFruitList(){
+vector<Sprite*> MakeFruitList1(){
+    vector<Sprite*> fruit_list;
+
+    Sprite* apple = new Sprite[6];
+    for(int i=0;i<6;i++){
+        Sprite* apple_ = (apple+i);
+        if(apple_!=nullptr){
+            apple_->LoadImg("img/Items/Fruits//Strawberry.png", g_screen);
+            apple_->init(FRUITS_FRAME_2, FRUITS_CLIPS_2);
+            if(i==0) apple_->set_pos(21*64, 4*64);
+            else if(i==1) apple_->set_pos(22*64, 4*64);
+            else if(i==2) apple_->set_pos(23*64, 4*64);
+            else if(i==3) apple_->set_pos(24*64, 4*64);
+            else if(i==4) apple_->set_pos(25*64, 4*64);
+            else if(i==5) apple_->set_pos(26*64, 4*64);
+            else apple_->set_pos(i*TILE_SIZE, 2*64);
+            fruit_list.push_back(apple_);
+        }
+    }
+
+    Sprite* banana = new Sprite[15];
+    for(int i=0;i<15;i++){
+        Sprite* banana_ = (banana+i);
+        if(banana_!=nullptr){
+            banana_->LoadImg("img/Items/Fruits//Pineapple.png", g_screen);
+            banana_->init(FRUITS_FRAME_2, FRUITS_CLIPS_2);
+            if(i==0) banana_->set_pos(59*64, 6*64);
+            else if(i==1) banana_->set_pos(60*64, 6*64);
+            else if(i==2) banana_->set_pos(61*64, 6*64);
+            else if(i==3) banana_->set_pos(62*64, 5*64);
+            else if(i==4) banana_->set_pos(63*64, 4*64);
+            else if(i==5) banana_->set_pos(64*64, 4*64);
+            else if(i==6) banana_->set_pos(65*64, 3*64);
+            else if(i==7) banana_->set_pos(30*64, 6*64);
+            else if(i==8) banana_->set_pos(31*64, 6*64);
+            else if(i==9) banana_->set_pos(32*64, 6*64);
+            else if(i==10) banana_->set_pos(33*64, 6*64);
+            else if(i==11) banana_->set_pos(34*64, 6*64);
+            else if(i==12) banana_->set_pos(35*64, 6*64);
+            else if(i==13) banana_->set_pos(36*64, 6*64);
+            else if(i==14) banana_->set_pos(37*64, 6*64);
+            else banana_->set_pos(i*TILE_SIZE, 3*64);
+            fruit_list.push_back(banana_);
+        }
+    }
+
+
+
+    return fruit_list;
+}
+
+vector<Sprite*> MakeFruitList2(){
+    vector<Sprite*> fruit_list;
+
+    Sprite* apple = new Sprite[6];
+    for(int i=0;i<6;i++){
+        Sprite* apple_ = (apple+i);
+        if(apple_!=nullptr){
+            apple_->LoadImg("img/Items/Fruits//Strawberry.png", g_screen);
+            apple_->init(FRUITS_FRAME_2, FRUITS_CLIPS_2);
+            if(i==0) apple_->set_pos(3*64, 5*64);
+            else if(i==1) apple_->set_pos(4*64, 5*64);
+            else if(i==2) apple_->set_pos(5*64, 5*64);
+            else if(i==3) apple_->set_pos(6*64, 5*64);
+            else if(i==4) apple_->set_pos(7*64, 5*64);
+            else if(i==5) apple_->set_pos(8*64, 5*64);
+            else apple_->set_pos(i*TILE_SIZE, 2*64);
+            fruit_list.push_back(apple_);
+        }
+    }
+
+    Sprite* banana = new Sprite[13];
+    for(int i=0;i<13;i++){
+        Sprite* banana_ = (banana+i);
+        if(banana_!=nullptr){
+            banana_->LoadImg("img/Items/Fruits//Pineapple.png", g_screen);
+            banana_->init(FRUITS_FRAME_2, FRUITS_CLIPS_2);
+            if(i==0) banana_->set_pos(12*64, 5*64);
+            else if(i==1) banana_->set_pos(13*64, 5*64);
+            else if(i==2) banana_->set_pos(14*64, 5*64);
+            else if(i==3) banana_->set_pos(15*64, 5*64);
+            else if(i==4) banana_->set_pos(16*64, 6*64);
+            else if(i==5) banana_->set_pos(17*64, 6*64);
+            else if(i==6) banana_->set_pos(23*64, 6*64);
+            else if(i==7) banana_->set_pos(24*64, 5*64);
+            else if(i==8) banana_->set_pos(25*64, 5*64);
+            else if(i==9) banana_->set_pos(26*64, 5*64);
+            else if(i==10) banana_->set_pos(27*64, 5*64);
+            else if(i==11) banana_->set_pos(28*64, 5*64);
+            else if(i==12) banana_->set_pos(29*64, 5*64);
+            else banana_->set_pos(i*TILE_SIZE, 3*64);
+            fruit_list.push_back(banana_);
+        }
+    }
+    Sprite* kiwi = new Sprite[5];
+    for(int i=0;i<5;i++){
+        Sprite* kiwi_ = (kiwi+i);
+        if(kiwi_!=nullptr){
+            kiwi_->LoadImg("img/Items/Fruits//Kiwi.png", g_screen);
+            kiwi_->init(FRUITS_FRAME_2, FRUITS_CLIPS_2);
+            kiwi_->set_pos(33*64, (6-i)*64);
+            fruit_list.push_back(kiwi_);
+        }
+    }
+
+    Sprite* kiwi2 = new Sprite[7];
+    for(int i=0;i<7;i++){
+        Sprite* kiwi_ = (kiwi2+i);
+        if(kiwi_!=nullptr){
+            kiwi_->LoadImg("img/Items/Fruits//Kiwi.png", g_screen);
+            kiwi_->init(FRUITS_FRAME_2, FRUITS_CLIPS_2);
+            kiwi_->set_pos((38+i)*64, 6*64);
+            fruit_list.push_back(kiwi_);
+        }
+    }
+
+    Sprite* melon = new Sprite[6];
+    for(int i=0;i<6;i++){
+        Sprite* melon_ = (melon+i);
+        if(melon_!=nullptr){
+            melon_->LoadImg("img/Items/Fruits//Melon.png", g_screen);
+            melon_->init(FRUITS_FRAME_2, FRUITS_CLIPS_2);
+            melon_->set_pos((36+i)*64, 2*64);
+            fruit_list.push_back(melon_);
+        }
+    }
+
+    Sprite* orange = new Sprite[6];
+    for(int i=0;i<6;i++){
+        Sprite* orange_ = (orange+i);
+        if(orange_!=nullptr){
+            orange_->LoadImg("img/Items/Fruits//Orange.png", g_screen);
+            orange_->init(FRUITS_FRAME_2, FRUITS_CLIPS_2);
+            orange_->set_pos((57+i)*64, 6*64);
+            fruit_list.push_back(orange_);
+        }
+    }
+
+    return fruit_list;
+}
+
+vector<Sprite*> MakeFruitList3(){
     vector<Sprite*> fruit_list;
     Sprite* apple = new Sprite[5];
     for(int i=0;i<5;i++){
@@ -263,7 +534,146 @@ vector<Sprite*> MakeFruitList(){
     return fruit_list;
 }
 
-vector<Sprite*> MakeCollected(){
+vector<Sprite*> MakeCollected1(){
+    vector<Sprite*> fruit_list;
+
+    Sprite* apple = new Sprite[6];
+    for(int i=0;i<6;i++){
+        Sprite* apple_ = (apple+i);
+        if(apple_!=nullptr){
+            apple_->LoadImg("img/Items/Fruits//Collect.png", g_screen);
+            apple_->init(COLLECTED_FRAME_2, COLLECTED_CLIPS_2);
+            if(i==0) apple_->set_pos(21*64, 4*64);
+            else if(i==1) apple_->set_pos(22*64, 4*64);
+            else if(i==2) apple_->set_pos(23*64, 4*64);
+            else if(i==3) apple_->set_pos(24*64, 4*64);
+            else if(i==4) apple_->set_pos(25*64, 4*64);
+            else if(i==5) apple_->set_pos(26*64, 4*64);
+            else apple_->set_pos(i*TILE_SIZE, 2*64);
+            fruit_list.push_back(apple_);
+        }
+    }
+
+    Sprite* banana = new Sprite[15];
+    for(int i=0;i<15;i++){
+        Sprite* banana_ = (banana+i);
+        if(banana_!=nullptr){
+            banana_->LoadImg("img/Items/Fruits//Collect.png", g_screen);
+            banana_->init(COLLECTED_FRAME_2, COLLECTED_CLIPS_2);
+            if(i==0) banana_->set_pos(59*64, 6*64);
+            else if(i==1) banana_->set_pos(60*64, 6*64);
+            else if(i==2) banana_->set_pos(61*64, 6*64);
+            else if(i==3) banana_->set_pos(62*64, 5*64);
+            else if(i==4) banana_->set_pos(63*64, 4*64);
+            else if(i==5) banana_->set_pos(64*64, 4*64);
+            else if(i==6) banana_->set_pos(65*64, 3*64);
+            else if(i==7) banana_->set_pos(30*64, 6*64);
+            else if(i==8) banana_->set_pos(31*64, 6*64);
+            else if(i==9) banana_->set_pos(32*64, 6*64);
+            else if(i==10) banana_->set_pos(33*64, 6*64);
+            else if(i==11) banana_->set_pos(34*64, 6*64);
+            else if(i==12) banana_->set_pos(35*64, 6*64);
+            else if(i==13) banana_->set_pos(36*64, 6*64);
+            else if(i==14) banana_->set_pos(37*64, 6*64);
+            else banana_->set_pos(i*TILE_SIZE, 3*64);
+            fruit_list.push_back(banana_);
+        }
+    }
+    return fruit_list;
+}
+
+vector<Sprite*> MakeCollected2(){
+    vector<Sprite*> fruit_list;
+
+    Sprite* apple = new Sprite[6];
+    for(int i=0;i<6;i++){
+        Sprite* apple_ = (apple+i);
+        if(apple_!=nullptr){
+            apple_->LoadImg("img/Items/Fruits//Collect.png", g_screen);
+            apple_->init(COLLECTED_FRAME_2, COLLECTED_CLIPS_2);
+            if(i==0) apple_->set_pos(3*64, 5*64);
+            else if(i==1) apple_->set_pos(4*64, 5*64);
+            else if(i==2) apple_->set_pos(5*64, 5*64);
+            else if(i==3) apple_->set_pos(6*64, 5*64);
+            else if(i==4) apple_->set_pos(7*64, 5*64);
+            else if(i==5) apple_->set_pos(8*64, 5*64);
+            else apple_->set_pos(i*TILE_SIZE, 2*64);
+            fruit_list.push_back(apple_);
+        }
+    }
+
+    Sprite* banana = new Sprite[13];
+    for(int i=0;i<13;i++){
+        Sprite* banana_ = (banana+i);
+        if(banana_!=nullptr){
+            banana_->LoadImg("img/Items/Fruits//Collect.png", g_screen);
+            banana_->init(COLLECTED_FRAME_2, COLLECTED_CLIPS_2);
+            if(i==0) banana_->set_pos(12*64, 5*64);
+            else if(i==1) banana_->set_pos(13*64, 5*64);
+            else if(i==2) banana_->set_pos(14*64, 5*64);
+            else if(i==3) banana_->set_pos(15*64, 5*64);
+            else if(i==4) banana_->set_pos(16*64, 6*64);
+            else if(i==5) banana_->set_pos(17*64, 6*64);
+            else if(i==6) banana_->set_pos(23*64, 6*64);
+            else if(i==7) banana_->set_pos(24*64, 5*64);
+            else if(i==8) banana_->set_pos(25*64, 5*64);
+            else if(i==9) banana_->set_pos(26*64, 5*64);
+            else if(i==10) banana_->set_pos(27*64, 5*64);
+            else if(i==11) banana_->set_pos(28*64, 5*64);
+            else if(i==12) banana_->set_pos(29*64, 5*64);
+            else banana_->set_pos(i*TILE_SIZE, 3*64);
+            fruit_list.push_back(banana_);
+        }
+    }
+    Sprite* kiwi = new Sprite[5];
+    for(int i=0;i<5;i++){
+        Sprite* kiwi_ = (kiwi+i);
+        if(kiwi_!=nullptr){
+            kiwi_->LoadImg("img/Items//Fruits//Collect.png", g_screen);
+            kiwi_->init(COLLECTED_FRAME_2, COLLECTED_CLIPS_2);
+            kiwi_->set_pos(33*64, (6-i)*64);
+            fruit_list.push_back(kiwi_);
+        }
+    }
+
+    Sprite* kiwi2 = new Sprite[7];
+    for(int i=0;i<7;i++){
+        Sprite* kiwi_ = (kiwi2+i);
+        if(kiwi_!=nullptr){
+            kiwi_->LoadImg("img/Items//Fruits//Collect.png", g_screen);
+            kiwi_->init(COLLECTED_FRAME_2, COLLECTED_CLIPS_2);
+            kiwi_->set_pos((38+i)*64, 6*64);
+            fruit_list.push_back(kiwi_);
+        }
+    }
+
+    Sprite* melon = new Sprite[6];
+    for(int i=0;i<6;i++){
+        Sprite* melon_ = (melon+i);
+        if(melon_!=nullptr){
+            melon_->LoadImg("img/Items/Fruits//Collect.png", g_screen);
+            melon_->init(COLLECTED_FRAME_2, COLLECTED_CLIPS_2);
+            melon_->set_pos((36+i)*64, 2*64);
+            fruit_list.push_back(melon_);
+        }
+    }
+
+    Sprite* orange = new Sprite[6];
+    for(int i=0;i<6;i++){
+        Sprite* orange_ = (orange+i);
+        if(orange_!=nullptr){
+            orange_->LoadImg("img/Items/Fruits//Collect.png", g_screen);
+            orange_->init(COLLECTED_FRAME_2, COLLECTED_CLIPS_2);
+            orange_->set_pos((57+i)*64, 6*64);
+            fruit_list.push_back(orange_);
+        }
+    }
+
+    return fruit_list;
+
+}
+
+vector<Sprite*> MakeCollected3(){
     vector<Sprite*> collect_list;
     Sprite* collect = new Sprite[12];
     for(int i=0;i<5;i++){
@@ -300,7 +710,7 @@ vector<Sprite*> MakeCollected(){
     return collect_list;
 }
 
-vector<Sprite*> MakeBox(){
+vector<Sprite*> MakeBox3(){
     vector<Sprite*> box_list;
     Sprite* box = new Sprite[6];
     for(int i=0; i<6; i++){
@@ -328,12 +738,24 @@ int main(int argc,char* argv[])
     if( InitData() == false) return -1;
     if(LoadBackground() == false) return -2;
 
+    int lv1=0, lv2=0, lv3=0;
+    ifstream fileLevel("map//Level.txt");
+    fileLevel>>lv1>>lv2>>lv3;
+    fileLevel.close();
+    int HighScore = 0;
+    ifstream fileScore("map//HighScore.txt");
+    fileScore>>HighScore;
+    fileScore.close();
+
+    SDL_Texture* hMove = IMG_LoadTexture(g_screen, "map//Move.png");
+    SDL_Texture* hCollect = IMG_LoadTexture(g_screen, "map//Collect.png");
+    SDL_Texture* hClick = IMG_LoadTexture(g_screen, "map//Click.png");
+
     Begin:
 
     int choose=0;
     ImpTimer fps_timer;
     SDL_Texture* vien = IMG_LoadTexture(g_screen, "img//vien.png");
-
 
     Menu menu;
     menu.restart_ = false;
@@ -341,6 +763,7 @@ int main(int argc,char* argv[])
     choose = menu.ChooseCharacter(g_screen,g_event);
     menu.LoadVolumnButton(g_screen);
     menu.LoadRestart(g_screen);
+    menu.LoadPause(g_screen);
 
     Graphics graphics;
     Mix_Music* gMusic = graphics.loadMusic("sound//cafe_boba_short.mp3");
@@ -352,21 +775,6 @@ int main(int argc,char* argv[])
     Mix_Chunk *boss_gun = graphics.loadSound("sound//GunBoss.wav");
     Mix_Chunk *disappear = graphics.loadSound("sound//Disappear.wav");
 
-    MainObject p_player;
-    p_player.SelectCharacter(choose);
-    p_player.LoadImg(p_player.RunR,g_screen);
-    p_player.set_clips();
-
-    Restart:
-    p_player.SetBegin();
-    graphics.play(gMusic);
-    PlayerHeart p_heart;
-    p_heart.Init(g_screen);
-
-    GameMap game_map;
-    game_map.LoadMap("map/map02.txt");
-    game_map.LoadTiles(g_screen);
-
     ExplosionObject explosion_;
     bool tRet = explosion_.LoadImg("img//Explosion.png", g_screen);
     if(!tRet){
@@ -375,19 +783,51 @@ int main(int argc,char* argv[])
     }
     explosion_.set_clip();
 
+    MainObject p_player;
+    p_player.SelectCharacter(choose);
+    p_player.LoadImg(p_player.RunR,g_screen);
+    p_player.set_clips();
+    string runR = p_player.RunR;
+    string runL = p_player.RunL;
+    string jumpL = p_player.JumpL;
+    string jumpR = p_player.JumpR;
+
+    int level = 1;
+    level = menu.SellectLevel(g_screen, g_event, lv1, lv2, lv3);
+
     TextObject time_game;
     time_game.SetColor(TextObject::WHITE_TEXT);
     TextObject mark_game;
     mark_game.SetColor(TextObject::WHITE_TEXT);
-    UINT mark_value = 0;
+    TextObject high_score;
+    high_score.SetColor(TextObject::WHITE_TEXT);
 
-    BossObject bossObject;
-    bossObject.CreateBoss(g_screen);
+    vector<ThreatsObject*> threats_list;
+    vector<Sprite*> fruit_list;
+    vector<Sprite*> collect_list;
+    vector<Sprite*> box_list;
+
+    Restart:
+    p_player.SetBegin();
+    p_player.UnSuper(runR, runL, jumpL, jumpR);
+    graphics.play(gMusic);
+    PlayerHeart p_heart;
+    p_heart.Init(g_screen);
+
+    GameMap game_map;
+    if(level == 2) game_map.LoadMap("map/map02.txt");
+    else if(level == 3) game_map.LoadMap("map/map03.txt");
+    else game_map.LoadMap("map/map01.txt");
+    game_map.LoadTiles(g_screen);
+
+    UINT mark_value = 0;
 
     Sprite Fan;
     Fan.LoadImg("img/Items//Fan.png", g_screen);
     Fan.init(FAN_FRAME, FAN_CLIPS);
-    Fan.set_pos(29*64, 7*64+45);
+    if(level == 2 ) Fan.set_pos(33*64, 6*64+45);
+    else if(level == 3) Fan.set_pos(29*64, 7*64+45);
+    else Fan.set_pos(81*64, 11*64+45);
     Sprite Start_Flag;
     Start_Flag.LoadImg("img/Items//Start.png", g_screen);
     Start_Flag.init(FLAGS_FRAME, FLAGS_CLIPS);
@@ -396,19 +836,41 @@ int main(int argc,char* argv[])
     Cup.LoadImg("img/Items//End.png", g_screen);
     Cup.init(FLAGS_FRAME, FLAGS_CLIPS);
     Cup.set_pos(79*64, 5*64);
+    Sprite Gun;
+    Gun.LoadImg("img//GunPower.png", g_screen);
+    Gun.init(BOX_FRAME, BOX_CLIPS);
+    if(level==1) Gun.set_pos(41*64, 6*64);
+    else if(level==3)Gun.set_pos(34*64, 5*64);
+    else Gun.set_pos(81*64, 11*64);
+
+    BossObject bossObject;
+    bossObject.CreateBoss(g_screen);
     Sprite BossDie;
     BossDie.LoadImg("img/Boss//BossDie.png", g_screen);
     BossDie.init(BOSS_FRAME, BOSS_CLIPS);
     BossDie.set_pos(MAX_MAP_X*TILE_SIZE - SCREEN_WIDTH*0.8, 4*64);
-    Sprite Gun;
-    Gun.LoadImg("img//GunPower.png", g_screen);
-    Gun.init(BOX_FRAME, BOX_CLIPS);
-    Gun.set_pos(34*64, 5*64);
 
-    vector<ThreatsObject*> threats_list = MakeThreadList();
-    vector<Sprite*> fruit_list = MakeFruitList();
-    vector<Sprite*> collect_list = MakeCollected();
-    vector<Sprite*> box_list = MakeBox();
+    threats_list.clear();
+    fruit_list.clear();
+    collect_list.clear();
+    box_list.clear();
+
+    if(level==1){
+        threats_list = MakeThreadList1();
+        fruit_list = MakeFruitList1();
+        collect_list = MakeCollected1();
+    }
+    else if(level==2){
+        threats_list = MakeThreadList2();
+        fruit_list = MakeFruitList2();
+        collect_list = MakeCollected2();
+    }
+    else if(level==3){
+        threats_list = MakeThreadList3();
+        fruit_list = MakeFruitList3();
+        collect_list = MakeCollected3();
+        box_list = MakeBox3();
+    }
 
     bool is_restart = false;
     bool is_lose = false;
@@ -434,6 +896,7 @@ int main(int argc,char* argv[])
             p_player.HandelInputAction(g_event, g_screen, gun_sound, graphics);
             menu.ChangeVolumn(g_event, gJump, gun_sound, fruit_sound, super_power, boss_gun, disappear);
             menu.SellectRestart(g_event, is_restart);
+            menu.Pause(g_event ,g_screen);
         }
         if(is_restart){
             is_quit = true;
@@ -452,8 +915,15 @@ int main(int argc,char* argv[])
         renderTexture(vien, 0, 0, g_screen);
         menu.RenderVolumnButton(g_screen);
         menu.RenderRestartButton(g_screen);
+        menu.RenderPauseButton(g_screen);
         p_heart.SetHeart(num_live);
         p_heart.Show(g_screen);
+
+        if(level == 1){
+            RenderWithMap(map_data, hMove, g_screen, 20, 3*64);
+            RenderWithMap(map_data, hCollect, g_screen, 21*64, 80);
+            RenderWithMap(map_data, hClick, g_screen, 39*64, 4*64);
+        }
 
         Fan.RenderWithMap(map_data, g_screen);
         Fan.tick();
@@ -502,7 +972,6 @@ int main(int argc,char* argv[])
             Sprite* box = box_list[i];
             if(box!=nullptr){
                 box->RenderWithMap(map_data, g_screen);
-                //box->tick();
                 bool isCollect = p_player.CollectItem(*box);
                 if(isCollect) box->is_collect=true;
                 if(box->is_collect){
@@ -561,7 +1030,7 @@ int main(int argc,char* argv[])
             }
         }
 
-        if(!bossObject.IsLive() && !BossDie.is_collect){
+        if(!bossObject.IsLive() && !BossDie.is_collect && level==3){
             BossDie.RenderWithMap(map_data, g_screen);
             BossDie.tick();
             if(BossDie.currentFrame == 31) BossDie.is_collect = true;
@@ -569,8 +1038,8 @@ int main(int argc,char* argv[])
         //Boss
         bool VaBoss = false;
         bool BulletBoss = false;
-        if( bossObject.get_x_pos() - p_player.get_x_pos() <= (SCREEN_WIDTH/2)) gap_boss = true;
-        if(gap_boss && bossObject.IsLive()){
+        if(level==3 && bossObject.get_x_pos() - p_player.get_x_pos() <= (SCREEN_WIDTH/2)) gap_boss = true;
+        if(gap_boss && bossObject.IsLive() ){
             bossObject.SetMapXY(map_data.start_x_, map_data.start_y_);
             bossObject.DoPlayer(map_data);
             bossObject.MakeBullet(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT, map_data, p_player.get_x_pos(), p_player.get_y_pos(), graphics, boss_gun);
@@ -670,6 +1139,22 @@ int main(int argc,char* argv[])
         if(p_player.CollectItem(Cup)){
             is_win = true;
             is_quit = true;
+            ofstream ghifile("map//Level.txt");
+            if(level == 1){
+                lv2 = 1;
+                ghifile<<lv1<<" "<<lv2<<" "<<lv3<<endl;
+            }
+            else if(level == 2){
+                lv3 =1;
+                ghifile<<lv1<<" "<<lv2<<" "<<lv3<<endl;
+            }
+            else{
+               ghifile<<lv1<<" "<<lv2<<" "<<lv3<<endl;
+            }
+            ghifile.close();
+            ofstream ghidiem("map//HighScore.txt");
+            ghidiem<<HighScore;
+            ghidiem.close();
         }
 
         string str_time = "Map break in: ";
@@ -677,35 +1162,46 @@ int main(int argc,char* argv[])
         int val_time = time_tick - time_real;
         int idx = val_time;
 
-        if(val_time == MAX_TIME){
-            map_break = true;
-        }
-        else if(!map_break){
-            string str_val = to_string(MAX_TIME - val_time);
-            str_time += str_val;
-            time_game.SetText(str_time);
-            time_game.LoadFromRenderText(font_time, g_screen);
-            time_game.RenderText(g_screen,SCREEN_WIDTH-400, -2);
-        }
-        else{
-            string s = "Map is breaking!!";
-            time_game.SetText(s);
-            time_game.LoadFromRenderText(font_time, g_screen);
-            time_game.RenderText(g_screen,SCREEN_WIDTH-450, -2);
+        if(level == 3){
+            if(val_time == MAX_TIME){
+                map_break = true;
+            }
+            else if(!map_break){
+                string str_val = to_string(MAX_TIME - val_time);
+                str_time += str_val;
+                time_game.SetText(str_time);
+                time_game.LoadFromRenderText(font_time, g_screen);
+                time_game.RenderText(g_screen,SCREEN_WIDTH-400, -2);
+            }
+            else{
+                string s = "Map is breaking!!";
+                time_game.SetText(s);
+                time_game.LoadFromRenderText(font_time, g_screen);
+                time_game.RenderText(g_screen,SCREEN_WIDTH-450, -2);
+            }
         }
 
-        if(map_break){
+        if(map_break  && level==3){
             game_map.MapBreak(idx-MAX_TIME);
         }
-        if(mark_value == 1700){
+        if((mark_value == 1700 && level==3) || level ==1){
             update_power = true;
         }
+
         string val_str_mark = to_string(mark_value);
         string strMark("Score: ");
         strMark+= val_str_mark;
         mark_game.SetText(strMark);
         mark_game.LoadFromRenderText(font_time, g_screen);
-        mark_game.RenderText(g_screen, SCREEN_WIDTH*0.5 - 250, -2);
+        mark_game.RenderText(g_screen, SCREEN_WIDTH*0.5 - 50, -2);
+
+        if(mark_value > HighScore) HighScore = mark_value;
+        string high_val = to_string(HighScore);
+        string highMark("Highscore: ");
+        highMark +=high_val;
+        high_score.SetText(highMark);
+        high_score.LoadFromRenderText(font_time, g_screen);
+        high_score.RenderText(g_screen, 200, -2);
 
         SDL_RenderPresent(g_screen);
 

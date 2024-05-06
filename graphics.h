@@ -245,6 +245,8 @@ struct Menu {
     SDL_Texture* volumn_on;
     SDL_Texture* volumn_off;
     SDL_Texture* res;
+    SDL_Texture* pause;
+    SDL_Texture* backgr;
 
     SDL_Texture *loadTexture(const char *filename, SDL_Renderer* renderer)
     {
@@ -426,6 +428,69 @@ struct Menu {
         return A;
     }
 
+    int SellectLevel(SDL_Renderer* renderer, SDL_Event event, const int& lv1, const int& lv2, const int& lv3){
+        int level = 1;
+        ScrollingBackground SBackground;
+        SBackground.setTexture(renderer);
+
+        SDL_Texture* selectLevel = LoadButton("img/button//SelectLevel.png", renderer);
+        SDL_Texture* lv1On = LoadButton("img/button//Level1On.png", renderer);
+        SDL_Texture* lv1Off = LoadButton("img/button//Level1Off.png", renderer);
+        SDL_Texture* lv2On = LoadButton("img/button//Level2On.png", renderer);
+        SDL_Texture* lv2Off = LoadButton("img/button//Level2Off.png", renderer);
+        SDL_Texture* lvBossOn = LoadButton("img/button//LevelBossOn.png", renderer);
+        SDL_Texture* lvBossOff = LoadButton("img/button//LevelBossOff.png", renderer);
+
+        bool quit = false;
+        int x,y;
+        while(!quit){
+            SDL_PollEvent(&event);
+            if(event.type == SDL_QUIT) exit(0);
+            SDL_GetMouseState(&x, &y);
+            SBackground.scroll(1);
+            renderTexture(SBackground.texture, SBackground.scrollingOffset, 0, renderer);
+            renderTexture(SBackground.texture, SBackground.scrollingOffset - SBackground.width, 0, renderer);
+
+            renderTexture(selectLevel, 385, 100, renderer);
+
+            if(lv1) renderTexture(lv1On, 504, 250, renderer);
+            else renderTexture(lv1Off, 504, 250, renderer);
+            if(lv2) renderTexture(lv2On, 604, 250, renderer);
+            else renderTexture(lv2Off, 604, 250, renderer);
+            if(lv3) renderTexture(lvBossOn, 704, 250, renderer);
+            else renderTexture(lvBossOff, 704, 250, renderer);
+
+            if(event.type == SDL_MOUSEBUTTONDOWN)
+            {
+                if( (504<=x&&x<=504 + 72) && (250<=y&&y<=250 + 62) && lv1 ){
+                    level=1;
+                    quit=true;
+                }
+                else if( (604<=x&&x<=604 + 72) && (250<=y&&y<=250+62) && lv2){
+                    level=2;
+                    quit=true;
+                }
+                else if( (704<=x&&x<=704 + 72) && (250<=y&&y<=250+62) && lv3){
+                    level=3;
+                    quit = true;
+                }
+            }
+
+            SDL_RenderPresent(renderer);
+            SDL_Delay(50);
+
+        }
+
+        SDL_DestroyTexture(lv1On); lv1On = nullptr;
+        SDL_DestroyTexture(lv2On); lv2On = nullptr;
+        SDL_DestroyTexture(lvBossOn); lvBossOn = nullptr;
+        SDL_DestroyTexture(lv1Off); lv1Off = nullptr;
+        SDL_DestroyTexture(lv2Off); lv2Off = nullptr;
+        SDL_DestroyTexture(lvBossOff); lvBossOff = nullptr;
+
+        return level;
+    }
+
     void MenuGameOver(SDL_Renderer* renderer, SDL_Event event){
 
         ScrollingBackground SBackground;
@@ -595,6 +660,34 @@ struct Menu {
         int x=0, y=0;
         SDL_GetMouseState(&x, &y);
         if(event.type == SDL_MOUSEBUTTONDOWN && (1209<=x && x<=1228) && (11<=y && y<=30) ) is_restart = true;
+    }
+
+    void LoadPause(SDL_Renderer* renderer){
+        pause = LoadButton("img/button//Pause.png", renderer);
+        backgr = LoadButton("img/button//PauseBackground.png", renderer);
+    }
+    void RenderPauseButton(SDL_Renderer* renderer){
+        renderTexture(pause, 1167, 11, renderer);
+    }
+    void Pause(SDL_Event& event, SDL_Renderer* renderer){
+        int x, y;
+        SDL_GetMouseState(&x, &y);
+        if((1167<=x&&x<=1186) && (11<=y&&y<=30) && event.type == SDL_MOUSEBUTTONUP){
+            SDL_Event e;
+            bool is_quit = false;
+            while(!is_quit){
+                SDL_PollEvent(&e);
+                SDL_GetMouseState(&x, &y);
+                if( (565<=x&&x<=565+150) && (300<=y&&y<=300+150) && e.type == SDL_MOUSEBUTTONDOWN){
+                    is_quit = true;
+                    return;
+                }
+                renderTexture(backgr, 0, 0, renderer);
+                SDL_RenderPresent(renderer);
+                SDL_Delay(50);
+            }
+        }
+        return;
     }
 };
 

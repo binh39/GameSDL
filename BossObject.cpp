@@ -236,6 +236,22 @@ void BossObject :: InitBullet(SDL_Renderer* screen){
     }
 }
 
+void BossObject :: InitBullet2(SDL_Renderer* screen, const int& x, const int& y){
+    BulletObject* p_bullet = new BulletObject();
+    bool ret = p_bullet->LoadImg("img/Boss//BossBullet2.png", screen);
+    float A = atan( (x_pos_ - x) / (y - y_pos_) );
+
+    if(ret){
+        p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
+        p_bullet->set_is_move(true);
+        p_bullet->set_position(x_pos_+10, y_pos_+height_frame_*0.45);
+        p_bullet->set_x_val(BOSS_FIRE);
+        p_bullet->set_y_val(BOSS_FIRE);
+        p_bullet->set_goc(A);
+        bullet_list_.push_back(p_bullet);
+    }
+}
+
 void BossObject :: MakeBullet(SDL_Renderer* des, const int& x_limit, const int& y_limit, Map& map_data, const float& xPlayer, const float& yPlayer, Graphics& graphics, Mix_Chunk* boss_gun){
     if(frame_ == 31){
         InitBullet(des);
@@ -247,7 +263,6 @@ void BossObject :: MakeBullet(SDL_Renderer* des, const int& x_limit, const int& 
             if(p_bullet->get_is_move()){
                 int bullet_distance = x_pos_ +width_frame_ - p_bullet->get_pos_x();
                 if(0<bullet_distance && bullet_distance < 9*64){
-                    //p_bullet->HandleMove(x_limit, y_limit, map_data);
                     p_bullet->HandleMove2(x_limit, y_limit, map_data, xPlayer, yPlayer);
                     p_bullet->Render(des);
                 }

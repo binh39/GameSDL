@@ -10,6 +10,7 @@ BulletObject :: BulletObject(){
     y_pos_=0;
     map_x=0;
     map_y=0;
+    goc=0;
 }
 
 BulletObject :: ~BulletObject(){
@@ -103,10 +104,8 @@ void BulletObject :: HandleMove2(const int& x_border, const int& y_border, Map& 
         x_pos_ += x_val_ * sin(A);
         y_pos_ -= y_val_ * cos(A);
     }
-
-
-
     rect_.x = x_pos_ - map_x;
     rect_.y = y_pos_ - map_y;
     if(rect_.x < 0 || rect_.y > y_border || rect_.y<0 || rect_.y > y_border) is_move_ = false;
 }
+

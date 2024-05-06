@@ -45,6 +45,7 @@ public:
     vector<BulletObject*> get_bullet_list() const {return bullet_list_;}
     void set_bullet_list(vector<BulletObject*>& am_list){bullet_list_ = am_list;}
     void InitBullet(SDL_Renderer* screen);
+    void InitBullet2(SDL_Renderer* screen, const int& x, const int& y);
     void MakeBullet(SDL_Renderer* des, const int& x_limit, const int& y_limit, Map& map_data, const float& xPlayer, const float& yPlayer, Graphics& graphics, Mix_Chunk* boss_gun);
     void RemoveBullet(const int& idx);
     void ClearBullet();
