@@ -27,12 +27,6 @@ void TextObject :: Free(){
     }
 }
 
-void TextObject :: SetColor(Uint8 red, Uint8 green, Uint8 blue){
-    text_color_.r = red;
-    text_color_.b = blue;
-    text_color_.g = green;
-}
-
 void TextObject :: SetColor(int type){
     if(type == RED_TEXT){
         SDL_Color color = {255, 0, 0};

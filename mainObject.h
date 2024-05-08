@@ -98,5 +98,16 @@ private:
     int come_back_time_;
 };
 
+struct PlayerHeart{
+    Sprite heart;
+    int num_heart = HEART;
+
+    void SetHeart(const int& num){num_heart = num;}
+    void Increase(){num_heart++;}
+    void Decrease(){num_heart--;}
+
+    void Init(SDL_Renderer* screen);
+    void Show(SDL_Renderer* screen);
+};
 
 #endif // MAIN_OBJECT_H

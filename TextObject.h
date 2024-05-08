@@ -15,10 +15,8 @@ public:
         WHITE_TEXT = 1,
         BLACK_TEXT = 2,
     };
-    bool LoadFromFile(string path);
     bool LoadFromRenderText(TTF_Font* font, SDL_Renderer* screen);
     void Free();
-    void SetColor(Uint8 red, Uint8 green, Uint8 blue);
     void SetColor(int type);
 
     void RenderText(SDL_Renderer* screen, int xp, int yp,

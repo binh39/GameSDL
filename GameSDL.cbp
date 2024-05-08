@@ -42,10 +42,6 @@
 		<Unit filename="CommonFunction.h" />
 		<Unit filename="ExplosionObject.cpp" />
 		<Unit filename="ExplosionObject.h" />
-		<Unit filename="Geometric.cpp" />
-		<Unit filename="Geometric.h" />
-		<Unit filename="PlayerPower.cpp" />
-		<Unit filename="PlayerPower.h" />
 		<Unit filename="TextObject.cpp" />
 		<Unit filename="TextObject.h" />
 		<Unit filename="ThreatsObject.cpp" />

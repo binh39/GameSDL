@@ -7,8 +7,6 @@
 #include "ThreatsObject.h"
 #include "ExplosionObject.h"
 #include "TextObject.h"
-#include "PlayerPower.h"
-#include "Geometric.h"
 #include "BossObject.h"
 
 BaseObject g_background;
@@ -18,16 +16,6 @@ void logErrorAndExit(const char* msg, const char* error)
 {
     SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR,"%s: %s", msg, error);
     SDL_Quit();
-}
-
-void Pause()
-{
-    SDL_Event e;
-    while (true) {
-        if ( SDL_PollEvent(&e) != 0 && (e.type == SDL_KEYDOWN || e.type == SDL_QUIT) )
-            return;
-        SDL_Delay(100);
-    }
 }
 
 bool InitData(){
@@ -218,8 +206,7 @@ vector<ThreatsObject*> MakeThreadList2(){
     return list_threats;
 }
 
-vector<ThreatsObject*> MakeThreadList3()
-{
+vector<ThreatsObject*> MakeThreadList3(){
     vector<ThreatsObject*> list_threats;
     ThreatsObject* dynamic_threats = new ThreatsObject[4];
     for(int i=0; i<4 ; i++)
