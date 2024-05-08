@@ -562,8 +562,8 @@ struct Menu {
         Cup.init(FLAGS_FRAME, FLAGS_CLIPS);
 
         SDL_Texture* game_win = LoadButton("img/button//Win.png", renderer);
-        SDL_Texture* play_again1 = LoadButton("img/button//PlayAgain1.png", renderer);
-        SDL_Texture* play_again2 = LoadButton("img/button//PlayAgain2.png", renderer);
+        SDL_Texture* play_again1 = LoadButton("img/button//NextChallenge1.png", renderer);
+        SDL_Texture* play_again2 = LoadButton("img/button//NextChallenge2.png", renderer);
         SDL_Texture* quit1 = LoadButton("img/button//Quit1.png", renderer);
         SDL_Texture* quit2 = LoadButton("img/button//Quit2.png", renderer);
 

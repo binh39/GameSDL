@@ -27,6 +27,14 @@ void BossObject :: CreateBoss(SDL_Renderer* screen){
     set_ypos(10);
 }
 
+void BossObject :: SetBegin(){
+    boss_life = 10;
+    int x = MAX_MAP_X*TILE_SIZE - SCREEN_WIDTH*0.8;
+    set_xpos(x);
+    set_ypos(10);
+    bullet_list_.clear();
+}
+
 bool BossObject :: LoadImg(string path, SDL_Renderer* screen){
     bool ret = BaseObject :: LoadImg(path, screen);
     if(ret){

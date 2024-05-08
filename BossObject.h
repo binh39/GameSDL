@@ -52,6 +52,7 @@ public:
     void BanBoss(){if(boss_life>0) boss_life--;}
     bool IsLive();
     int CheckLive(){return boss_life;}
+    void SetBegin();
     SDL_Rect GetRectFrame();
     void ShowHeart(SDL_Renderer* screen, Map& map_data);
 private:

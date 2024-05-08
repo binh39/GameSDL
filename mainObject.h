@@ -66,7 +66,7 @@ public:
     void Nhay(){y_val_ = -5;}
     void Bay(){y_val_ = -27; on_ground_=false;}
     void Khong(){on_ground_ = false;}
-    void SetBegin(){x_pos_=0; y_pos_=5*64;}
+    void SetBegin();
     void UnSuper(string runR, string runL, string jumpL, string jumpR);
 
 private:

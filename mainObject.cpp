@@ -66,6 +66,19 @@ MainObject :: MainObject(){
 MainObject :: ~MainObject(){
 }
 
+void MainObject :: SetBegin(){
+    x_pos_=0;
+    y_pos_=5*64;
+    status_ = WALK_NONE;
+    input_type_.left_ = 0;
+    input_type_.right_ =0;
+    input_type_.jump_ =0;
+    input_type_.down_=0;
+    input_type_.up_=0;
+    on_ground_ = false;
+    p_bullet_list_.clear();
+}
+
 bool MainObject :: LoadImg(string path,SDL_Renderer* screen)
 {
     bool ret = BaseObject :: LoadImg(path,screen);
