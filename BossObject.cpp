@@ -91,7 +91,6 @@ void BossObject :: DoPlayer(Map& g_map){
             input_type_.jump_ = 0;
         }
         CheckToMap(g_map);
-        //CenterEntityOnMap(g_map);
     }
 
     if( think_time_ >0)
@@ -110,17 +109,6 @@ void BossObject :: InitPlayer(){
     y_pos_=0;
     think_time_=0;
     input_type_.left_=1;
-}
-
-void BossObject :: CenterEntityOnMap(Map& g_map)
-{
-    g_map.start_x_ = x_pos_ - (SCREEN_WIDTH/2);
-    if(g_map.start_x_ < 0)   g_map.start_x_=0;
-    else if(g_map.start_x_ + SCREEN_WIDTH >= g_map.max_x_) g_map.start_x_ = g_map.max_x_ - SCREEN_WIDTH;
-
-    g_map.start_y_ = y_pos_ - (SCREEN_HEIGHT/2);
-    if(g_map.start_y_ < 0) g_map.start_y_ =0;
-    else if(g_map.start_y_ + SCREEN_HEIGHT >= g_map.max_y_) g_map.start_y_ = g_map.max_y_ - SCREEN_HEIGHT;
 }
 
 void BossObject :: CheckToMap(Map& map_data)
@@ -153,8 +141,6 @@ void BossObject :: CheckToMap(Map& map_data)
 
             if(val1 != BLANK_TILE || val2 != BLANK_TILE)
             {
-                //x_pos_ = x2*TILE_SIZE;
-                //x_pos_ -= width_frame_ +1;
                 x_pos_ = test_x;
                 x_val_ =0;
             }
@@ -167,7 +153,6 @@ void BossObject :: CheckToMap(Map& map_data)
 
             if(val1 != BLANK_TILE || val2 != BLANK_TILE)
             {
-                //x_pos_ = (x1 +1)*TILE_SIZE;
                 x_pos_ = test_x;
                 x_val_ =0;
             }
@@ -190,13 +175,9 @@ void BossObject :: CheckToMap(Map& map_data)
             int val2 = map_data.tile[y2][x2];
             if(val1 != BLANK_TILE || val2 != BLANK_TILE)
             {
-                //y_pos_ = y2*TILE_SIZE;
-                //y_pos_ -= (height_frame_+ 1);
                 y_pos_ = test_y;
                 y_val_ = 0;
                 on_ground_ = true;
-                //if(status_ == WALK_NONE) status_ == WALK_RIGHT;
-
             }
         }
         else if (y_val_ < 0)
@@ -206,7 +187,6 @@ void BossObject :: CheckToMap(Map& map_data)
 
             if(val1 != BLANK_TILE || val2 !=BLANK_TILE)
             {
-                //y_pos_ = (y1 + 1)*TILE_SIZE;
                 y_pos_ = test_y;
                 y_val_ = 0;
             }
@@ -240,22 +220,6 @@ void BossObject :: InitBullet(SDL_Renderer* screen){
         p_bullet->set_position(x_pos_+10, y_pos_+height_frame_*0.45);
         p_bullet->set_x_val(BOSS_FIRE);
         p_bullet->set_y_val(BOSS_FIRE);
-        bullet_list_.push_back(p_bullet);
-    }
-}
-
-void BossObject :: InitBullet2(SDL_Renderer* screen, const int& x, const int& y){
-    BulletObject* p_bullet = new BulletObject();
-    bool ret = p_bullet->LoadImg("img/Boss//BossBullet2.png", screen);
-    float A = atan( (x_pos_ - x) / (y - y_pos_) );
-
-    if(ret){
-        p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
-        p_bullet->set_is_move(true);
-        p_bullet->set_position(x_pos_+10, y_pos_+height_frame_*0.45);
-        p_bullet->set_x_val(BOSS_FIRE);
-        p_bullet->set_y_val(BOSS_FIRE);
-        p_bullet->set_goc(A);
         bullet_list_.push_back(p_bullet);
     }
 }

@@ -22,22 +22,6 @@ void ImpTimer :: start()
     start_tick_ = SDL_GetTicks();
 }
 
-void ImpTimer :: stop()
-{
-    is_paused_ = false;
-    is_started_ = false;
-}
-
-void ImpTimer :: paused()
-{
-    if(is_started_ == true && is_paused_ == false)
-    {
-        is_paused_ = true;
-        start_tick_ = SDL_GetTicks() - paused_tick_;
-        paused_tick_ = 0;
-    }
-}
-
 int ImpTimer :: get_ticks()
 {
     if(is_started_ == true)
@@ -52,14 +36,4 @@ int ImpTimer :: get_ticks()
         }
     }
     return 0;
-}
-
-bool ImpTimer :: is_started()
-{
-    return is_started_;
-}
-
-bool ImpTimer :: is_paused()
-{
-    return is_paused_;
 }

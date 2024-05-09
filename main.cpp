@@ -797,7 +797,6 @@ int main(int argc,char* argv[])
     BossDie.init(BOSS_FRAME, BOSS_CLIPS);
     BossDie.set_pos(MAX_MAP_X*TILE_SIZE - SCREEN_WIDTH*0.8, 4*64);
 
-    Begin:
     string runR;
     string runL;
     string jumpL;
@@ -807,10 +806,8 @@ int main(int argc,char* argv[])
 
     MainObject p_player;
 
-    Restart:
     p_player.SetBegin();
     p_player.UnSuper(runR, runL, jumpL, jumpR);
-
     PlayerHeart p_heart;
     p_heart.Init(g_screen);
 
@@ -1269,7 +1266,7 @@ int main(int argc,char* argv[])
             SDL_RenderPresent(g_screen);
 
             int real_imp_time = fps_timer.get_ticks();
-            int time_one_frame = 1000/FRAME_PER_SECOND; //ms
+            int time_one_frame = 1000/FRAME_PER_SECOND;
             if(real_imp_time < time_one_frame)
             {
                 int delay_time = time_one_frame - real_imp_time;

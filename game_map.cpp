@@ -28,7 +28,6 @@ void GameMap :: LoadMap(char* name)
     game_map_.start_x_=0;
     game_map_.start_y_=0;
     game_map_.file_name_=name;
-    //fclose(fp);
     file.close();
 }
 
@@ -42,7 +41,6 @@ void GameMap :: LoadTiles(SDL_Renderer* screen)
         fopen_s(&fp, file_img, "rb");
         if(fp==NULL) continue;
         fclose(fp);
-
         tile_mat[i].LoadImg(file_img,screen);
     }
 }
