@@ -37,8 +37,8 @@ const int BULLET_SPEED = 20;
 const int BULLET_SPEED_ENEMY = 10;
 
 #define TILE_SIZE 64
-#define BLANK_TILE 0
-#define SUPER_POWER 1
+#define MAX_TILES 30
+#define BLANK_TILE 10
 
 #define MAX_MAP_X 80
 #define MAX_MAP_Y 10
@@ -50,6 +50,8 @@ typedef struct Input
     int up_;
     int down_;
     int jump_;
+    int jump_on_plate_;
+    int jet_pack;
 };
 
 typedef struct Map{

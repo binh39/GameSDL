@@ -5,6 +5,8 @@
 
 using namespace std;
 
+#define PLATE_SPEED 3
+
 const int MAN_CLIPS[][4] = {
     {  0, 0, 64, 64},
     { 64, 0, 64, 64},
@@ -18,7 +20,7 @@ const int MAN_CLIPS[][4] = {
     {576, 0, 64, 64},
     {640, 0, 64, 64},
     {704, 0, 64, 64}};
-const int MAN_FRAMES = sizeof(MAN_CLIPS)/sizeof(int)/4;
+const int MAN_FRAMES = 12;
 
 const int MAN_CLIPS_2[][4] = {
     {  128*0, 0, 128, 128},
@@ -184,6 +186,17 @@ const int FAN_CLIPS[][4] = {
     { 448, 0, 64, 21}};
 const int FAN_FRAME = 8;
 
+const int PLATE_CLIPS[][4] = {
+    { 0, 0, 64, 14},
+    { 64, 0, 64, 14},
+    { 128, 0, 64, 14},
+    { 192, 0, 64, 14},
+    { 256, 0, 64, 14},
+    { 320, 0, 64, 14},
+    { 384, 0, 64, 14},
+    { 448, 0, 64, 14}};
+const int PLATE_FRAME = 8;
+
 const int BOX_CLIPS[][4] = {
     {  0, 0, 64, 64},
     { 64, 0, 64, 64},
@@ -196,6 +209,15 @@ const int BOX_CLIPS[][4] = {
     {512, 0, 64, 64},
     {576, 0, 64, 64}};
 const int BOX_FRAME = 10;
+
+const int DOOR_CLIPS[][4] = {
+    {0, 0, 64, 128},
+    {64, 0, 64, 128}};
+const int DOOR_FRAME  = 2;
+
+const int KEY_CLIPS[][4] = {
+    {0, 0, 12, 30}};
+const int KEY_FRAME = 1;
 
 struct ScrollingBackground{
     SDL_Texture* texture;
@@ -210,15 +232,19 @@ struct Sprite{
     SDL_Texture* texture;
     vector<SDL_Rect> clips;
     int currentFrame = 0;
+    int delay = 0;
     int x=0;
     int y=0;
 
+    int dx=0;
     int x_pos=0;
     int y_pos=0;
     int width_frame_=0;
     int height_frame_=0;
 
     bool is_collect = false;
+    bool is_move = false;
+    int huong = 1;
 
     void init(int frames, const int _clips[][4]);
     void tick();
@@ -228,6 +254,8 @@ struct Sprite{
     void RenderWithMap(Map& map_data, SDL_Renderer* renderer);
     void set_pos(const int& xp, const int& yp){x_pos = xp; y_pos = yp;}
     void move();
+    void move2(const int& x_left, const int& x_right);
+    void SetBegin();
     void Free();
 };
 

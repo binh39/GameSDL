@@ -29,6 +29,7 @@ bool BaseObject :: LoadImg(string path,SDL_Renderer* screen){
     }
     p_object_ = new_texture;
 
+    //SDL_DestroyTexture(new_texture);
     return p_object_ != NULL;
 }
 

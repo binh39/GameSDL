@@ -139,7 +139,7 @@ void BossObject :: CheckToMap(Map& map_data)
             int val1 = map_data.tile[y1][x2];
             int val2 = map_data.tile[y2][x2];
 
-            if(val1 != BLANK_TILE || val2 != BLANK_TILE)
+            if(val1 > BLANK_TILE || val2 > BLANK_TILE)
             {
                 x_pos_ = test_x;
                 x_val_ =0;
@@ -151,7 +151,7 @@ void BossObject :: CheckToMap(Map& map_data)
             int val1 = map_data.tile[y1][x1];
             int val2 = map_data.tile[y2][x1];
 
-            if(val1 != BLANK_TILE || val2 != BLANK_TILE)
+            if(val1 > BLANK_TILE || val2 > BLANK_TILE)
             {
                 x_pos_ = test_x;
                 x_val_ =0;
@@ -173,7 +173,7 @@ void BossObject :: CheckToMap(Map& map_data)
         {
             int val1 = map_data.tile[y2][x1];
             int val2 = map_data.tile[y2][x2];
-            if(val1 != BLANK_TILE || val2 != BLANK_TILE)
+            if(val1 > BLANK_TILE || val2 > BLANK_TILE)
             {
                 y_pos_ = test_y;
                 y_val_ = 0;
@@ -185,7 +185,7 @@ void BossObject :: CheckToMap(Map& map_data)
             int val1 = map_data.tile[y1][x1];
             int val2 = map_data.tile[y1][x2];
 
-            if(val1 != BLANK_TILE || val2 !=BLANK_TILE)
+            if(val1 > BLANK_TILE || val2 > BLANK_TILE)
             {
                 y_pos_ = test_y;
                 y_val_ = 0;

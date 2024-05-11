@@ -56,8 +56,7 @@ bool LoadBackground(){
     return true;
 }
 
-void renderTexture(SDL_Texture *texture, int x, int y, SDL_Renderer* renderer)
-{
+void renderTexture(SDL_Texture *texture, int x, int y, SDL_Renderer* renderer){
     SDL_Rect dest;
     dest.x = x;
     dest.y = y;
@@ -717,6 +716,39 @@ vector<Sprite*> MakeBox3(){
 
     return box_list;
 }
+
+vector<Sprite*> MakeGreenPortal(){
+    vector<Sprite*> green_list;
+    Sprite* portal = new Sprite[3];
+    for(int i=0;i<3;i++){
+        Sprite* portal_ = (portal+i);
+        if(portal_!=nullptr){
+            portal_->LoadImg("img/Items//GreenPortal.png", g_screen);
+            portal_->init(MAN_FRAMES, MAN_CLIPS);
+            if(i==0) portal_->set_pos(6*64, 6*64);
+            else if(i==1) portal_->set_pos(21*64, 7*64);
+            else if(i==2) portal_->set_pos(33*64, 1*64);
+            green_list.push_back(portal_);
+        }
+    }
+    return green_list;
+}
+
+vector<Sprite*> MakeGreyPortal(){
+    vector<Sprite*> grey_list;
+    Sprite* portal = new Sprite[2];
+    for(int i=0;i<2;i++){
+        Sprite* portal_ = (portal+i);
+        if(portal_!=nullptr){
+            portal_->LoadImg("img/Items//GreyPortal.png", g_screen);
+            portal_->init(MAN_FRAMES, MAN_CLIPS);
+            if(i==0) portal_->set_pos(3*64, 2*64);
+            else if(i==1) portal_->set_pos(33*64, 5*64);
+            grey_list.push_back(portal_);
+        }
+    }
+    return grey_list;
+}
 using namespace std;
 
 int main(int argc,char* argv[])
@@ -774,6 +806,8 @@ int main(int argc,char* argv[])
     vector<Sprite*> fruit_list;
     vector<Sprite*> collect_list;
     vector<Sprite*> box_list;
+    vector<Sprite*> green_portal;
+    vector<Sprite*> grey_portal;
 
     Sprite Fan;
     Fan.LoadImg("img/Items//Fan.png", g_screen);
@@ -789,6 +823,24 @@ int main(int argc,char* argv[])
     Sprite Gun;
     Gun.LoadImg("img//GunPower.png", g_screen);
     Gun.init(BOX_FRAME, BOX_CLIPS);
+    Sprite Door;
+    Door.LoadImg("img/Items//Door.png", g_screen);
+    Door.init(DOOR_FRAME, DOOR_CLIPS);
+    Sprite Key;
+    Key.LoadImg("img/Items//Key.png", g_screen);
+    Key.init(KEY_FRAME, KEY_CLIPS);
+    Sprite Grey;
+    Grey.LoadImg("img/Items//Grey.png", g_screen);
+    Grey.init(PLATE_FRAME, PLATE_CLIPS);
+    Sprite Brown;
+    Brown.LoadImg("img/Items//Brown.png", g_screen);
+    Brown.init(PLATE_FRAME, PLATE_CLIPS);
+    Sprite JetPack;
+    JetPack.LoadImg("img/Items//JetPack.png", g_screen);
+    JetPack.init(MAN_FRAMES, MAN_CLIPS);
+    Sprite DangerSign;
+    DangerSign.LoadImg("img/Items//DangerSign.png", g_screen);
+    DangerSign.init(MAN_FRAMES, MAN_CLIPS);
 
     BossObject bossObject;
     bossObject.CreateBoss(g_screen);
@@ -812,6 +864,7 @@ int main(int argc,char* argv[])
     p_heart.Init(g_screen);
 
     GameMap game_map;
+    game_map.LoadTiles(g_screen);
 
     UINT mark_value = 0;
     int num_live = HEART;
@@ -821,6 +874,7 @@ int main(int argc,char* argv[])
     bool map_break = false;
     int time_real = SDL_GetTicks()/1000;
     bool update_power = false;
+    int transition = 1;
 
     bool is_restart = false;
     bool is_lose = false;
@@ -849,41 +903,79 @@ int main(int argc,char* argv[])
             jumpL = p_player.JumpL;
             jumpR = p_player.JumpR;
 
-            level = menu.SellectLevel(g_screen, g_event, lv1, lv2, lv3);
-
-            if(level == 2) game_map.LoadMap("map/map02.txt");
-            else if(level == 3) game_map.LoadMap("map/map03.txt");
-            else game_map.LoadMap("map/map01.txt");
-            game_map.LoadTiles(g_screen);
-
-            if(level == 2 ) Fan.set_pos(33*64, 6*64+45);
-            else if(level == 3) Fan.set_pos(29*64, 7*64+45);
-            else Fan.set_pos(81*64, 11*64+45);
-            if(level==1) Gun.set_pos(41*64, 6*64);
-            else if(level==3)Gun.set_pos(34*64, 5*64);
-            else Gun.set_pos(81*64, 11*64);
-
+            //level = menu.SellectLevel(g_screen, g_event, lv1, lv2, lv3);
+            level = 4;
             threats_list.clear();
             fruit_list.clear();
             collect_list.clear();
             box_list.clear();
-            if(level==1){
+            green_portal.clear();
+            grey_portal.clear();
+
+            if(level == 1){
+                game_map.LoadMap("map/map01.txt");
+                Gun.set_pos(41*64, 6*64);
+                Fan.set_pos(81*64, 11*64+45);
+                Door.set_pos(81*64, 11*64);
+                Key.set_pos(81*64, 11*64);
+                Grey.set_pos(81*64, 11*64);
+                Brown.set_pos(81*64, 11*64);
+                JetPack.set_pos(81*64, 11*64);
                 threats_list = MakeThreadList1();
                 fruit_list = MakeFruitList1();
                 collect_list = MakeCollected1();
             }
-            else if(level==2){
+            else if(level == 2){
+                game_map.LoadMap("map/map02.txt");
+                Fan.set_pos(33*64, 6*64+45);
+                Gun.set_pos(81*64, 11*64);
+                Door.set_pos(81*64, 11*64);
+                Key.set_pos(81*64, 11*64);
+                Grey.set_pos(81*64, 11*64);
+                Brown.set_pos(81*64, 11*64);
+                JetPack.set_pos(81*64, 11*64);
                 threats_list = MakeThreadList2();
                 fruit_list = MakeFruitList2();
                 collect_list = MakeCollected2();
             }
-            else if(level==3){
+            else if(level == 3){
+                game_map.LoadMap("map/map03.txt");
+                Fan.set_pos(29*64, 7*64+45);
+                Gun.set_pos(34*64, 5*64);
+                Door.set_pos(81*64, 11*64);
+                Key.set_pos(81*64, 11*64);
+                Grey.set_pos(81*64, 11*64);
+                Brown.set_pos(81*64, 11*64);
+                JetPack.set_pos(81*64, 11*64);
                 threats_list = MakeThreadList3();
                 fruit_list = MakeFruitList3();
                 collect_list = MakeCollected3();
                 box_list = MakeBox3();
             }
+            else if(level == 4){
+                game_map.LoadMap("map/map04a.txt");
+                Fan.set_pos(8*64, 7*64+45);
+                Gun.set_pos(81*64, 11*64);
+                Door.set_pos(34*64, 4*64);
+                Key.set_pos(23*64+21, 2*64+17);
+                Grey.set_pos(15*64, 8*64-10);
+                Brown.set_pos(26*64, 6*64-10);
+                JetPack.set_pos(37*64, 5*64);
+                green_portal = MakeGreenPortal();
+                grey_portal = MakeGreyPortal();
+            }
+            else{
+                game_map.LoadMap("map/map01.txt");
+                Fan.set_pos(81*64, 11*64+45);
+                Gun.set_pos(81*64, 11*64);
+                Door.set_pos(81*64, 11*64);
+                Key.set_pos(81*64, 11*64);
+                Grey.set_pos(81*64, 11*64);
+                Brown.set_pos(81*64, 11*64);
+                JetPack.set_pos(81*64, 11*64);
+            }
 
+            transition = 1;
             num_live = HEART;
             p_heart.SetHeart(HEART);
             is_quit = false;
@@ -893,6 +985,11 @@ int main(int argc,char* argv[])
             update_power = false;
             mark_value = 0;
             Gun.is_collect = false;
+            Key.is_collect = false;
+            Door.is_collect = false;
+            JetPack.is_collect = false;
+            Grey.SetBegin();
+            Brown.SetBegin();
             p_player.SetBegin();
             p_player.UnSuper(runR, runL, jumpL, jumpR);
 
@@ -924,10 +1021,6 @@ int main(int argc,char* argv[])
                 Mix_HaltMusic();
                 graphics.play(gMusic);
 
-                if(level == 2) game_map.LoadMap("map/map02.txt");
-                else if(level == 3) game_map.LoadMap("map/map03.txt");
-                else game_map.LoadMap("map/map01.txt");
-                game_map.LoadTiles(g_screen);
                 num_live = HEART;
                 p_heart.SetHeart(HEART);
                 is_quit = false;
@@ -936,35 +1029,54 @@ int main(int argc,char* argv[])
                 time_real = SDL_GetTicks()/1000;
                 update_power = false;
                 mark_value = 0;
-
+                transition = 1;
+                Key.is_collect = false;
+                Door.is_collect = false;
                 Gun.is_collect = false;
+                JetPack.is_collect = false;
+                JetPack.set_pos(37*64, 5*64);
+                Brown.SetBegin();
+                Grey.SetBegin();
                 bossObject.SetBegin();
                 BossDie.is_collect = false;
+
                 threats_list.clear();
                 fruit_list.clear();
                 collect_list.clear();
                 box_list.clear();
+                green_portal.clear();
+                grey_portal.clear();
 
                 if(level==1){
+                    game_map.LoadMap("map/map01.txt");
                     threats_list = MakeThreadList1();
                     fruit_list = MakeFruitList1();
                     collect_list = MakeCollected1();
                 }
                 else if(level==2){
+                    game_map.LoadMap("map/map02.txt");
                     threats_list = MakeThreadList2();
                     fruit_list = MakeFruitList2();
                     collect_list = MakeCollected2();
                 }
                 else if(level==3){
+                    game_map.LoadMap("map/map03.txt");
                     threats_list = MakeThreadList3();
                     fruit_list = MakeFruitList3();
                     collect_list = MakeCollected3();
                     box_list = MakeBox3();
                 }
+                else if(level==4){
+                    green_portal = MakeGreenPortal();
+                    grey_portal = MakeGreyPortal();
+                    game_map.LoadMap("map/map04a.txt");
+                    Grey.set_pos(15*64, 8*64-10);
+                    Brown.set_pos(26*64, 6*64-10);
+                }
 
             }
 
-            SDL_SetRenderDrawColor(g_screen,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR);
+            //SDL_SetRenderDrawColor(g_screen,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR);
             SDL_RenderClear(g_screen);
             g_background.Render(g_screen,NULL);
             Map map_data = game_map.getMap();
@@ -986,13 +1098,67 @@ int main(int argc,char* argv[])
                 RenderWithMap(map_data, hClick, g_screen, 39*64, 4*64);
             }
 
-            Fan.RenderWithMap(map_data, g_screen);
-            Fan.tick();
-            Start_Flag.RenderWithMap(map_data, g_screen);
-            Start_Flag.tick();
+            if(level != 4){
+                Fan.RenderWithMap(map_data, g_screen);
+                Fan.tick();
+                Start_Flag.RenderWithMap(map_data, g_screen);
+                Start_Flag.tick();
+            }
+            else{
+                if(!transition){
+                    Fan.RenderWithMap(map_data, g_screen);
+                    Fan.tick();
+                    if(!JetPack.is_collect){
+                        JetPack.RenderWithMap(map_data, g_screen);
+                    }
+                    else{
+                        JetPack.Render(p_player.GetRect().x +64, p_player.GetRect().y+14, g_screen);
+                        JetPack.tick();
+                    }
+                    if(p_player.CollectItem(JetPack) && !JetPack.is_collect){
+                        JetPack.is_collect = true;
+                        p_player.jetpack = true;
+                    }
+                    if(JetPack.is_collect == true){
+                        DangerSign.Render(SCREEN_WIDTH, p_player.GetRect().y, g_screen);
+                        DangerSign.tick();
+                    }
+                    Brown.RenderWithMap(map_data, g_screen);
+                    if(p_player.CollectItem(Brown)){
+                        p_player.Plate();
+                        Brown.tick();
+                        Brown.is_move = true;
+                        Brown.move2(26*64, 26*64+4*64);
+                        p_player.MoveWithPlate(Brown.dx);
+                    }
+                    else p_player.UnPlate();
+                }
+                else{
+                    Start_Flag.RenderWithMap(map_data, g_screen);
+                    Start_Flag.tick();
+                    Grey.RenderWithMap(map_data, g_screen);
+                    if(p_player.CollectItem(Grey)){
+                        p_player.Plate();
+                        Grey.tick();
+                        Grey.is_move = true;
+                        Grey.move2(15*64, 15*64+4*64);
+                        p_player.MoveWithPlate(Grey.dx);
+                    }
+                    else p_player.UnPlate();
+                }
+            }
+
             Cup.RenderWithMap(map_data,g_screen);
             Cup.tick();
-
+            if(transition && !Key.is_collect) Key.RenderWithMap(map_data, g_screen);
+            else if(!transition) Door.RenderWithMap(map_data, g_screen);
+            if(transition && p_player.CollectItem(Key) && !Key.is_collect) Key.is_collect = true;
+            if(Key.is_collect) Key.Render(1100, 6, g_screen);
+            if(Key.is_collect && !transition && !Door.is_collect && p_player.CollectItem(Door)){
+                Door.is_collect = true;
+                Door.currentFrame++;
+                Key.is_collect = false;
+            }
             if(update_power && !Gun.is_collect){
                 Gun.RenderWithMap(map_data, g_screen);
                 Gun.tick();
@@ -1005,7 +1171,36 @@ int main(int argc,char* argv[])
 
             bool Va1 = false;
             bool Va2 = false;
-
+            for(int i=0; i<green_portal.size(); i++){
+                Sprite* portal = green_portal[i];
+                if(portal!=nullptr && transition){
+                    portal->RenderWithMap(map_data, g_screen);
+                    portal->tick();
+                    bool isCollect = p_player.CollectItem(*portal);
+                    if(isCollect) portal->is_collect = true;
+                    if(portal->is_collect){
+                        transition = (transition+1)%2;
+                        game_map.LoadMap("map/map04b.txt");
+                        portal->Free();
+                        green_portal.erase(green_portal.begin()+i);
+                    }
+                }
+            }
+            for(int i=0; i<grey_portal.size(); i++){
+                Sprite* portal = grey_portal[i];
+                if(portal!=nullptr && !transition){
+                    portal->RenderWithMap(map_data, g_screen);
+                    portal->tick();
+                    bool isCollect = p_player.CollectItem(*portal);
+                    if(isCollect) portal->is_collect = true;
+                    if(portal->is_collect){
+                        transition = (transition+1)%2;
+                        game_map.LoadMap("map/map04a.txt");
+                        portal->Free();
+                        grey_portal.erase(grey_portal.begin()+i);
+                    }
+                }
+            }
             for(int i=0; i<fruit_list.size() ; i++){
                 Sprite* fruit = fruit_list[i];
                 Sprite* collect = collect_list[i];
@@ -1028,7 +1223,6 @@ int main(int argc,char* argv[])
                     }
                 }
             }
-
             for(int i=0; i<box_list.size(); i++){
                 Sprite* box = box_list[i];
                 if(box!=nullptr){
@@ -1045,7 +1239,6 @@ int main(int argc,char* argv[])
                     }
                 }
             }
-
             for(int i=0 ; i<threats_list.size() ; i++){
                 ThreatsObject* p_threat = threats_list[i];
                 if(p_threat != NULL)
@@ -1096,7 +1289,6 @@ int main(int argc,char* argv[])
                 BossDie.tick();
                 if(BossDie.currentFrame == 31) BossDie.is_collect = true;
             }
-            //Boss
             bool VaBoss = false;
             bool BulletBoss = false;
             if(level==3 && bossObject.get_x_pos() - p_player.get_x_pos() <= (SCREEN_WIDTH/2)) gap_boss = true;
@@ -1194,7 +1386,6 @@ int main(int argc,char* argv[])
                     }
                 }
             }
-            //Show game time
 
             if(p_player.CollectItem(Cup)){
                 is_win = true;

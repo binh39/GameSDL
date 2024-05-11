@@ -12,6 +12,7 @@
 #define MAX_FALL_SPEED 10
 #define PLAYER_SPEED 9
 #define PLAYER_JUMP_VAL 13
+#define PLAYER_JETPACK 1
 
 using namespace std;
 
@@ -22,6 +23,7 @@ public:
     string RunL;
     string JumpR;
     string JumpL;
+    bool jetpack = false;
 
     MainObject();
     ~MainObject();
@@ -66,12 +68,17 @@ public:
     void Nhay(){y_val_ = -5;}
     void Bay(){y_val_ = -27; on_ground_=false;}
     void Khong(){on_ground_ = false;}
+    void Plate(){on_ground_ = true; is_on_plate = true;}
+    void UnPlate(){is_on_plate = false;}
+    void MoveWithPlate(const int& dx);
     void SetBegin();
     void UnSuper(string runR, string runL, string jumpL, string jumpR);
 
 private:
     bool is_cup = false;
+    bool is_on_plate = false;
     bool gun = false;
+
     int money_count;
     vector<BulletObject*> p_bullet_list_;
 

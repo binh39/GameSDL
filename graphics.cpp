@@ -67,6 +67,29 @@ void Sprite::move(){
     x = (x+4)%(1280+64);
 }
 
+void Sprite :: move2(const int& x_left, const int& x_right){
+    if(huong) dx = PLATE_SPEED;
+    else  dx = -PLATE_SPEED;
+    if(is_move) x_pos += dx;
+    if(x_pos >= x_right){
+        is_move = false;
+        dx=0;
+        huong = (huong+1)%2;
+    }
+    if(x_pos <= x_left){
+        is_move = false;
+        dx = 0;
+        huong = (huong+1)%2;
+    }
+}
+
+void Sprite :: SetBegin(){
+    dx = 0;
+    huong = 1;
+    is_collect = false;
+    is_move = false;
+}
+
 const SDL_Rect* Sprite::getCurrentClip() const {
     return &(clips[currentFrame]);
 }

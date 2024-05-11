@@ -43,6 +43,9 @@ MainObject :: MainObject(){
     JumpR = "img/NinjaFrog//JumpR.png";
     JumpL = "img/NinjaFrog//JumpL.png";
     gun = false;
+    jetpack = false;
+    is_cup = false;
+    is_on_plate = false;
     frame_ = 0;
     x_pos_ = 0;
     y_pos_ =0 ;
@@ -54,6 +57,8 @@ MainObject :: MainObject(){
     input_type_.left_ = 0;
     input_type_.right_ =0;
     input_type_.jump_ =0;
+    input_type_.jump_on_plate_=0;
+    input_type_.jet_pack = 0;
     input_type_.down_=0;
     input_type_.up_=0;
     on_ground_ = false;
@@ -76,6 +81,8 @@ void MainObject :: SetBegin(){
     input_type_.down_=0;
     input_type_.up_=0;
     on_ground_ = false;
+    jetpack = false;
+    is_on_plate = false;
     p_bullet_list_.clear();
 }
 
@@ -202,7 +209,20 @@ void MainObject :: HandelInputAction(SDL_Event events, SDL_Renderer* screen, Mix
     }
     if(events.key.keysym.scancode == SDL_SCANCODE_UP || events.key.keysym.scancode == SDL_SCANCODE_SPACE || events.key.keysym.scancode==SDL_SCANCODE_W)
     {
-        input_type_.jump_ =1;
+        if(jetpack){
+            input_type_.jet_pack = 1;
+            input_type_.jump_ = 0;
+            input_type_.jump_on_plate_ = 0;
+        }
+        else if(is_on_plate){
+            input_type_.jump_on_plate_=1;
+            input_type_.jump_ = 0;
+        }
+        else{
+            input_type_.jump_ =1;
+            input_type_.jump_on_plate_ = 0;
+        }
+
     }
 
 }
@@ -252,7 +272,7 @@ void MainObject :: DoPlayer(Map& map_data, SDL_Renderer* screen, int& num_live, 
     if( come_back_time_ == 0)
     {
         x_val_ =0;
-        y_val_ += GRAVITY_SPEED;
+        if(!jetpack || input_type_.jet_pack ==0) y_val_ += GRAVITY_SPEED;
 
         if(y_val_ >= MAX_FALL_SPEED) y_val_ = MAX_FALL_SPEED;
 
@@ -272,7 +292,20 @@ void MainObject :: DoPlayer(Map& map_data, SDL_Renderer* screen, int& num_live, 
             on_ground_ = false;
             input_type_.jump_ = 0;
         }
-
+        if(input_type_.jump_on_plate_ == 1)
+        {
+            if(on_ground_ && is_on_plate)
+            {
+                y_val_ = -PLAYER_JUMP_VAL;
+            }
+            on_ground_ = false;
+        }
+        if(input_type_.jet_pack == 1){
+            if(y_val_>5 )y_val_ = 5;
+            y_val_ -= PLAYER_JETPACK;
+            input_type_.jet_pack = 0;
+            on_ground_ = false;
+        }
 
         CheckToMap(map_data, screen, num_live, graphics, chunk);
         CenterEntityOnMap(map_data);
@@ -324,8 +357,8 @@ void MainObject :: CheckToMap(Map& map_data, SDL_Renderer* screen, int &num_live
     //Check horizontal
     int height_min = height_frame_ < TILE_SIZE ? height_frame_ : TILE_SIZE;
 
-    x1 = (x_pos_ + x_val_)/TILE_SIZE; //vi tri hien tai + di chuyen x_val_, chia TILE_SIZE ra duoc o dang dung
-    x2 = (x_pos_ + x_val_ + width_frame_-1)/TILE_SIZE; //x2 la ria phai cua nhan vat
+    x1 = (x_pos_ + x_val_)/TILE_SIZE;
+    x2 = (x_pos_ + x_val_ + width_frame_-1)/TILE_SIZE;
 
     y1 = (y_pos_)/TILE_SIZE;
     y2 = (y_pos_ + height_min- 1)/TILE_SIZE;
@@ -336,32 +369,17 @@ void MainObject :: CheckToMap(Map& map_data, SDL_Renderer* screen, int &num_live
         {
             int val1 = map_data.tile[y1][x2];
             int val2 = map_data.tile[y2][x2];
-            if(val1 == SUPER_POWER || val2 == SUPER_POWER)
+            if(val1 > BLANK_TILE || val2 > BLANK_TILE)
             {
-                map_data.tile[y1][x2] = 0;
-                map_data.tile[y2][x2] = 0;
-                Super(screen, graphics, chunk);
-            }
-            else
-            {
-                if(val1 != BLANK_TILE || val2 != BLANK_TILE)
-                {
-                    x_pos_ = test_x;
-                    x_val_ =0;
-                }
+                x_pos_ = test_x;
+                x_val_ =0;
             }
         }
         else if (x_val_ < 0)
         {
             int val1 = map_data.tile[y1][x1];
             int val2 = map_data.tile[y2][x1];
-            if(val1 == SUPER_POWER || val2 == SUPER_POWER)
-            {
-                map_data.tile[y1][x1] = 0;
-                map_data.tile[y2][x1] = 0;
-                Super(screen, graphics, chunk);
-            }
-            if(val1 != BLANK_TILE || val2 != BLANK_TILE)
+            if(val1 > BLANK_TILE || val2 > BLANK_TILE)
             {
                 x_pos_ = test_x;
                 x_val_ =0;
@@ -383,57 +401,35 @@ void MainObject :: CheckToMap(Map& map_data, SDL_Renderer* screen, int &num_live
         {
             int val1 = map_data.tile[y2][x1];
             int val2 = map_data.tile[y2][x2];
-            if(val1 == SUPER_POWER || val2 == SUPER_POWER)
+            if(val1 > BLANK_TILE || val2 > BLANK_TILE)
             {
-                map_data.tile[y2][x1] = 0;
-                map_data.tile[y2][x2] = 0;
-                Super(screen, graphics, chunk);
-            }
-            else
-            {
-                if(val1 != BLANK_TILE || val2 != BLANK_TILE)
-                {
-                    y_pos_ = test_y;
-                    y_val_ = 0;
-                    on_ground_ = true;
-                    if(status_ == WALK_NONE) status_ == WALK_RIGHT;
-                }
+                y_pos_ = test_y;
+                y_val_ = 0;
+                on_ground_ = true;
+                if(status_ == WALK_NONE) status_ == WALK_RIGHT;
             }
         }
         else if (y_val_ < 0)
         {
             int val1 = map_data.tile[y1][x1];
             int val2 = map_data.tile[y1][x2];
-            if(val1 == SUPER_POWER || val2 == SUPER_POWER)
+            if(val1 > BLANK_TILE || val2 > BLANK_TILE)
             {
-                map_data.tile[y1][x1] = 0;
-                map_data.tile[y1][x2] = 0;
-                Super(screen, graphics, chunk);
+                y_pos_ = test_y;
+                y_val_ = 0;
             }
-            else
-            {
-                if(val1 != BLANK_TILE || val2 !=BLANK_TILE)
-                {
-                    y_pos_ = test_y;
-                    y_val_ = 0;
-                }
-            }
-
         }
     }
 
     x_pos_ += x_val_;
-    y_pos_ += y_val_;
-
-    if(x_pos_ < 0)
-    {
-        x_pos_ =0;
-    }
-    else if(x_pos_+width_frame_ > map_data.max_x_)
-    {
-        x_pos_ = map_data.max_x_ - width_frame_ -1;
+    if(!is_on_plate) y_pos_ += y_val_;
+    else if(is_on_plate && input_type_.jump_on_plate_){
+        y_pos_+=y_val_;
+        input_type_.jump_on_plate_ = 0;
     }
 
+    if(x_pos_ < 0)  x_pos_ =0;
+    else if(x_pos_+width_frame_ > map_data.max_x_) x_pos_ = map_data.max_x_ - width_frame_ -1;
     if( y_pos_ > map_data.max_y_)
     {
         come_back_time_ = 60;
@@ -521,6 +517,10 @@ bool MainObject :: CollectItem(const Sprite& item){
   if( (left_a<=right_b && right_a>=left_b) && (top_a<=bottom_b && bottom_a>=top_b) ) return true;
 
   return false;
+}
+
+void MainObject :: MoveWithPlate(const int& dx){
+    x_pos_ += dx;
 }
 
 void PlayerHeart :: Init(SDL_Renderer* screen){

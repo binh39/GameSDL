@@ -108,32 +108,26 @@ void ThreatsObject :: CheckToMap(Map& map_data)
 {
     int x1=0;
     int x2=0;
-
     int y1=0;
     int y2=0;
-
     int test_x = x_pos_;
     int test_y = y_pos_;
     //Check horizontal
     int height_min = height_frame_ < TILE_SIZE ? height_frame_ : TILE_SIZE;
-
-    x1 = (x_pos_ + x_val_)/TILE_SIZE; //vi tri hien tai + di chuyen x_val_, chia TILE_SIZE ra duoc o dang dung
-    x2 = (x_pos_ + x_val_ + width_frame_-1)/TILE_SIZE; //x2 la ria phai cua nhan vat
-
+    x1 = (x_pos_ + x_val_)/TILE_SIZE;
+    x2 = (x_pos_ + x_val_ + width_frame_-1)/TILE_SIZE;
     y1 = (y_pos_)/TILE_SIZE;
     y2 = (y_pos_ + height_min- 1)/TILE_SIZE;
 
     if(x1 >= 0 && x2< MAX_MAP_X && y1 >= 0 && y2<MAX_MAP_Y)
     {
-        if(x_val_ > 0) //main obbject di chuyen sang phai
+        if(x_val_ > 0)
         {
             int val1 = map_data.tile[y1][x2];
             int val2 = map_data.tile[y2][x2];
 
-            if((val1 != BLANK_TILE && val1!=SUPER_POWER) || (val2 != BLANK_TILE && val2!=SUPER_POWER))
+            if(val1 > BLANK_TILE || val2 > BLANK_TILE )
             {
-                //x_pos_ = x2*TILE_SIZE;
-                //x_pos_ -= width_frame_ +1;
                 x_pos_ = test_x;
                 x_val_ =0;
                 input_type_.right_=0;
@@ -145,9 +139,8 @@ void ThreatsObject :: CheckToMap(Map& map_data)
             int val1 = map_data.tile[y1][x1];
             int val2 = map_data.tile[y2][x1];
 
-            if((val1 != BLANK_TILE && val1!=SUPER_POWER) || (val2 != BLANK_TILE && val2!=SUPER_POWER))
+            if(val1 > BLANK_TILE || val2 > BLANK_TILE )
             {
-                //x_pos_ = (x1 +1)*TILE_SIZE;
                 x_pos_ = test_x;
                 x_val_ =0;
                 input_type_.left_=0;
@@ -160,7 +153,6 @@ void ThreatsObject :: CheckToMap(Map& map_data)
     int width_min = width_frame_ < TILE_SIZE ? width_frame_ : TILE_SIZE;
     x1 = (x_pos_)/TILE_SIZE;
     x2 = (x_pos_ + width_min)/TILE_SIZE;
-
     y1 = (y_pos_ + y_val_)/TILE_SIZE;
     y2 = (y_pos_ + y_val_ + height_frame_ - 1)/TILE_SIZE;
 
@@ -171,10 +163,8 @@ void ThreatsObject :: CheckToMap(Map& map_data)
             int val1 = map_data.tile[y2][x1];
             int val2 = map_data.tile[y2][x2];
 
-            if((val1 != BLANK_TILE && val1!=SUPER_POWER) || (val2 != BLANK_TILE && val2!=SUPER_POWER))
+            if(val1 > BLANK_TILE || val2 > BLANK_TILE)
             {
-                //y_pos_ = y2*TILE_SIZE;
-                //y_pos_ -= (height_frame_+ 1);
                 y_pos_ = test_y;
                 y_val_ = 0;
                 on_ground_ = true;
@@ -186,9 +176,8 @@ void ThreatsObject :: CheckToMap(Map& map_data)
             int val1 = map_data.tile[y1][x1];
             int val2 = map_data.tile[y1][x2];
 
-            if((val1 != BLANK_TILE && val1!=SUPER_POWER) || (val2 != BLANK_TILE && val2!=SUPER_POWER))
+            if(val1 > BLANK_TILE || val2 > BLANK_TILE)
             {
-                //y_pos_ = (y1 + 1)*TILE_SIZE;
                 y_pos_ = test_y;
                 y_val_ = 0;
 
