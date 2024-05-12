@@ -4,12 +4,9 @@
 
 void GameMap :: LoadMap(char* name)
 {
-
     game_map_.max_x_=0;
     game_map_.max_y_=0;
-
     ifstream file(name);
-
     for(int i=0 ; i<MAX_MAP_Y ; i++){
         for(int j=0 ; j<MAX_MAP_X ; j++){
             file>>game_map_.tile[i][j];
@@ -21,7 +18,6 @@ void GameMap :: LoadMap(char* name)
             }
         }
     }
-
     game_map_.max_x_ = (game_map_.max_x_ + 1)*TILE_SIZE;
     game_map_.max_y_ = (game_map_.max_y_ + 1)*TILE_SIZE;
 
@@ -93,5 +89,8 @@ void GameMap :: MapBreak(const int& idx){
     }
 }
 
-
+void GameMap :: MapLock(){
+    game_map_.tile[5][34] = 24;
+    game_map_.tile[4][34] = 24;
+}
 

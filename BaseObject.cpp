@@ -12,7 +12,7 @@ BaseObject :: BaseObject(){
 BaseObject :: ~BaseObject(){
     Free();
 }
-
+/*
 bool BaseObject :: LoadImg(string path,SDL_Renderer* screen){
     Free();
     SDL_Texture* new_texture = NULL;
@@ -20,16 +20,27 @@ bool BaseObject :: LoadImg(string path,SDL_Renderer* screen){
     if(load_surface == NULL) cout<<"Error Load Image "<<path<<endl;
     if(load_surface != NULL){
         SDL_SetColorKey(load_surface, SDL_TRUE, SDL_MapRGB(load_surface->format,COLOR_KEY_R,COLOR_KEY_G,COLOR_KEY_B));
-        new_texture = SDL_CreateTextureFromSurface(screen,load_surface);
-        if(new_texture != NULL){
+        //new_texture = SDL_CreateTextureFromSurface(screen,load_surface);
+        p_object_ = SDL_CreateTextureFromSurface(screen,load_surface);
+        if(/*new_texture p_object_ != NULL){
             rect_.w = load_surface->w;
             rect_.h = load_surface->h;
         }
         SDL_FreeSurface(load_surface);
     }
-    p_object_ = new_texture;
+    //p_object_ = new_texture;
 
     //SDL_DestroyTexture(new_texture);
+    return p_object_ != NULL;
+}*/
+
+bool BaseObject :: LoadImg(string path, SDL_Renderer *screen){
+    Free();
+    p_object_ = IMG_LoadTexture(screen, path.c_str());
+    SDL_Rect dest;
+    SDL_QueryTexture(p_object_, NULL, NULL, &dest.w, &dest.h);
+    rect_.w = dest.w;
+    rect_.h = dest.h;
     return p_object_ != NULL;
 }
 

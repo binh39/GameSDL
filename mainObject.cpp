@@ -74,6 +74,7 @@ MainObject :: ~MainObject(){
 void MainObject :: SetBegin(){
     x_pos_=0;
     y_pos_=5*64;
+    come_back_time_ = 0;
     status_ = WALK_NONE;
     input_type_.left_ = 0;
     input_type_.right_ =0;
@@ -155,7 +156,22 @@ void MainObject :: HandelInputAction(SDL_Event events, SDL_Renderer* screen, Mix
                     input_type_.right_ =0;
                     UpdateImagePlayer(screen);
                 } break;
-
+            case SDLK_UP: case SDLK_w: case SDLK_SPACE:
+                {
+                    if(jetpack){
+                        input_type_.jet_pack = 1;
+                        input_type_.jump_ = 0;
+                        input_type_.jump_on_plate_ = 0;
+                    }
+                    else if(is_on_plate){
+                        input_type_.jump_on_plate_=1;
+                        input_type_.jump_ = 0;
+                    }
+                    else{
+                        input_type_.jump_on_plate_=0;
+                        input_type_.jump_ = 1;
+                    }
+                } break;
             default:
                 break;
         }
@@ -171,6 +187,12 @@ void MainObject :: HandelInputAction(SDL_Event events, SDL_Renderer* screen, Mix
             case SDLK_LEFT: case SDLK_a:
                 {
                     input_type_.left_ = 0;
+                } break;
+            case SDLK_UP: case SDLK_w: case SDLK_SPACE:
+                {
+                    input_type_.jet_pack = 0;
+                    input_type_.jump_ = 0;
+                    input_type_.jump_on_plate_ = 0;
                 } break;
             default:
                 break;
@@ -207,24 +229,6 @@ void MainObject :: HandelInputAction(SDL_Event events, SDL_Renderer* screen, Mix
 
         p_bullet_list_.push_back(p_bullet);
     }
-    if(events.key.keysym.scancode == SDL_SCANCODE_UP || events.key.keysym.scancode == SDL_SCANCODE_SPACE || events.key.keysym.scancode==SDL_SCANCODE_W)
-    {
-        if(jetpack){
-            input_type_.jet_pack = 1;
-            input_type_.jump_ = 0;
-            input_type_.jump_on_plate_ = 0;
-        }
-        else if(is_on_plate){
-            input_type_.jump_on_plate_=1;
-            input_type_.jump_ = 0;
-        }
-        else{
-            input_type_.jump_ =1;
-            input_type_.jump_on_plate_ = 0;
-        }
-
-    }
-
 }
 
 SDL_Rect MainObject :: GetRectFrame(){
@@ -301,9 +305,7 @@ void MainObject :: DoPlayer(Map& map_data, SDL_Renderer* screen, int& num_live, 
             on_ground_ = false;
         }
         if(input_type_.jet_pack == 1){
-            if(y_val_>5 )y_val_ = 5;
             y_val_ -= PLAYER_JETPACK;
-            input_type_.jet_pack = 0;
             on_ground_ = false;
         }
 
@@ -319,14 +321,14 @@ void MainObject :: DoPlayer(Map& map_data, SDL_Renderer* screen, int& num_live, 
             on_ground_ = false;
             if(x_pos_ > 256)
             {
-                x_pos_ -=256; //4 tile
+                x_pos_ -= 4 * TILE_SIZE; //4 tile
             }
             else
             {
                 x_pos_ =0;
 
             }
-            y_pos_ = 0;
+            y_pos_ = TILE_SIZE + 1;
             x_val_ = 0;
             y_val_ =0;
         }

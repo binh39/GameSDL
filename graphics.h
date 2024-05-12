@@ -6,6 +6,8 @@
 using namespace std;
 
 #define PLATE_SPEED 3
+#define ROCKET_SPEED 20
+#define MAX_DELAY 48
 
 const int MAN_CLIPS[][4] = {
     {  0, 0, 64, 64},
@@ -197,6 +199,17 @@ const int PLATE_CLIPS[][4] = {
     { 448, 0, 64, 14}};
 const int PLATE_FRAME = 8;
 
+const int ROCKET_CLIPS[][4] = {
+    { 0, 0, 64, 41},
+    { 64, 0, 64, 41},
+    { 128, 0, 64, 41},
+    { 192, 0, 64, 41},
+    { 256, 0, 64, 41},
+    { 320, 0, 64, 41},
+    { 384, 0, 64, 41},
+    { 448, 0, 64, 41}};
+const int ROCKET_FRAME = 8;
+
 const int BOX_CLIPS[][4] = {
     {  0, 0, 64, 64},
     { 64, 0, 64, 64},
@@ -255,6 +268,8 @@ struct Sprite{
     void set_pos(const int& xp, const int& yp){x_pos = xp; y_pos = yp;}
     void move();
     void move2(const int& x_left, const int& x_right);
+    void move3();
+    SDL_Rect GetRect();
     void SetBegin();
     void Free();
 };
@@ -325,6 +340,7 @@ struct Menu {
         int x=0,y=0;
         while(!quit)
         {
+            //SDL_Texture* start1 = LoadButton("img/button//Start1.png", renderer);
             SDL_PollEvent(&event);
             if(event.type == SDL_QUIT) exit(0);
             SDL_GetMouseState(&x,&y);
@@ -349,6 +365,7 @@ struct Menu {
         SDL_DestroyTexture( pixel_adventure ); pixel_adventure = NULL;
         SDL_DestroyTexture( start1 ); start1 = NULL;
         SDL_DestroyTexture( start2 ); start2 = NULL;
+        Man.Free();
     }
 
     int ChooseCharacter(SDL_Renderer* renderer, SDL_Event event){
@@ -453,10 +470,14 @@ struct Menu {
         SDL_DestroyTexture( continue1 ); continue1 = NULL;
         SDL_DestroyTexture( continue2 ); continue2 = NULL;
         SDL_DestroyTexture( selectcharacter); selectcharacter = NULL;
+        Frog.Free(); BigFrog.Free();
+        Mask.Free(); BigMask.Free();
+        Pink.Free(); BigPink.Free();
+        Guy.Free(); BigGuy.Free();
         return A;
     }
 
-    int SellectLevel(SDL_Renderer* renderer, SDL_Event event, const int& lv1, const int& lv2, const int& lv3){
+    int SellectLevel(SDL_Renderer* renderer, SDL_Event event, const int& lv1, const int& lv2, const int& lv3, const int& lv4){
         int level = 1;
         ScrollingBackground SBackground;
         SBackground.setTexture(renderer);
@@ -468,7 +489,8 @@ struct Menu {
         SDL_Texture* lv2Off = LoadButton("img/button//Level2Off.png", renderer);
         SDL_Texture* lvBossOn = LoadButton("img/button//LevelBossOn.png", renderer);
         SDL_Texture* lvBossOff = LoadButton("img/button//LevelBossOff.png", renderer);
-
+        SDL_Texture* lv4On = LoadButton("img/button//Level4On.png", renderer);
+        SDL_Texture* lv4Off = LoadButton("img/button//Level4Off.png", renderer);
         bool quit = false;
         int x,y;
         while(!quit){
@@ -481,25 +503,30 @@ struct Menu {
 
             renderTexture(selectLevel, 385, 100, renderer);
 
-            if(lv1) renderTexture(lv1On, 504, 250, renderer);
-            else renderTexture(lv1Off, 504, 250, renderer);
-            if(lv2) renderTexture(lv2On, 604, 250, renderer);
-            else renderTexture(lv2Off, 604, 250, renderer);
-            if(lv3) renderTexture(lvBossOn, 704, 250, renderer);
-            else renderTexture(lvBossOff, 704, 250, renderer);
-
+            if(lv1) renderTexture(lv1On, 454, 250, renderer);
+            else renderTexture(lv1Off, 454, 250, renderer);
+            if(lv2) renderTexture(lv2On, 554, 250, renderer);
+            else renderTexture(lv2Off, 554, 250, renderer);
+            if(lv3) renderTexture(lvBossOn, 654, 250, renderer);
+            else renderTexture(lvBossOff, 654, 250, renderer);
+            if(lv4) renderTexture(lv4On, 754, 250, renderer);
+            else renderTexture(lv4Off, 754, 250, renderer);
             if(event.type == SDL_MOUSEBUTTONDOWN)
             {
-                if( (504<=x&&x<=504 + 72) && (250<=y&&y<=250 + 62) && lv1 ){
+                if( (454<=x&&x<=454 + 72) && (250<=y&&y<=250 + 62) && lv1 ){
                     level=1;
                     quit=true;
                 }
-                else if( (604<=x&&x<=604 + 72) && (250<=y&&y<=250+62) && lv2){
+                else if( (554<=x&&x<=554 + 72) && (250<=y&&y<=250+62) && lv2){
                     level=2;
                     quit=true;
                 }
-                else if( (704<=x&&x<=704 + 72) && (250<=y&&y<=250+62) && lv3){
+                else if( (654<=x&&x<=654 + 72) && (250<=y&&y<=250+62) && lv3){
                     level=3;
+                    quit = true;
+                }
+                else if( (754<=x&&x<=754 + 72) && (250<=y&&y<=250+62) && lv4){
+                    level = 4;
                     quit = true;
                 }
             }
@@ -515,6 +542,8 @@ struct Menu {
         SDL_DestroyTexture(lv1Off); lv1Off = nullptr;
         SDL_DestroyTexture(lv2Off); lv2Off = nullptr;
         SDL_DestroyTexture(lvBossOff); lvBossOff = nullptr;
+        SDL_DestroyTexture(lv4On); lv4On = nullptr;
+        SDL_DestroyTexture(lv4Off); lv4Off = nullptr;
 
         return level;
     }
@@ -573,7 +602,7 @@ struct Menu {
         SDL_DestroyTexture( play_again2 ); play_again2 = NULL;
         SDL_DestroyTexture( quit1 ); quit1 = NULL;
         SDL_DestroyTexture( quit2 ); quit2 = NULL;
-
+        Man.Free();
     }
 
     void MenuWin(SDL_Renderer* renderer, SDL_Event event){
@@ -637,7 +666,8 @@ struct Menu {
         SDL_DestroyTexture( play_again2 ); play_again2 = NULL;
         SDL_DestroyTexture( quit1 ); quit1 = NULL;
         SDL_DestroyTexture( quit2 ); quit2 = NULL;
-
+        Man.Free();
+        Cup.Free();
     }
 
     void LoadVolumnButton(SDL_Renderer* renderer){

@@ -52,9 +52,7 @@ public:
     float get_x_pos(){return x_pos_;}
     float get_y_pos(){return y_pos_;}
 
-    void set_bullet_list(vector<BulletObject*> bullet_list){
-            p_bullet_list_ = bullet_list;
-        }
+    void set_bullet_list(vector<BulletObject*> bullet_list){ p_bullet_list_ = bullet_list;}
     vector<BulletObject*> get_bullet_list() const {return p_bullet_list_;}
     void HandleBullet(SDL_Renderer* des, Map& map_data);
     void RemoveBullet(const int& idx);

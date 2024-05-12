@@ -757,9 +757,9 @@ int main(int argc,char* argv[])
     if( InitData() == false) return -1;
     if(LoadBackground() == false) return -2;
 
-    int lv1=0, lv2=0, lv3=0;
+    int lv1=0, lv2=0, lv3=0, lv4=0;
     ifstream fileLevel("map//Level.txt");
-    fileLevel>>lv1>>lv2>>lv3;
+    fileLevel>>lv1>>lv2>>lv3>>lv4;
     fileLevel.close();
     int HighScore = 0;
     ifstream fileScore("map//HighScore.txt");
@@ -841,6 +841,9 @@ int main(int argc,char* argv[])
     Sprite DangerSign;
     DangerSign.LoadImg("img/Items//DangerSign.png", g_screen);
     DangerSign.init(MAN_FRAMES, MAN_CLIPS);
+    Sprite Rocket;
+    Rocket.LoadImg("img/Items//Rocket.png", g_screen);
+    Rocket.init(ROCKET_FRAME, ROCKET_CLIPS);
 
     BossObject bossObject;
     bossObject.CreateBoss(g_screen);
@@ -903,8 +906,8 @@ int main(int argc,char* argv[])
             jumpL = p_player.JumpL;
             jumpR = p_player.JumpR;
 
-            //level = menu.SellectLevel(g_screen, g_event, lv1, lv2, lv3);
-            level = 4;
+            level = menu.SellectLevel(g_screen, g_event, lv1, lv2, lv3, lv4);
+            //level = 4;
             threats_list.clear();
             fruit_list.clear();
             collect_list.clear();
@@ -921,6 +924,7 @@ int main(int argc,char* argv[])
                 Grey.set_pos(81*64, 11*64);
                 Brown.set_pos(81*64, 11*64);
                 JetPack.set_pos(81*64, 11*64);
+                Rocket.set_pos(81*64, 11*64);
                 threats_list = MakeThreadList1();
                 fruit_list = MakeFruitList1();
                 collect_list = MakeCollected1();
@@ -934,6 +938,7 @@ int main(int argc,char* argv[])
                 Grey.set_pos(81*64, 11*64);
                 Brown.set_pos(81*64, 11*64);
                 JetPack.set_pos(81*64, 11*64);
+                Rocket.set_pos(81*64, 11*64);
                 threats_list = MakeThreadList2();
                 fruit_list = MakeFruitList2();
                 collect_list = MakeCollected2();
@@ -947,6 +952,7 @@ int main(int argc,char* argv[])
                 Grey.set_pos(81*64, 11*64);
                 Brown.set_pos(81*64, 11*64);
                 JetPack.set_pos(81*64, 11*64);
+                Rocket.set_pos(81*64, 11*64);
                 threats_list = MakeThreadList3();
                 fruit_list = MakeFruitList3();
                 collect_list = MakeCollected3();
@@ -961,6 +967,7 @@ int main(int argc,char* argv[])
                 Grey.set_pos(15*64, 8*64-10);
                 Brown.set_pos(26*64, 6*64-10);
                 JetPack.set_pos(37*64, 5*64);
+                Rocket.set_pos(81*64, 11*64);
                 green_portal = MakeGreenPortal();
                 grey_portal = MakeGreyPortal();
             }
@@ -973,6 +980,7 @@ int main(int argc,char* argv[])
                 Grey.set_pos(81*64, 11*64);
                 Brown.set_pos(81*64, 11*64);
                 JetPack.set_pos(81*64, 11*64);
+                Rocket.set_pos(81*64, 11*64);
             }
 
             transition = 1;
@@ -988,6 +996,7 @@ int main(int argc,char* argv[])
             Key.is_collect = false;
             Door.is_collect = false;
             JetPack.is_collect = false;
+            Rocket.SetBegin();
             Grey.SetBegin();
             Brown.SetBegin();
             p_player.SetBegin();
@@ -1017,6 +1026,7 @@ int main(int argc,char* argv[])
                 is_stop = false;
 
                 p_player.SetBegin();
+                p_player.SetRect(-64,-64);
                 p_player.UnSuper(runR, runL, jumpL, jumpR);
                 Mix_HaltMusic();
                 graphics.play(gMusic);
@@ -1032,9 +1042,13 @@ int main(int argc,char* argv[])
                 transition = 1;
                 Key.is_collect = false;
                 Door.is_collect = false;
+                Door.currentFrame = 0;
                 Gun.is_collect = false;
                 JetPack.is_collect = false;
                 JetPack.set_pos(37*64, 5*64);
+                DangerSign.SetBegin();
+                Rocket.set_pos(81*64, 11*64);
+                Rocket.SetBegin();
                 Brown.SetBegin();
                 Grey.SetBegin();
                 bossObject.SetBegin();
@@ -1097,7 +1111,6 @@ int main(int argc,char* argv[])
                 RenderWithMap(map_data, hCollect, g_screen, 21*64, 80);
                 RenderWithMap(map_data, hClick, g_screen, 39*64, 4*64);
             }
-
             if(level != 4){
                 Fan.RenderWithMap(map_data, g_screen);
                 Fan.tick();
@@ -1118,10 +1131,25 @@ int main(int argc,char* argv[])
                     if(p_player.CollectItem(JetPack) && !JetPack.is_collect){
                         JetPack.is_collect = true;
                         p_player.jetpack = true;
+                        Door.is_collect = false;
+                        game_map.MapLock();
                     }
                     if(JetPack.is_collect == true){
-                        DangerSign.Render(SCREEN_WIDTH, p_player.GetRect().y, g_screen);
-                        DangerSign.tick();
+                        if(Rocket.is_collect == false){
+                            DangerSign.Render(SCREEN_WIDTH, p_player.GetRect().y, g_screen);
+                            DangerSign.tick();
+                            if(DangerSign.delay == MAX_DELAY - 1){
+                                Rocket.is_collect = true;
+                                Rocket.is_move = true;
+                                Rocket.set_pos(p_player.get_x_pos() + SCREEN_WIDTH/2 , p_player.get_y_pos());
+                            }
+                        }
+                        if(Rocket.is_move){
+                            Rocket.RenderWithMap(map_data, g_screen);
+                            Rocket.move3();
+                            Rocket.tick();
+                        }
+
                     }
                     Brown.RenderWithMap(map_data, g_screen);
                     if(p_player.CollectItem(Brown)){
@@ -1146,19 +1174,21 @@ int main(int argc,char* argv[])
                     }
                     else p_player.UnPlate();
                 }
+                if(transition && !Key.is_collect) Key.RenderWithMap(map_data, g_screen);
+                else if(!transition) Door.RenderWithMap(map_data, g_screen);
+                if(transition && p_player.CollectItem(Key) && !Key.is_collect) Key.is_collect = true;
+                if(Key.is_collect) Key.Render(1100, 6, g_screen);
+                if(Key.is_collect && !transition && !Door.is_collect && p_player.CollectItem(Door)){
+                    Door.is_collect = true;
+                    Key.is_collect = false;
+                }
+                if(Door.is_collect) Door.currentFrame = 1;
+                else Door.currentFrame = 0;
             }
 
             Cup.RenderWithMap(map_data,g_screen);
             Cup.tick();
-            if(transition && !Key.is_collect) Key.RenderWithMap(map_data, g_screen);
-            else if(!transition) Door.RenderWithMap(map_data, g_screen);
-            if(transition && p_player.CollectItem(Key) && !Key.is_collect) Key.is_collect = true;
-            if(Key.is_collect) Key.Render(1100, 6, g_screen);
-            if(Key.is_collect && !transition && !Door.is_collect && p_player.CollectItem(Door)){
-                Door.is_collect = true;
-                Door.currentFrame++;
-                Key.is_collect = false;
-            }
+
             if(update_power && !Gun.is_collect){
                 Gun.RenderWithMap(map_data, g_screen);
                 Gun.tick();
@@ -1169,8 +1199,6 @@ int main(int argc,char* argv[])
             }
             if(p_player.CollectItem(Fan)) p_player.Bay();
 
-            bool Va1 = false;
-            bool Va2 = false;
             for(int i=0; i<green_portal.size(); i++){
                 Sprite* portal = green_portal[i];
                 if(portal!=nullptr && transition){
@@ -1185,6 +1213,7 @@ int main(int argc,char* argv[])
                         green_portal.erase(green_portal.begin()+i);
                     }
                 }
+                else if(portal == nullptr) portal->Free();
             }
             for(int i=0; i<grey_portal.size(); i++){
                 Sprite* portal = grey_portal[i];
@@ -1200,6 +1229,7 @@ int main(int argc,char* argv[])
                         grey_portal.erase(grey_portal.begin()+i);
                     }
                 }
+                else if(portal == nullptr) portal->Free();
             }
             for(int i=0; i<fruit_list.size() ; i++){
                 Sprite* fruit = fruit_list[i];
@@ -1222,6 +1252,10 @@ int main(int argc,char* argv[])
                         }
                     }
                 }
+                else{
+                    fruit->Free();
+                    collect->Free();
+                }
             }
             for(int i=0; i<box_list.size(); i++){
                 Sprite* box = box_list[i];
@@ -1238,7 +1272,10 @@ int main(int argc,char* argv[])
                         }
                     }
                 }
+                else box->Free();
             }
+            bool Va1 = false;
+            bool Va2 = false;
             for(int i=0 ; i<threats_list.size() ; i++){
                 ThreatsObject* p_threat = threats_list[i];
                 if(p_threat != NULL)
@@ -1250,7 +1287,6 @@ int main(int argc,char* argv[])
                     p_threat->Show(g_screen);
                     SDL_Rect tRect = p_threat->GetRectFrame();
                     SDL_Rect pRect = p_player.GetRectFrame();
-
                     bool killquai = SDLCommonFunc::CheckVaQuai(pRect,tRect);
                     if(killquai){
                         p_player.Nhay();
@@ -1283,7 +1319,6 @@ int main(int argc,char* argv[])
                     }
                 }
             }
-
             if(!bossObject.IsLive() && !BossDie.is_collect && level==3){
                 BossDie.RenderWithMap(map_data, g_screen);
                 BossDie.tick();
@@ -1313,7 +1348,6 @@ int main(int argc,char* argv[])
                     }
                 }
             }
-
             if(Va1 || Va2 || VaBoss || BulletBoss){
                 graphics.play(disappear);
                 int width_exp_frame = explosion_.get_frame_width();
@@ -1329,7 +1363,30 @@ int main(int argc,char* argv[])
                 }
                 num_live--;
                 if(num_live > 0){
-                    p_player.SetRect(0,0);
+                    p_player.SetRect(-64,-64);
+                    p_player.set_come_back_time(60);
+                    p_heart.Decrease();
+                    SDL_Delay(1000);
+                    continue;
+                }
+            }
+            bool VaRocket = SDLCommonFunc::CheckCollision(p_player.GetRectFrame(), Rocket.GetRect());
+            if(VaRocket){
+                graphics.play(disappear);
+                int width_exp_frame = explosion_.get_frame_width();
+                int height__exp_frame = explosion_.get_frame_height();
+                for(int ex=0; ex<NUM_FRAME_EXP; ex++){
+                    int x_pos = (p_player.GetRectFrame().x + p_player.GetRectFrame().w*0.5 - width_exp_frame*0.5);
+                    int y_pos = (p_player.GetRectFrame().y + p_player.GetRectFrame().h*0.5 - height__exp_frame*0.5);
+                    explosion_.set_frame(ex);
+                    explosion_.SetRect(x_pos, y_pos);
+                    explosion_.Show(g_screen);
+                    SDL_RenderPresent(g_screen);
+                    SDL_Delay(30);
+                }
+                num_live--;
+                if(num_live > 0){
+                    p_player.SetRect(-64,-64);
                     p_player.set_come_back_time(60);
                     p_heart.Decrease();
                     SDL_Delay(1000);
@@ -1393,14 +1450,18 @@ int main(int argc,char* argv[])
                 ofstream ghifile("map//Level.txt");
                 if(level == 1){
                     lv2 = 1;
-                    ghifile<<lv1<<" "<<lv2<<" "<<lv3<<endl;
+                    ghifile<<lv1<<" "<<lv2<<" "<<lv3<<" "<<lv4<<endl;
                 }
                 else if(level == 2){
                     lv3 =1;
-                    ghifile<<lv1<<" "<<lv2<<" "<<lv3<<endl;
+                    ghifile<<lv1<<" "<<lv2<<" "<<lv3<<" "<<lv4<<endl;
+                }
+                else if(level ==3){
+                    lv4 = 1;
+                    ghifile<<lv1<<" "<<lv2<<" "<<lv3<<" "<<lv4<<endl;
                 }
                 else{
-                   ghifile<<lv1<<" "<<lv2<<" "<<lv3<<endl;
+                    ghifile<<lv1<<" "<<lv2<<" "<<lv3<<" "<<lv4<<endl;
                 }
                 ghifile.close();
                 ofstream ghidiem("map//HighScore.txt");
