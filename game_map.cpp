@@ -94,3 +94,7 @@ void GameMap :: MapLock(){
     game_map_.tile[4][34] = 24;
 }
 
+void GameMap :: MapUnLock(){
+    game_map_.tile[5][34] = 5;
+    game_map_.tile[4][34] = 5;
+}

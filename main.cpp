@@ -85,6 +85,16 @@ void close(){
     SDL_Quit();
 }
 
+void DestroyVector(vector<Sprite*> &a){
+    for(int i=0; i<a.size(); i++){
+        if(a[i]!=nullptr){
+            a[i]->Free();
+            a.erase(a.begin()+i);
+        }
+    }
+    a.clear();
+}
+
 vector<ThreatsObject*> MakeThreadList1(){
     vector<ThreatsObject*> list_threats;
     ThreatsObject* dynamic_threats = new ThreatsObject[2];
@@ -338,6 +348,53 @@ vector<ThreatsObject*> MakeThreadList3(){
     }
 
     return list_threats;
+}
+
+vector<Sprite*> MakeTrap(){
+    vector<Sprite*> trap_list;
+    Sprite* saw = new Sprite[10];
+    for(int i=0;i<10;i++){
+        Sprite* saw_ = (saw+i);
+        if(saw_ != nullptr){
+            saw_->LoadImg("img/Traps//Saw.png", g_screen);
+            saw_->init(SAW_FRAME, SAW_CLIPS);
+            if(i==0) saw_->set_pos(43*64, 5*64);
+            else if(i==1) saw_->set_pos(45*64, 3*64);
+            else if(i==2) saw_->set_pos(48*64, 6*64);
+            else if (i==3) saw_->set_pos(51*64, 7*64);
+            else if (i==4) saw_->set_pos(54*64, 7*64);
+            else if (i==5) saw_->set_pos(58*64, 4*64);
+            else if (i==6) saw_->set_pos(62*64, 6*64);
+            else if (i==7) saw_->set_pos(65*64, 3*64);
+            else if (i==8) saw_->set_pos(69*64, 5*64);
+            else if (i==9) saw_->set_pos(73*64, 6*64);
+            else saw_->set_pos(81*64, 11*64);
+            trap_list.push_back(saw_);
+        }
+    }
+
+    Sprite* spike = new Sprite[10];
+    for(int i=0;i<10;i++){
+        Sprite* spike_ = (spike+i);
+        if(spike_ != nullptr){
+            spike_->LoadImg("img/Traps//SpikeHead.png", g_screen);
+            spike_->init(SPIKE_FRAME, SPIKE_CLIPS);
+            if(i==0) spike_->set_pos(41*64, 4*64);
+            else if(i==1) spike_->set_pos(44*64, 4*64);
+            else if(i==2) spike_->set_pos(45*64, 7*64);
+            else if (i==3) spike_->set_pos(48*64, 2*64);
+            else if (i==4) spike_->set_pos(49*64, 4*64);
+            else if (i==5) spike_->set_pos(53*64, 3*64);
+            else if (i==6) spike_->set_pos(56*64, 3*64);
+            else if (i==7) spike_->set_pos(64*64, 8*64);
+            else if (i==8) spike_->set_pos(65*64, 8*64);
+            else if (i==9) spike_->set_pos(71*64, 2*64);
+            else spike_->set_pos(81*64, 11*64);
+            trap_list.push_back(spike_);
+        }
+    }
+
+    return trap_list;
 }
 
 vector<Sprite*> MakeFruitList1(){
@@ -775,12 +832,14 @@ int main(int argc,char* argv[])
 
     Graphics graphics;
     Mix_Music* gMusic = graphics.loadMusic("sound//cafe_boba_short.mp3");
-    Mix_Chunk *gJump = graphics.loadSound("sound//jump.wav");
+    Mix_Chunk *gJump = graphics.loadSound("sound//Teleport.wav");
     Mix_Chunk *gun_sound = graphics.loadSound("sound//Gun2.wav");
     Mix_Chunk *fruit_sound = graphics.loadSound("sound//Fruit.wav");
     Mix_Chunk *super_power = graphics.loadSound("sound//SuperPower.wav");
     Mix_Chunk *boss_gun = graphics.loadSound("sound//GunBoss.wav");
     Mix_Chunk *disappear = graphics.loadSound("sound//Disappear.wav");
+    Mix_Chunk *door_open = graphics.loadSound("sound//DoorOpen.wav");
+    Mix_Chunk *door_close = graphics.loadSound("sound//DoorClose.wav");
 
     ExplosionObject explosion_;
     bool tRet = explosion_.LoadImg("img//Explosion.png", g_screen);
@@ -808,6 +867,7 @@ int main(int argc,char* argv[])
     vector<Sprite*> box_list;
     vector<Sprite*> green_portal;
     vector<Sprite*> grey_portal;
+    vector<Sprite*> trap_list;
 
     Sprite Fan;
     Fan.LoadImg("img/Items//Fan.png", g_screen);
@@ -844,6 +904,8 @@ int main(int argc,char* argv[])
     Sprite Rocket;
     Rocket.LoadImg("img/Items//Rocket.png", g_screen);
     Rocket.init(ROCKET_FRAME, ROCKET_CLIPS);
+    Chain Ball;
+    Ball.LoadImg(g_screen);
 
     BossObject bossObject;
     bossObject.CreateBoss(g_screen);
@@ -885,8 +947,7 @@ int main(int argc,char* argv[])
     bool is_continue = false;
     bool is_stop = false;
     bool is_start = true;
-
-    menu.StartMenu(g_screen,g_event);
+    bool start_game = true;
 
     while(!is_quit){
         if(is_start){
@@ -897,6 +958,8 @@ int main(int argc,char* argv[])
             is_stop = false;
             is_continue = true;
             menu.restart_ = false;
+            if(start_game) menu.StartMenu(g_screen,g_event);
+            start_game = false;
             choose = menu.ChooseCharacter(g_screen,g_event);
             p_player.SelectCharacter(choose);
             p_player.LoadImg(p_player.RunR,g_screen);
@@ -905,15 +968,14 @@ int main(int argc,char* argv[])
             runL = p_player.RunL;
             jumpL = p_player.JumpL;
             jumpR = p_player.JumpR;
-
             level = menu.SellectLevel(g_screen, g_event, lv1, lv2, lv3, lv4);
-            //level = 4;
+            DestroyVector(fruit_list);
+            DestroyVector(collect_list);
+            DestroyVector(box_list);
+            DestroyVector(green_portal);
+            DestroyVector(grey_portal);
+            DestroyVector(trap_list);
             threats_list.clear();
-            fruit_list.clear();
-            collect_list.clear();
-            box_list.clear();
-            green_portal.clear();
-            grey_portal.clear();
 
             if(level == 1){
                 game_map.LoadMap("map/map01.txt");
@@ -925,6 +987,7 @@ int main(int argc,char* argv[])
                 Brown.set_pos(81*64, 11*64);
                 JetPack.set_pos(81*64, 11*64);
                 Rocket.set_pos(81*64, 11*64);
+                Ball.SetPos(81*64, 11*64);
                 threats_list = MakeThreadList1();
                 fruit_list = MakeFruitList1();
                 collect_list = MakeCollected1();
@@ -939,6 +1002,7 @@ int main(int argc,char* argv[])
                 Brown.set_pos(81*64, 11*64);
                 JetPack.set_pos(81*64, 11*64);
                 Rocket.set_pos(81*64, 11*64);
+                Ball.SetPos(81*64, 11*64);
                 threats_list = MakeThreadList2();
                 fruit_list = MakeFruitList2();
                 collect_list = MakeCollected2();
@@ -953,6 +1017,7 @@ int main(int argc,char* argv[])
                 Brown.set_pos(81*64, 11*64);
                 JetPack.set_pos(81*64, 11*64);
                 Rocket.set_pos(81*64, 11*64);
+                Ball.SetPos(81*64, 11*64);
                 threats_list = MakeThreadList3();
                 fruit_list = MakeFruitList3();
                 collect_list = MakeCollected3();
@@ -968,8 +1033,10 @@ int main(int argc,char* argv[])
                 Brown.set_pos(26*64, 6*64-10);
                 JetPack.set_pos(37*64, 5*64);
                 Rocket.set_pos(81*64, 11*64);
+                Ball.SetPos(61*64, 3*64);
                 green_portal = MakeGreenPortal();
                 grey_portal = MakeGreyPortal();
+                trap_list = MakeTrap();
             }
             else{
                 game_map.LoadMap("map/map01.txt");
@@ -981,6 +1048,7 @@ int main(int argc,char* argv[])
                 Brown.set_pos(81*64, 11*64);
                 JetPack.set_pos(81*64, 11*64);
                 Rocket.set_pos(81*64, 11*64);
+                Ball.SetPos(81*64, 11*64);
             }
 
             transition = 1;
@@ -1053,13 +1121,13 @@ int main(int argc,char* argv[])
                 Grey.SetBegin();
                 bossObject.SetBegin();
                 BossDie.is_collect = false;
-
+                DestroyVector(fruit_list);
+                DestroyVector(collect_list);
+                DestroyVector(box_list);
+                DestroyVector(green_portal);
+                DestroyVector(grey_portal);
+                DestroyVector(trap_list);
                 threats_list.clear();
-                fruit_list.clear();
-                collect_list.clear();
-                box_list.clear();
-                green_portal.clear();
-                grey_portal.clear();
 
                 if(level==1){
                     game_map.LoadMap("map/map01.txt");
@@ -1083,6 +1151,7 @@ int main(int argc,char* argv[])
                 else if(level==4){
                     green_portal = MakeGreenPortal();
                     grey_portal = MakeGreyPortal();
+                    trap_list = MakeTrap();
                     game_map.LoadMap("map/map04a.txt");
                     Grey.set_pos(15*64, 8*64-10);
                     Brown.set_pos(26*64, 6*64-10);
@@ -1119,8 +1188,13 @@ int main(int argc,char* argv[])
             }
             else{
                 if(!transition){
+                    Ball.RenderWithMap(map_data, g_screen);
+                    Ball.MoveARound();
+                    Door.RenderWithMap(map_data, g_screen);
                     Fan.RenderWithMap(map_data, g_screen);
                     Fan.tick();
+                    if(Door.is_collect) Door.currentFrame = 1;
+                    else Door.currentFrame = 0;
                     if(!JetPack.is_collect){
                         JetPack.RenderWithMap(map_data, g_screen);
                     }
@@ -1133,6 +1207,8 @@ int main(int argc,char* argv[])
                         p_player.jetpack = true;
                         Door.is_collect = false;
                         game_map.MapLock();
+                        graphics.play(door_close);
+                        graphics.play(fruit_sound);
                     }
                     if(JetPack.is_collect == true){
                         if(Rocket.is_collect == false){
@@ -1165,6 +1241,13 @@ int main(int argc,char* argv[])
                     Start_Flag.RenderWithMap(map_data, g_screen);
                     Start_Flag.tick();
                     Grey.RenderWithMap(map_data, g_screen);
+                    if(!Key.is_collect){
+                        Key.RenderWithMap(map_data, g_screen);
+                        if(p_player.CollectItem(Key)){
+                            Key.is_collect = true;
+                            graphics.play(fruit_sound);
+                        }
+                    }
                     if(p_player.CollectItem(Grey)){
                         p_player.Plate();
                         Grey.tick();
@@ -1174,16 +1257,12 @@ int main(int argc,char* argv[])
                     }
                     else p_player.UnPlate();
                 }
-                if(transition && !Key.is_collect) Key.RenderWithMap(map_data, g_screen);
-                else if(!transition) Door.RenderWithMap(map_data, g_screen);
-                if(transition && p_player.CollectItem(Key) && !Key.is_collect) Key.is_collect = true;
                 if(Key.is_collect) Key.Render(1100, 6, g_screen);
                 if(Key.is_collect && !transition && !Door.is_collect && p_player.CollectItem(Door)){
                     Door.is_collect = true;
                     Key.is_collect = false;
+                    graphics.play(door_open);
                 }
-                if(Door.is_collect) Door.currentFrame = 1;
-                else Door.currentFrame = 0;
             }
 
             Cup.RenderWithMap(map_data,g_screen);
@@ -1208,6 +1287,7 @@ int main(int argc,char* argv[])
                     if(isCollect) portal->is_collect = true;
                     if(portal->is_collect){
                         transition = (transition+1)%2;
+                        graphics.play(gJump);
                         game_map.LoadMap("map/map04b.txt");
                         portal->Free();
                         green_portal.erase(green_portal.begin()+i);
@@ -1223,7 +1303,9 @@ int main(int argc,char* argv[])
                     bool isCollect = p_player.CollectItem(*portal);
                     if(isCollect) portal->is_collect = true;
                     if(portal->is_collect){
+                        cout<<p_player.GetRectFrame().x<<" "<<p_player.GetRectFrame().y<<" "<<p_player.GetRectFrame().w<<" "<<p_player.GetRectFrame().h<<endl;
                         transition = (transition+1)%2;
+                        graphics.play(gJump);
                         game_map.LoadMap("map/map04a.txt");
                         portal->Free();
                         grey_portal.erase(grey_portal.begin()+i);
@@ -1276,6 +1358,23 @@ int main(int argc,char* argv[])
             }
             bool Va1 = false;
             bool Va2 = false;
+            bool Va3 = false;
+            bool Va4 = false;
+            Va4 = (SDLCommonFunc::CheckCollision(p_player.GetRectFrame(), Ball.GetRect()) && level==4 && !transition );
+            for (int i =0; i<trap_list.size() ; i++){
+                Sprite* trap = trap_list[i];
+                if(trap!=nullptr){
+                    trap->RenderWithMap(map_data, g_screen);
+                    trap->tick();
+                    Va3 = SDLCommonFunc::CheckCollision(p_player.GetRectFrame(), trap->GetRect());
+                    if(Va3){
+                        cout<<p_player.GetRectFrame().x<<" "<<p_player.GetRectFrame().y<<" "<<p_player.GetRectFrame().w<<" "<<p_player.GetRectFrame().h<<endl;
+                        cout<<trap->GetRect().x<<" "<<trap->GetRect().y<<" "<<trap->GetRect().w<< " "<<trap->GetRect().h<<endl;
+                        cout<<i;
+                        break;
+                    }
+                }
+            }
             for(int i=0 ; i<threats_list.size() ; i++){
                 ThreatsObject* p_threat = threats_list[i];
                 if(p_threat != NULL)
@@ -1348,7 +1447,7 @@ int main(int argc,char* argv[])
                     }
                 }
             }
-            if(Va1 || Va2 || VaBoss || BulletBoss){
+            if(Va1 || Va2 || Va3 || Va4 || VaBoss || BulletBoss){
                 graphics.play(disappear);
                 int width_exp_frame = explosion_.get_frame_width();
                 int height__exp_frame = explosion_.get_frame_height();

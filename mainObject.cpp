@@ -121,8 +121,6 @@ void MainObject :: Show(SDL_Renderer* des)
     else{
       frame_=0;
     }
-    //if(frame_ >= 12) frame_ =0;
-    //if(frame_stand_ >= 11) frame_stand_ = 0;
 
     if(come_back_time_ == 0 )
     {
@@ -462,10 +460,6 @@ void MainObject :: UpdateImagePlayer(SDL_Renderer* des){
             LoadImg(JumpR,des);
         }
     }
-}
-
-void MainObject :: IncreaseMoney(){
-    money_count++;
 }
 
 void MainObject :: Super(SDL_Renderer* screen, Graphics& graphics, Mix_Chunk* chunk){

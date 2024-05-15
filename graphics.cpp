@@ -52,6 +52,7 @@ void Sprite :: SetBegin(){
     dx = 0;
     huong = 1;
     delay = 0;
+    rec = 0;
     is_collect = false;
     is_move = false;
 }
@@ -93,6 +94,13 @@ void Sprite :: move2(const int& x_left, const int& x_right){
 void Sprite :: move3(){
     x_pos -= ROCKET_SPEED;
     if(x < 0-width_frame_) SetBegin();
+}
+void Sprite :: moveARound(const int& radius){
+    if(rec_pos) rec += 0.06;
+    else rec -=0.06;
+    if(rec > 3.14*0.5 || rec < 3.14*-0.5) rec_pos = (rec_pos+1)%2;
+    x_pos = tam_x + radius*sin(rec);
+    y_pos = tam_y + radius*cos(rec);
 }
 
 SDL_Rect Sprite :: GetRect(){

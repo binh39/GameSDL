@@ -232,6 +232,27 @@ const int KEY_CLIPS[][4] = {
     {0, 0, 12, 30}};
 const int KEY_FRAME = 1;
 
+const int SAW_CLIPS[][4] = {
+    { 0, 0, 38, 38},
+    { 38, 0, 38, 38},
+    { 76, 0, 38, 38},
+    { 114, 0, 38, 38},
+    { 152, 0, 38, 38},
+    { 190, 0, 38, 38},
+    { 228, 0, 38, 38},
+    { 266, 0, 38, 38}};
+const int SAW_FRAME = 8;
+
+const int SPIKE_CLIPS[][4] = {
+    { 0, 0, 43, 43},
+    { 43, 0, 43, 43},
+    { 86, 0, 43, 43},
+    { 129, 0, 43, 43}};
+const int SPIKE_FRAME = 4;
+
+const int BALL_CLIPS[][4] = {{0,0,28,28}};
+const int CHAIN_CLIPS[][4] = {{0,0,7,7}};
+
 struct ScrollingBackground{
     SDL_Texture* texture;
     int scrollingOffset = 0;
@@ -248,10 +269,14 @@ struct Sprite{
     int delay = 0;
     int x=0;
     int y=0;
+    float rec=0;
+    int rec_pos = 1;
 
     int dx=0;
     int x_pos=0;
     int y_pos=0;
+    int tam_x=0;
+    int tam_y=0;
     int width_frame_=0;
     int height_frame_=0;
 
@@ -266,12 +291,69 @@ struct Sprite{
     void Render(int x, int y, SDL_Renderer* renderer);
     void RenderWithMap(Map& map_data, SDL_Renderer* renderer);
     void set_pos(const int& xp, const int& yp){x_pos = xp; y_pos = yp;}
+    void set_tam(const int& xp, const int& yp){tam_x = xp; tam_y = yp;}
     void move();
     void move2(const int& x_left, const int& x_right);
     void move3();
+    void moveARound(const int& radius);
     SDL_Rect GetRect();
     void SetBegin();
     void Free();
+};
+
+struct Chain : Sprite{
+    float x_pos=0;
+    float y_pos=0;
+    Sprite ball;
+    Sprite* chain = new Sprite[10];
+
+    void SetPos(const int& xp, const int& yp){
+        x_pos = xp;
+        y_pos = yp;
+        ball.set_tam(x_pos-10, y_pos-10);
+        for(int i=0; i<10 ; i++){
+            Sprite* chain_ = (chain+i);
+            if(chain_!=nullptr){
+                chain_->set_tam(x_pos, y_pos);
+            }
+        }
+    }
+
+    void LoadImg(SDL_Renderer* renderer){
+        ball.LoadImg("img/Traps//Ball.png", renderer);
+        ball.init(1, BALL_CLIPS);
+        for(int i=0; i<10 ; i++){
+            Sprite* chain_ = (chain+i);
+            if(chain_!=nullptr){
+                chain_->LoadImg("img/Traps//Chain.png", renderer);
+                chain_->init(1, CHAIN_CLIPS);
+            }
+        }
+    }
+
+    void RenderWithMap(Map& map_data, SDL_Renderer* renderer){
+        for(int i=0; i<10 ; i++){
+            Sprite* chain_ = (chain+i);
+            if(chain_!=nullptr){
+                chain_->RenderWithMap(map_data, renderer);
+            }
+        }
+        ball.RenderWithMap(map_data, renderer);
+    }
+
+    void MoveARound(){
+        for(int i=0; i<10 ; i++){
+            Sprite* chain_ = (chain+i);
+            if(chain_!=nullptr){
+                chain_->moveARound(i*14);
+            }
+        }
+        ball.moveARound(10*14);
+    }
+
+    SDL_Rect GetRect(){
+        return ball.GetRect();
+    }
 };
 
 struct Graphics {
@@ -334,13 +416,10 @@ struct Menu {
         SDL_Texture* start1 = LoadButton("img/button//Start1.png", renderer);
         SDL_Texture* start2 = LoadButton("img/button//Start2.png", renderer);
 
-        SDL_RenderPresent(renderer);
-
         bool quit=false;
         int x=0,y=0;
         while(!quit)
         {
-            //SDL_Texture* start1 = LoadButton("img/button//Start1.png", renderer);
             SDL_PollEvent(&event);
             if(event.type == SDL_QUIT) exit(0);
             SDL_GetMouseState(&x,&y);
@@ -348,9 +427,7 @@ struct Menu {
             SBackground.scroll(1);
             renderTexture(SBackground.texture, SBackground.scrollingOffset, 0, renderer);
             renderTexture(SBackground.texture, SBackground.scrollingOffset - SBackground.width, 0, renderer);
-
             renderTexture(pixel_adventure, 350, 100,renderer);
-
 
             Man.Render(Man.x, Man.y+560, renderer);
             Man.Render(Man.x, Man.y, renderer);
@@ -731,6 +808,7 @@ struct Menu {
         int x, y;
         SDL_GetMouseState(&x, &y);
         if((1167<=x&&x<=1186) && (11<=y&&y<=30) && event.type == SDL_MOUSEBUTTONUP){
+            Mix_PauseMusic();
             SDL_Event e;
             bool is_quit = false;
             while(!is_quit){
@@ -738,6 +816,7 @@ struct Menu {
                 SDL_GetMouseState(&x, &y);
                 if( (565<=x&&x<=565+150) && (300<=y&&y<=300+150) && e.type == SDL_MOUSEBUTTONDOWN){
                     is_quit = true;
+                    Mix_ResumeMusic();
                     return;
                 }
                 renderTexture(backgr, 0, 0, renderer);
