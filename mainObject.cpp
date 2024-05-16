@@ -13,6 +13,8 @@ void MainObject :: SelectCharacter(int choose){
         RunL = "img/NinjaFrog//RunL.png";
         JumpR = "img/NinjaFrog//JumpR.png";
         JumpL = "img/NinjaFrog//JumpL.png";
+        IdleR = "img/NinjaFrog//Idle.png";
+        IdleL = "img/NinjaFrog//IdleL.png";
     }
     else if ( choose==2 )
     {
@@ -20,6 +22,8 @@ void MainObject :: SelectCharacter(int choose){
         RunL = "img/MaskDude//RunL.png";
         JumpR = "img/MaskDude//JumpR.png";
         JumpL = "img/MaskDude//JumpL.png";
+        IdleR = "img/MaskDude//Idle.png";
+        IdleL = "img/MaskDude//IdleL.png";
     }
     else if ( choose==3 )
     {
@@ -27,6 +31,8 @@ void MainObject :: SelectCharacter(int choose){
         RunL = "img/PinkMan//RunL.png";
         JumpR = "img/PinkMan//JumpR.png";
         JumpL = "img/PinkMan//JumpL.png";
+        IdleR = "img/PinkMan//Idle.png";
+        IdleL = "img/PinkMan//IdleL.png";
     }
     else
     {
@@ -34,7 +40,15 @@ void MainObject :: SelectCharacter(int choose){
         RunL = "img/VirtualGuy//RunL.png";
         JumpR = "img/VirtualGuy//JumpR.png";
         JumpL = "img/VirtualGuy//JumpL.png";
+        IdleR = "img/VirtualGuy//Idle.png";
+        IdleL = "img/VirtualGuy//IdleL.png";
     }
+    RunR2 = RunR;
+    RunL2 =RunL;
+    JumpR2 = JumpR;
+    JumpL2 = JumpL;
+    IdleR2 = IdleR;
+    IdleL2 = IdleL;
 }
 
 MainObject :: MainObject(){
@@ -42,6 +56,14 @@ MainObject :: MainObject(){
     RunL = "img/NinjaFrog//RunL.png";
     JumpR = "img/NinjaFrog//JumpR.png";
     JumpL = "img/NinjaFrog//JumpL.png";
+    IdleR = "img/NinjaFrog//Idle.png";
+    IdleL = "img/NinjaFrog//IdleL.png";
+    RunR2 = RunR;
+    RunL2 =RunL;
+    JumpR2 = JumpR;
+    JumpL2 = JumpL;
+    IdleR2 = IdleR;
+    IdleL2 = IdleL;
     gun = false;
     jetpack = false;
     is_cup = false;
@@ -65,7 +87,6 @@ MainObject :: MainObject(){
     map_x_ =0;
     map_y_ =0;
     come_back_time_ =0;
-    money_count = 0;
 }
 
 MainObject :: ~MainObject(){
@@ -115,12 +136,12 @@ void MainObject :: Show(SDL_Renderer* des)
 {
     UpdateImagePlayer(des);
 
-    if(input_type_.left_ == 1 || input_type_.right_ == 1){
+    /*if(input_type_.left_ == 1 || input_type_.right_ == 1){
         frame_ = (frame_+1)%12;
     }
     else{
       frame_=0;
-    }
+    }*/ frame_ = (frame_+1)%12;
 
     if(come_back_time_ == 0 )
     {
@@ -442,11 +463,13 @@ void MainObject :: UpdateImagePlayer(SDL_Renderer* des){
     {
         if(status_ == WALK_LEFT)
         {
-            LoadImg(RunL,des);
+            if(input_type_.left_==0 && input_type_.right_==0 ) LoadImg(IdleL, des);
+            else LoadImg(RunL,des);
         }
         else
         {
-            LoadImg(RunR,des);
+            if(input_type_.left_==0 && input_type_.right_==0 ) LoadImg(IdleR, des);
+            else LoadImg(RunR,des);
         }
     }
     else
@@ -469,6 +492,8 @@ void MainObject :: Super(SDL_Renderer* screen, Graphics& graphics, Mix_Chunk* ch
     RunR = "img/Super//RunR.png";
     JumpL = "img/Super//JumpL.png";
     JumpR = "img/Super//JumpR.png";
+    IdleL = "img/Super//IdleL.png";
+    IdleR = "img/Super//Idle.png";
     ExplosionObject super_power;
     bool sRet = super_power.LoadImg("img/Super//SuperWhite.png", screen);
     if(!sRet){
@@ -491,12 +516,14 @@ void MainObject :: Super(SDL_Renderer* screen, Graphics& graphics, Mix_Chunk* ch
     }
 }
 
-void MainObject :: UnSuper(string runR, string runL, string jumpL, string jumpR){
+void MainObject :: UnSuper(){
     gun=false;
-    RunR = runR;
-    RunL = runL;
-    JumpL = jumpL;
-    JumpR = jumpR;
+    RunR = RunR2;
+    RunL = RunL2;
+    JumpL = JumpL2;
+    JumpR = JumpR2;
+    IdleL = IdleL2;
+    IdleR = IdleR2;
 }
 
 bool MainObject :: CollectItem(const Sprite& item){

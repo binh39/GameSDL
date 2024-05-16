@@ -843,10 +843,6 @@ int main(int argc,char* argv[])
 
     ExplosionObject explosion_;
     bool tRet = explosion_.LoadImg("img//Explosion.png", g_screen);
-    if(!tRet){
-        cout << "Error LoadImg Explosion\n";
-        return -1;
-    }
     explosion_.set_clip();
 
     TextObject time_game;
@@ -914,17 +910,13 @@ int main(int argc,char* argv[])
     BossDie.init(BOSS_FRAME, BOSS_CLIPS);
     BossDie.set_pos(MAX_MAP_X*TILE_SIZE - SCREEN_WIDTH*0.8, 4*64);
 
-    string runR;
-    string runL;
-    string jumpL;
-    string jumpR;
     int choose=0;
     int level = 1;
 
     MainObject p_player;
 
     p_player.SetBegin();
-    p_player.UnSuper(runR, runL, jumpL, jumpR);
+    p_player.UnSuper();
     PlayerHeart p_heart;
     p_heart.Init(g_screen);
 
@@ -964,10 +956,6 @@ int main(int argc,char* argv[])
             p_player.SelectCharacter(choose);
             p_player.LoadImg(p_player.RunR,g_screen);
             p_player.set_clips();
-            runR = p_player.RunR;
-            runL = p_player.RunL;
-            jumpL = p_player.JumpL;
-            jumpR = p_player.JumpR;
             level = menu.SellectLevel(g_screen, g_event, lv1, lv2, lv3, lv4);
             DestroyVector(fruit_list);
             DestroyVector(collect_list);
@@ -1068,7 +1056,7 @@ int main(int argc,char* argv[])
             Grey.SetBegin();
             Brown.SetBegin();
             p_player.SetBegin();
-            p_player.UnSuper(runR, runL, jumpL, jumpR);
+            p_player.UnSuper();
 
         }
         if(is_continue){
@@ -1095,7 +1083,7 @@ int main(int argc,char* argv[])
 
                 p_player.SetBegin();
                 p_player.SetRect(-64,-64);
-                p_player.UnSuper(runR, runL, jumpL, jumpR);
+                p_player.UnSuper();
                 Mix_HaltMusic();
                 graphics.play(gMusic);
 
@@ -1156,10 +1144,7 @@ int main(int argc,char* argv[])
                     Grey.set_pos(15*64, 8*64-10);
                     Brown.set_pos(26*64, 6*64-10);
                 }
-
             }
-
-            //SDL_SetRenderDrawColor(g_screen,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR);
             SDL_RenderClear(g_screen);
             g_background.Render(g_screen,NULL);
             Map map_data = game_map.getMap();
@@ -1303,7 +1288,6 @@ int main(int argc,char* argv[])
                     bool isCollect = p_player.CollectItem(*portal);
                     if(isCollect) portal->is_collect = true;
                     if(portal->is_collect){
-                        cout<<p_player.GetRectFrame().x<<" "<<p_player.GetRectFrame().y<<" "<<p_player.GetRectFrame().w<<" "<<p_player.GetRectFrame().h<<endl;
                         transition = (transition+1)%2;
                         graphics.play(gJump);
                         game_map.LoadMap("map/map04a.txt");
@@ -1324,7 +1308,7 @@ int main(int argc,char* argv[])
                     if(collect->is_collect){
                         collect->RenderWithMap(map_data, g_screen);
                         collect->tick();
-                        if(collect->currentFrame == 5){
+                        if(collect->currentFrame == COLLECTED_FRAME_2-1){
                             fruit->Free();
                             fruit_list.erase(fruit_list.begin()+i);
                             collect->Free();
@@ -1347,7 +1331,7 @@ int main(int argc,char* argv[])
                     if(isCollect) box->is_collect=true;
                     if(box->is_collect){
                         box->tick();
-                        if(box->currentFrame == 9){
+                        if(box->currentFrame == BOX_FRAME-1){
                             p_player.Khong();
                             box->Free();
                             box_list.erase(box_list.begin()+i);
@@ -1367,12 +1351,7 @@ int main(int argc,char* argv[])
                     trap->RenderWithMap(map_data, g_screen);
                     trap->tick();
                     Va3 = SDLCommonFunc::CheckCollision(p_player.GetRectFrame(), trap->GetRect());
-                    if(Va3){
-                        cout<<p_player.GetRectFrame().x<<" "<<p_player.GetRectFrame().y<<" "<<p_player.GetRectFrame().w<<" "<<p_player.GetRectFrame().h<<endl;
-                        cout<<trap->GetRect().x<<" "<<trap->GetRect().y<<" "<<trap->GetRect().w<< " "<<trap->GetRect().h<<endl;
-                        cout<<i;
-                        break;
-                    }
+                    if(Va3) break;
                 }
             }
             for(int i=0 ; i<threats_list.size() ; i++){
@@ -1463,7 +1442,7 @@ int main(int argc,char* argv[])
                 num_live--;
                 if(num_live > 0){
                     p_player.SetRect(-64,-64);
-                    p_player.set_come_back_time(60);
+                    p_player.set_come_back_time(COME_BACK_TIME);
                     p_heart.Decrease();
                     SDL_Delay(1000);
                     continue;
@@ -1486,7 +1465,7 @@ int main(int argc,char* argv[])
                 num_live--;
                 if(num_live > 0){
                     p_player.SetRect(-64,-64);
-                    p_player.set_come_back_time(60);
+                    p_player.set_come_back_time(COME_BACK_TIME);
                     p_heart.Decrease();
                     SDL_Delay(1000);
                     continue;
@@ -1496,8 +1475,6 @@ int main(int argc,char* argv[])
                 is_lose = true;
                 is_continue = false;
             }
-
-            //Hinh anh load sau dong nay
             p_player.Show(g_screen);
             p_player.HandleBullet(g_screen,map_data);
 

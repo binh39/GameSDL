@@ -13,16 +13,19 @@
 #define PLAYER_SPEED 9
 #define PLAYER_JUMP_VAL 13
 #define PLAYER_JETPACK 1
+#define COME_BACK_TIME 60
 
 using namespace std;
 
 class MainObject : public BaseObject
 {
 public:
-    string RunR;
-    string RunL;
-    string JumpR;
-    string JumpL;
+    string RunR, RunR2;
+    string RunL, RunL2;
+    string JumpR, JumpR2;
+    string JumpL, JumpL2;
+    string IdleL, IdleL2;
+    string IdleR, IdleR2;
     bool jetpack = false;
 
     MainObject();
@@ -56,11 +59,8 @@ public:
     vector<BulletObject*> get_bullet_list() const {return p_bullet_list_;}
     void HandleBullet(SDL_Renderer* des, Map& map_data);
     void RemoveBullet(const int& idx);
-    void IncreaseMoney();
-    int GetMoneyCount() const {return money_count;}
     bool CollectItem(const Sprite& item);
     bool GetIsCup(){return is_cup;}
-    void Vitri(){cout<<x_pos_<<" "<<y_pos_<<endl;}
     void set_come_back_time(const int& cb_time){come_back_time_ = cb_time;}
     void Super(SDL_Renderer* screen, Graphics& graphics, Mix_Chunk* chunk);
     void Nhay(){y_val_ = -5;}
@@ -70,14 +70,13 @@ public:
     void UnPlate(){is_on_plate = false;}
     void MoveWithPlate(const int& dx);
     void SetBegin();
-    void UnSuper(string runR, string runL, string jumpL, string jumpR);
+    void UnSuper();
 
 private:
     bool is_cup = false;
     bool is_on_plate = false;
     bool gun = false;
 
-    int money_count;
     vector<BulletObject*> p_bullet_list_;
 
     float x_val_;

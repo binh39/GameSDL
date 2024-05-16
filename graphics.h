@@ -113,15 +113,6 @@ const int FLAGS_CLIPS[][4] = {
     {960, 0, 64, 64}};
 const int FLAGS_FRAME = 16;
 
-const int COLLECTED_CLIPS[][4] = {
-    {  0, 0, 32, 32},
-    { 32, 0, 32, 32},
-    { 64, 0, 32, 32},
-    { 96, 0, 32, 32},
-    {128, 0, 32, 32},
-    {160, 0, 32, 32}};
-const int COLLECTED_FRAME = 6;
-
 const int COLLECTED_CLIPS_2[][4] = {
     {  0, 0, 64, 64},
     { 64, 0, 64, 64},
