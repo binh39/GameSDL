@@ -25,10 +25,12 @@ Game được tạo bởi ngôn ngữ C++ kết hợp với thư viện SDL2.
 - Địa hình vỡ dần theo thời gian.
 - Map thay đổi theo cổng dịch chuyển.
 - Jetpack.
-## Special Thanks To
+## Hỗ Trợ
 - Giảng viên hướng dẫn: TS. Trần Thị Minh Châu, ThS. Kiều Hải Đăng
 - [Lazy' Foo](https://lazyfoo.net/tutorials/SDL/) và [PhatTrienPhanMem123A-Z](https://www.youtube.com/c/Ph%C3%A1tTri%E1%BB%83nPh%E1%BA%A7nM%E1%BB%81m123AZ) với những hướng dẫn về SDL2.
 ## Nguồn tài nguyên
 - [Hình ảnh](https://pixelfrog-assets.itch.io/pixel-adventure-2)
 - [Âm nhạc](https://www.youtube.com/watch?v=Uj93hicGDNc&t=4s)
 - [Hiệu ứng âm thanh](https://artlist.io/)
+## Ngưỡng điểm
+- Project có sự đầu tư về thời gian, kiến thức, tối ưu hóa đồ họa hiệu suất đảm bảo chạy mượt trên mọi thiết bị trong thời gian dài không gây giật lag. Vì vậy, ngưỡng điểm em mong muốn đạt được là 9-10.
