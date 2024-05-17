@@ -1,9 +1,9 @@
 # depslib dependency file v1.0
-1715540013 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\baseobject.cpp
+1715918338 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\baseobject.cpp
 	"CommonFunction.h"
 	"BaseObject.h"
 
-1715796373 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\main.cpp
+1715873253 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\main.cpp
 	"CommonFunction.h"
 	"graphics.h"
 	"BaseObject.h"
@@ -15,7 +15,7 @@
 	"TextObject.h"
 	"BossObject.h"
 
-1715452615 d:\admin\documents\thuchanhlt\codeblock\gamesdl\commonfunction.h
+1715920638 d:\admin\documents\thuchanhlt\codeblock\gamesdl\commonfunction.h
 	<windows.h>
 	<bits/stdc++.h>
 	<SDL.h>
@@ -46,7 +46,7 @@
 	"BulletObject.h"
 	"ExplosionObject.h"
 
-1715796383 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.cpp
+1715920212 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\mainobject.cpp
 	<bits/stdc++.h>
 	"mainObject.h"
 	"CommonFunction.h"
@@ -76,7 +76,7 @@
 	"BaseObject.h"
 	"CommonFunction.h"
 
-1715364104 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\threatsobject.cpp
+1715918336 source:d:\admin\documents\thuchanhlt\codeblock\gamesdl\threatsobject.cpp
 	"ThreatsObject.h"
 
 1714846517 d:\admin\documents\thuchanhlt\codeblock\gamesdl\threatsobject.h

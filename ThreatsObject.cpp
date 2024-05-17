@@ -231,7 +231,7 @@ void ThreatsObject :: ImpMoveType(SDL_Renderer* screen)
                 else LoadImg("img/Enemy//BunnyR.png",screen);
             }
         }
-        else//error on_ground_ == false
+        else
         {
             if(input_type_.left_ == 1)
             {
@@ -251,7 +251,6 @@ void ThreatsObject :: InitBullet(BulletObject* p_bullet, SDL_Renderer* screen)
         {
             p_bullet->set_is_move(true);
             p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
-            //p_bullet->SetRect(rect_.x+10, rect_.y+10);
             p_bullet->set_position(x_pos_+10, y_pos_+height_frame_*0.24);
             p_bullet->set_x_val(THREAT_FIRE);
             bullet_list_.push_back(p_bullet);
@@ -282,7 +281,6 @@ void ThreatsObject :: MakeBullet(SDL_Renderer* screen, const int& x_limit, const
             else
             {
                 p_bullet->set_is_move(true);
-                //p_bullet->SetRect(rect_.x+10,rect_.y+10);
                 p_bullet->set_position(x_pos_+10, y_pos_+height_frame_*0.24);
             }
         }

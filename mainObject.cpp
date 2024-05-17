@@ -95,11 +95,15 @@ MainObject :: ~MainObject(){
 void MainObject :: SetBegin(){
     x_pos_=0;
     y_pos_=5*64;
+    x_val_ = 0;
+    y_val_=0;
     come_back_time_ = 0;
     status_ = WALK_NONE;
     input_type_.left_ = 0;
     input_type_.right_ =0;
     input_type_.jump_ =0;
+    input_type_.jump_on_plate_ =0;
+    input_type_.jet_pack=0;
     input_type_.down_=0;
     input_type_.up_=0;
     on_ground_ = false;
@@ -135,13 +139,7 @@ void MainObject :: set_clips()
 void MainObject :: Show(SDL_Renderer* des)
 {
     UpdateImagePlayer(des);
-
-    /*if(input_type_.left_ == 1 || input_type_.right_ == 1){
-        frame_ = (frame_+1)%12;
-    }
-    else{
-      frame_=0;
-    }*/ frame_ = (frame_+1)%12;
+    frame_ = (frame_+1)%12;
 
     if(come_back_time_ == 0 )
     {
